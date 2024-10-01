@@ -81,8 +81,8 @@ export default defineComponent({
       ],
 
       authButtons: [
-        { name: "Login", url: "/login" },
-        { name: "Register", url: "/register" }
+        { name: "Login", url: "/Login" },
+        { name: "Register", url: "/Register" }
       ],
 
       isMobileMenuOpen: false,
@@ -133,7 +133,7 @@ export default defineComponent({
 <style>
 /* General Navbar Styling */
 .navbar {
-  background-image: linear-gradient(#ECF0F3, #898B8D);
+  background-image: linear-gradient(darkblue, darkblue);
   padding: 10px 30px;
 }
 
@@ -165,13 +165,13 @@ export default defineComponent({
 
 .nav-link a {
   padding: 10px;
-  color: black;
+  color: white;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .nav-link a:hover {
-  color: #000054;
+  color: darkgrey;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 20px;
   border-bottom: 3px solid #000054;
