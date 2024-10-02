@@ -4,7 +4,7 @@
 
     <div v-if="!showResults">
       <!-- Vraag -->
-      <h3>{{ questions[currentQuestionIndex].question }}</h3>
+      <h3>{{ currentQuestion.question }}</h3>
 
       <!-- Opties -->
       <div class="options">
@@ -32,65 +32,91 @@
 export default {
   data() {
     return {
-      questions: [
+      allQuestions: [
         {
           question: "Nederland moet meer investeren in duurzame energie.",
-          answers: [1, 2, 3] // 1 = D66, 2 = GroenLinks, 3 = VVD
+          answers: [1, 2, 3]
         },
         {
           question: "De belastingen voor de rijksten moeten omhoog.",
-          answers: [2, 1, 3] // 2 = GroenLinks, 1 = SP, 3 = VVD
+          answers: [2, 1, 3]
         },
         {
           question: "Nederland moet uit de Europese Unie stappen.",
-          answers: [3, 2, 1] // 3 = PVV, 2 = FvD, 1 = VVD
+          answers: [3, 2, 1]
         },
         {
           question: "We moeten investeren in defensie en onze krijgsmacht uitbreiden.",
-          answers: [3, 2, 1] // 3 = VVD, 2 = CDA, 1 = D66
+          answers: [3, 2, 1]
         },
         {
           question: "Het minimumloon moet fors omhoog.",
-          answers: [1, 2, 3] // 1 = SP, 2 = PvdA, 3 = VVD
+          answers: [1, 2, 3]
         },
         {
           question: "Er moet een nationale zorgverzekering komen.",
-          answers: [2, 1, 3] // 2 = GroenLinks, 1 = SP, 3 = VVD
+          answers: [2, 1, 3]
         },
         {
           question: "Het woningaanbod moet worden uitgebreid met betaalbare woningen.",
-          answers: [1, 2, 3] // 1 = PvdA, 2 = D66, 3 = VVD
+          answers: [1, 2, 3]
         },
         {
           question: "Nederland moet meer vluchtelingen opnemen.",
-          answers: [2, 1, 3] // 2 = D66, 1 = GroenLinks, 3 = PVV
+          answers: [2, 1, 3]
         },
         {
           question: "Het gebruik van fossiele brandstoffen moet sterk verminderd worden.",
-          answers: [1, 2, 3] // 1 = GroenLinks, 2 = D66, 3 = VVD
+          answers: [1, 2, 3]
         },
         {
           question: "Er moet meer geld naar onderwijs.",
-          answers: [1, 2, 3] // 1 = PvdA, 2 = D66, 3 = VVD
+          answers: [1, 2, 3]
+        },
+        {
+          question: "De gezondheidszorg moet worden geprivatiseerd.",
+          answers: [3, 2, 1]
+        },
+        {
+          question: "Er moeten strengere immigratieregels komen.",
+          answers: [3, 1, 2]
+        },
+        {
+          question: "Zware criminaliteit moet zwaarder bestraft worden.",
+          answers: [3, 2, 1]
         }
+        // Voeg hier meer vragen toe voor variatie
       ],
+      questions: [],
       userAnswers: [],
       currentQuestionIndex: 0,
       showResults: false,
       parties: {
+        VVD: 0,
         D66: 0,
         GroenLinks: 0,
-        VVD: 0,
         PVV: 0,
         SP: 0,
         PvdA: 0,
         FvD: 0,
-        CDA: 0
+        CDA: 0,
+        CU: 0,
+        SGP: 0,
+        PvdD: 0
       },
       options: ["Helemaal eens", "Eens", "Oneens", "Helemaal oneens"]
     };
   },
+  created() {
+    // Selecteer 10 willekeurige vragen uit de allQuestions pool
+    this.questions = this.shuffleQuestions(this.allQuestions, 10);
+  },
   methods: {
+    shuffleQuestions(questions, count) {
+      // Shuffle de vragen en neem de eerste 'count' vragen
+      const shuffled = questions.sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, count);
+    },
     selectAnswer(answerIndex) {
       // Sla het antwoord van de gebruiker op
       this.userAnswers[this.currentQuestionIndex] = answerIndex;
@@ -125,15 +151,26 @@ export default {
       this.currentQuestionIndex = 0;
       this.showResults = false;
       this.parties = {
+        VVD: 0,
         D66: 0,
         GroenLinks: 0,
-        VVD: 0,
         PVV: 0,
         SP: 0,
         PvdA: 0,
         FvD: 0,
-        CDA: 0
+        CDA: 0,
+        CU: 0,
+        SGP: 0,
+        PvdD: 0
       };
+
+      // Kies weer nieuwe willekeurige vragen
+      this.questions = this.shuffleQuestions(this.allQuestions, 10);
+    }
+  },
+  computed: {
+    currentQuestion() {
+      return this.questions[this.currentQuestionIndex];
     }
   }
 };
@@ -146,7 +183,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 70vh;
-  max-width: 100vw; /* Zorgt ervoor dat er geen horizontale scrolling is */
+  max-width: 100vw;
   overflow: hidden;
   text-align: center;
   padding: 10px;
@@ -154,12 +191,12 @@ export default {
 
 h1 {
   margin-bottom: 10px;
-  font-size: 1.5rem; /* Verkleind om alles passend te houden */
+  font-size: 1.5rem;
 }
 
 h3 {
   margin-bottom: 10px;
-  font-size: 1.2rem; /* Verkleind om alles passend te houden */
+  font-size: 1.2rem;
 }
 
 .options {
@@ -169,7 +206,7 @@ h3 {
 }
 
 button {
-  padding: 8px 15px; /* Kleiner formaat voor knoppen */
+  padding: 8px 15px;
   font-size: 0.9rem;
   border: none;
   border-radius: 5px;
@@ -195,7 +232,7 @@ button.disagree:hover {
 
 .retry-button {
   margin-top: 20px;
-  padding: 8px 15px; /* Kleiner formaat voor de resetknop */
+  padding: 8px 15px;
   font-size: 0.9rem;
   background-color: #007bff;
   border: none;
@@ -210,6 +247,6 @@ button.disagree:hover {
 
 p {
   text-align: center;
-  font-size: 1.2rem; /* Verkleind om alles passend te houden */
+  font-size: 1.2rem;
 }
 </style>

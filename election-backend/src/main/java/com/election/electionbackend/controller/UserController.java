@@ -22,7 +22,10 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            // Save user without password encryption
+            // Save user with role (frontend should send the role)
+            if (user.getRole() == null || user.getRole().isEmpty()) {
+                user.setRole("visitor"); // Default to 'visitor' role if not provided
+            }
             userService.saveUser(user);
             return ResponseEntity.ok("User registered successfully!");
         } catch (Exception e) {
@@ -34,10 +37,10 @@ public class UserController {
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user) {
         User existingUser = userService.findByEmail(user.getEmail());
         if (existingUser != null && user.getPassword().equals(existingUser.getPassword())) {
-            // In a real application, this would be a JWT or session token
             String token = generateToken(existingUser); // Generate a token for the session
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
+            response.put("role", existingUser.getRole()); // Include the role in the response
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(401).body(null);

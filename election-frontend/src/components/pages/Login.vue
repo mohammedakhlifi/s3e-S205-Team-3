@@ -34,9 +34,22 @@ export default {
   methods: {
     async loginUser() {
       try {
+        // Send login request to backend
         const response = await axios.post('http://localhost:8080/api/login', this.login);
+        const { token, role } = response.data; // Assuming response contains token and role
+
+        // Store the token and role in localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
+
         this.message = 'Login successful!';
-        // Handle storing JWT token or other login success actions
+
+        // Redirect user based on role
+        if (role === 'admin') {
+          this.$router.push('/admin'); // Redirect to admin panel if the user is admin
+        } else {
+          this.$router.push('/'); // Redirect to home page or other page for non-admins
+        }
       } catch (error) {
         this.message = 'Login failed. Please try again.';
         console.error(error);

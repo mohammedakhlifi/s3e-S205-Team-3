@@ -39,6 +39,17 @@
           </select>
         </div>
 
+        <!-- New Role Selection Field -->
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select v-model="user.role" id="role" required>
+            <option value="" disabled>Select a role</option>
+            <option value="visitor">Visitor</option>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
         <button type="submit">Register</button>
       </form>
       <p v-if="message">{{ message }}</p>
@@ -59,6 +70,7 @@ export default {
         birthDate: "",
         province: "",
         city: "",
+        role: "" // New role property
       },
       message: "",
       provinces: ["Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland"],
@@ -68,7 +80,7 @@ export default {
   methods: {
     async registerUser() {
       try {
-        // Make sure to include the new fields in the request
+        // Include the role in the registration data
         const response = await axios.post("http://localhost:8080/api/register", this.user);
         this.message = "User registered successfully!";
         // Handle successful registration
@@ -78,7 +90,7 @@ export default {
       }
     },
     fetchCities() {
-      // This is a placeholder. You can replace it with actual API calls to fetch cities.
+      // Placeholder for cities fetching logic
       const citiesByProvince = {
         "Drenthe": ["Assen", "Emmen", "Hoogeveen"],
         "Flevoland": ["Almere", "Lelystad", "Emmeloord"],

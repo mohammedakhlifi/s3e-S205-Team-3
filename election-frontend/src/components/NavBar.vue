@@ -35,11 +35,11 @@
 
 <script lang="ts">
 import { inject } from 'vue';
-import { authState } from '@/router/auth';  // Import the auth state
+import { authState } from '@/router/auth'; // Import the auth state
 
 export default {
   setup() {
-    return { authState };  // Make authState available in the template
+    return { authState }; // Make authState available in the template
   },
 
   data() {
@@ -49,7 +49,8 @@ export default {
         { name: "Election result", url: "/election-result" },
         { name: "Parties", url: "/parties" },
         { name: "Quiz", url: "/quiz" },
-        { name: "Contact us", url: "/contact-us" },
+        { name: "Forum", url: "/forum" }, // Added Forum link
+        { name: "Contact us", url: "/contact-us" }
       ],
 
       authButtons: [
@@ -58,14 +59,14 @@ export default {
       ],
 
       activeLink: "Home", // Set default active link
-      activeButton: "Login", // Set default active button
+      activeButton: "Login" // Set default active button
     };
   },
 
   methods: {
     signOut() {
-      authState.logout();  // Call logout method from authState
-      this.$router.push('/login');  // Redirect to login page
+      authState.logout(); // Call logout method from authState
+      this.$router.push('/login'); // Redirect to login page
     }
   }
 };

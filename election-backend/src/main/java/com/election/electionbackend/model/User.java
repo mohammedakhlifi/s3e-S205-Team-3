@@ -17,7 +17,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password;  // Ensure this field exists and is annotated
+    private String password;
 
     @Column(nullable = false)
     private String birthDate;
@@ -27,6 +27,9 @@ public class User {
 
     @Column(nullable = false)
     private String province;
+
+    @Column(nullable = false)
+    private String role; // New role field
 
     // Getters and Setters
     public Long getId() {
@@ -83,5 +86,13 @@ public class User {
 
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
