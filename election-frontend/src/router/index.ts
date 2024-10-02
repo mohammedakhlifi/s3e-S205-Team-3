@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from "@/components/pages/HomePage.vue";
 import ElectionResultPage from "@/components/pages/ElectionResultPage.vue";
-import LoginPage from "@/components/pages/LoginPage.vue";
-import RegisterPage from "@/components/pages/RegisterPage.vue";  // Updated to RegisterPage.vue
+import login from "@/components/pages/Login.vue";
+import register from "@/components/pages/Register.vue";
 import Quiz from "@/components/pages/Quiz.vue";
 
 const routes = [
@@ -11,8 +11,8 @@ const routes = [
     { path: '/parties', component: HomePage },
     { path: '/quiz', component: Quiz },
     { path: '/contact-us', component: HomePage },
-    { path: '/login', component: LoginPage },
-    { path: '/register', component: RegisterPage },  // Updated component
+    { path: '/login', component: login },
+    { path: '/register', component: register },
 ];
 
 const router = createRouter({
