@@ -35,15 +35,20 @@ export default defineComponent({
     };
   },
   mounted() {
+    this.fetchBackendStatus();  // Fetch the backend status when the component is mounted
+  },
+  methods: {
     // Use Axios to fetch backend status
-    axios.get('http://localhost:8080/test')
-        .then(response => {
-          this.backendStatus = response.data;
-        })
-        .catch(error => {
-          console.error('Error fetching backend status:', error);
-          this.backendStatus = { message: 'Error connecting to backend' };
-        });
+    fetchBackendStatus() {
+      axios.get('http://localhost:8080/test')
+          .then(response => {
+            this.backendStatus = response.data;
+          })
+          .catch(error => {
+            console.error('Error fetching backend status:', error);
+            this.backendStatus = { message: 'Error connecting to backend' };
+          });
+    }
   }
 });
 </script>

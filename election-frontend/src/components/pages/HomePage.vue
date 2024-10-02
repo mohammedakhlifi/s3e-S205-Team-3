@@ -33,7 +33,7 @@
       <div class="info-section">
         <h2>Engage with the Community</h2>
         <p>Join discussions and debates on key political topics, and share your opinions.</p>
-        <router-link to="/chat">
+        <router-link to="/quiz">
           <button class="info-btn">Join the Conversation</button>
         </router-link>
       </div>

@@ -49,6 +49,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- Spring Security for password encryption -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 		<!-- Devtools for automatic restart during development -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -74,21 +80,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>your-id</id>
-			<name>Your Name</name>
-			<email>your-email@example.com</email>
-		</developer>
-	</developers>
 
 </project>

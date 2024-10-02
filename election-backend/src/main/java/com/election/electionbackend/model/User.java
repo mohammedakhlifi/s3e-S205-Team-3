@@ -10,12 +10,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    private String password;
+    @Column(nullable = false)
+    private String password;  // Ensure this field exists and is annotated
+
+    @Column(nullable = false)
+    private String birthDate;
+
+    @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false)
+    private String province;
 
     // Getters and Setters
     public Long getId() {
@@ -48,5 +59,29 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 }
