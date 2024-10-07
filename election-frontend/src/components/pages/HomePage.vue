@@ -60,10 +60,10 @@ export default defineComponent({
 
 /* Banner Sectie */
 .banner {
-  background-image: url('https://example.com/banner-image.jpg'); /* Vervang door een echte banner afbeelding */
+  background-image: url('@/assets/img/tweedekamer.jpg'); /* Zorg ervoor dat het pad naar je afbeelding klopt */
   background-size: cover;
   background-position: center;
-  height: 70vh;
+  height: 70vh; /* Pas de hoogte aan als dat nodig is */
   display: flex;
   justify-content: center;
   align-items: center;

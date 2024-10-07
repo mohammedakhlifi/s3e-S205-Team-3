@@ -18,7 +18,7 @@
 
       <div class="buttons">
         <div v-if="authState.isAuthenticated" class="signout-btn">
-          <button @click="signOut">Sign Out</button>
+          <button @click="signOut">Uitloggen</button>
         </div>
 
         <div v-else>
@@ -35,46 +35,46 @@
 
 <script lang="ts">
 import { inject } from 'vue';
-import { authState } from '@/router/auth'; // Import the auth state
+import { authState } from '@/router/auth'; // Importeer de authenticatiestatus
 
 export default {
   setup() {
-    return { authState }; // Make authState available in the template
+    return { authState }; // Maak authState beschikbaar in de template
   },
 
   data() {
     return {
       navLinks: [
         { name: "Home", url: "/" },
-        { name: "Election result", url: "/election-result" },
-        { name: "Parties", url: "/parties" },
+        { name: "Verkiezingsresultaat", url: "/election-result" },
+        { name: "Partijen", url: "/parties" },
         { name: "Quiz", url: "/quiz" },
-        { name: "Forum", url: "/forum" }, // Added Forum link
-        { name: "Contact us", url: "/contact-us" }
+        { name: "Forum", url: "/forum" },
+        { name: "Overview", url: "/forum/overview" },
+        { name: "Neem contact op", url: "/contact-us" }
       ],
 
       authButtons: [
-        { name: "Login", url: "/login" },
-        { name: "Register", url: "/register" }
+        { name: "Inloggen", url: "/login" },
+        { name: "Registreren", url: "/register" }
       ],
 
-      activeLink: "Home", // Set default active link
-      activeButton: "Login" // Set default active button
+      activeLink: "Home", // Standaard actieve link instellen
+      activeButton: "Inloggen" // Standaard actieve knop instellen
     };
   },
 
   methods: {
     signOut() {
-      authState.logout(); // Call logout method from authState
-      this.$router.push('/login'); // Redirect to login page
+      authState.logout(); // Roep de logout-methode van authState aan
+      this.$router.push('/login'); // Omleiden naar inlogpagina
     }
   }
 };
 </script>
 
 <style>
-/* General Navbar Styling */
-/* General Navbar Styling */
+/* Algemene Navbar Styling */
 .navbar {
   background-color: #002f6c;
   padding: 10px 30px;
@@ -94,12 +94,13 @@ export default {
   width: 50px;
 }
 
-/* Navigation Links */
+/* Navigatie Links */
 .nav-links {
   display: flex;
   justify-content: center;
   flex-grow: 1;
   gap: 30px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .nav-link {
@@ -112,17 +113,17 @@ export default {
   color: white;
   text-decoration: none;
   font-weight: bold;
-  transition: color 0.3s ease, border-bottom 0.3s ease; /* Added transition for border */
+  transition: color 0.3s ease, border-bottom 0.3s ease; /* Toegevoegde overgang voor rand */
   font-size: 1.1em;
 }
 
 .nav-link a:hover,
 .nav-link.active a {
-  color: #ffd700; /* Gold color on hover */
-  border-bottom: 2px solid #ffd700; /* Gold underline on hover */
+  color: #ffd700; /* Gouden kleur bij hover */
+  border-bottom: 2px solid #ffd700; /* Gouden onderlijn bij hover */
 }
 
-/* Search Bar */
+/* Zoekbalk */
 .search {
   position: relative;
   display: flex;
@@ -150,16 +151,16 @@ export default {
   pointer-events: none;
 }
 
-/* Buttons */
+/* Knoppen */
 .buttons {
   display: flex;
-  gap: 25px; /* Increased gap for space between buttons */
-  align-items: center; /* Align buttons vertically in the middle */
+  gap: 25px; /* Vergrote ruimte tussen knoppen */
+  align-items: center; /* Knoppen verticaal centreren */
 }
 
 .login-btn,
-.signout-btn { /* Container for buttons (Login, Register, Sign Out) */
-  display: inline-block;  /* Ensure each button stays inline */
+.signout-btn { /* Container voor knoppen (Inloggen, Registreren, Uitloggen) */
+  display: inline-block;  /* Zorg ervoor dat elke knop inline blijft */
 }
 
 .login-btn button,
@@ -169,7 +170,7 @@ export default {
   font-weight: bold;
   border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Transition for background color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Overgang voor achtergrondkleur */
   border: 2px solid white;
   background-color: transparent;
   color: white;
@@ -179,20 +180,20 @@ export default {
 .signout-btn button:hover,
 .login-btn button.active,
 .signout-btn button.active {
-  background-color: white; /* Active button background */
-  color: #002f6c; /* Active button text color */
+  background-color: white; /* Achtergrond actieve knop */
+  color: #002f6c; /* Tekstkleur actieve knop */
 }
 
-/* Active Button */
+/* Actieve knop */
 button.active {
-  background-color: white; /* Active button background */
-  color: #002f6c; /* Active button text color */
-  border-color: #002f6c; /* Match border color to the active state */
+  background-color: white; /* Achtergrond actieve knop */
+  color: #002f6c; /* Tekstkleur actieve knop */
+  border-color: #002f6c; /* Kleur rand matchen met actieve staat */
 }
 
 /* Burger Menu */
 .burger {
-  display: none; /* Hidden by default */
+  display: none; /* Standaard verborgen */
   flex-direction: column;
   cursor: pointer;
 }
@@ -204,7 +205,7 @@ button.active {
   margin: 4px 0;
 }
 
-/* Mobile Menu Styling */
+/* Mobiele Menu Styling */
 .mobile-menu {
   background-color: #002f6c;
   position: absolute;
@@ -239,36 +240,36 @@ button.active {
 }
 
 .mobile-nav-link a:hover {
-  background-color: #ffd700; /* Change background on hover */
+  background-color: #ffd700; /* Achtergrond wijzigen bij hover */
   border-radius: 20px;
-  color: #002f6c; /* Change text color on hover */
+  color: #002f6c; /* Tekstkleur wijzigen bij hover */
 }
 
-/* Responsive Design */
+/* Responsief Ontwerp */
 @media (max-width: 1100px) {
   .nav-links {
-    display: none; /* Hide nav links on mobile */
+    display: none; /* Verberg navigatielinks op mobiel */
   }
 
   .burger {
-    display: flex; /* Show burger icon on mobile */
+    display: flex; /* Toon burgericoon op mobiel */
   }
 
   .search {
-    width: 50%; /* Adjust search bar width */
+    width: 50%; /* Pas de breedte van de zoekbalk aan */
     margin: 0;
   }
 
   .search input {
-    width: 100%; /* Make input full width */
+    width: 100%; /* Maak input volledige breedte */
   }
 
   .buttons {
-    display: none; /* Hide buttons on mobile */
+    display: none; /* Verberg knoppen op mobiel */
   }
 
   .mobile-menu {
-    display: flex; /* Show mobile menu */
+    display: flex; /* Toon mobiel menu */
   }
 }
 </style>

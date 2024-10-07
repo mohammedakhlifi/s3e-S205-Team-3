@@ -18,10 +18,16 @@ public class Post {
 
     private Long userId;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reply> replies;
+
+    // Deze methode wordt automatisch aangeroepen wanneer een nieuwe post wordt aangemaakt
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     // Getters and Setters
 
