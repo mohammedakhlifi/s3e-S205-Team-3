@@ -7,12 +7,13 @@ import Quiz from "@/components/pages/Quiz.vue";
 import ContactUs from "@/components/pages/ContactUs.vue";
 import ForumPage from "@/components/pages/ForumPage.vue"; // Import ForumPage
 import AdminPanel from "@/components/pages/AdminPanel.vue"; // Import AdminPanel
-import NotFound from "@/components/pages/NotFound.vue"; // 404 Not Found Page
+import NotFound from "@/components/pages/NotFound.vue";
+import parties from "@/components/pages/Parties.vue"; // 404 Not Found Page
 
 const routes = [
     { path: '/', component: HomePage },
     { path: '/election-result', component: ElectionResultPage },
-    { path: '/parties', component: HomePage },
+    { path: '/parties', component: parties },
     { path: '/quiz', component: Quiz },
     { path: '/contact-us', component: ContactUs },
     { path: '/forum', component: ForumPage },
