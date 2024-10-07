@@ -1,6 +1,12 @@
 {
   "dependencies": {
     "axios": "^1.7.7",
+    "vue": "^3.5.11",
+    "vue-carousel": "^0.18.0",
     "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.2"
   }
 }
