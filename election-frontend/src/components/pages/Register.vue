@@ -1,56 +1,55 @@
 <template>
   <div class="register-container">
     <div class="register-box">
-      <h2>Register</h2>
+      <h2>Registreren</h2>
       <form @submit.prevent="registerUser">
         <div class="form-group">
-          <label for="name">Name</label>
+          <label for="name">Naam</label>
           <input type="text" v-model="user.name" id="name" required />
         </div>
 
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="email">E-mail</label>
           <input type="email" v-model="user.email" id="email" required />
         </div>
 
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">Wachtwoord</label>
           <input type="password" v-model="user.password" id="password" required />
         </div>
 
         <div class="form-group">
-          <label for="birthDate">Date of Birth</label>
+          <label for="birthDate">Geboortedatum</label>
           <input type="date" v-model="user.birthDate" id="birthDate" required />
         </div>
 
         <div class="form-group">
-          <label for="province">Province</label>
+          <label for="province">Provincie</label>
           <select v-model="user.province" id="province" @change="fetchCities" required>
-            <option value="" disabled>Select a province</option>
+            <option value="" disabled>Selecteer een provincie</option>
             <option v-for="province in provinces" :key="province" :value="province">{{ province }}</option>
           </select>
         </div>
 
         <div class="form-group" v-if="cities.length > 0">
-          <label for="city">City</label>
+          <label for="city">Stad</label>
           <select v-model="user.city" id="city" required>
-            <option value="" disabled>Select a city</option>
+            <option value="" disabled>Selecteer een stad</option>
             <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
           </select>
         </div>
 
-        <!-- New Role Selection Field -->
         <div class="form-group">
-          <label for="role">Role</label>
+          <label for="role">Rol</label>
           <select v-model="user.role" id="role" required>
-            <option value="" disabled>Select a role</option>
-            <option value="visitor">Visitor</option>
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
+            <option value="" disabled>Selecteer een rol</option>
+            <option value="visitor">Bezoeker</option>
+            <option value="user">Gebruiker</option>
+            <option value="admin">Beheerder</option>
           </select>
         </div>
 
-        <button type="submit">Register</button>
+        <button type="submit">Registreren</button>
       </form>
       <p v-if="message">{{ message }}</p>
     </div>
@@ -70,7 +69,7 @@ export default {
         birthDate: "",
         province: "",
         city: "",
-        role: "" // New role property
+        role: ""
       },
       message: "",
       provinces: ["Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland"],
@@ -80,17 +79,14 @@ export default {
   methods: {
     async registerUser() {
       try {
-        // Include the role in the registration data
         const response = await axios.post("http://localhost:8080/api/register", this.user);
-        this.message = "User registered successfully!";
-        // Handle successful registration
+        this.message = "Gebruiker succesvol geregistreerd!";
       } catch (error) {
-        this.message = "Error registering user. Please try again.";
+        this.message = "Fout bij het registreren. Probeer het opnieuw.";
         console.error(error);
       }
     },
     fetchCities() {
-      // Placeholder for cities fetching logic
       const citiesByProvince = {
         "Drenthe": ["Assen", "Emmen", "Hoogeveen"],
         "Flevoland": ["Almere", "Lelystad", "Emmeloord"],
@@ -117,7 +113,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 70vh;
-  background-color: white; /* Dark blue background */
+  background-color: white;
 }
 
 .register-box {

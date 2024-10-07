@@ -1,17 +1,17 @@
 <template>
   <div class="login-container">
     <div class="login-box">
-      <h2>Login</h2>
+      <h2>Inloggen</h2>
       <form @submit.prevent="loginUser">
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="email">E-mail</label>
           <input type="email" v-model="login.email" id="email" required />
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">Wachtwoord</label>
           <input type="password" v-model="login.password" id="password" required />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Inloggen</button>
       </form>
       <p v-if="message">{{ message }}</p>
     </div>
@@ -34,24 +34,21 @@ export default {
   methods: {
     async loginUser() {
       try {
-        // Send login request to backend
         const response = await axios.post('http://localhost:8080/api/login', this.login);
-        const { token, role } = response.data; // Assuming response contains token and role
+        const { token, role } = response.data;
 
-        // Store the token and role in localStorage
         localStorage.setItem('token', token);
         localStorage.setItem('role', role);
 
-        this.message = 'Login successful!';
+        this.message = 'Inloggen geslaagd!';
 
-        // Redirect user based on role
         if (role === 'admin') {
-          this.$router.push('/admin'); // Redirect to admin panel if the user is admin
+          this.$router.push('/admin');
         } else {
-          this.$router.push('/'); // Redirect to home page or other page for non-admins
+          this.$router.push('/');
         }
       } catch (error) {
-        this.message = 'Login failed. Please try again.';
+        this.message = 'Inloggen mislukt. Probeer het opnieuw.';
         console.error(error);
       }
     },
@@ -65,7 +62,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 70vh;
-  background-color: white; /* Dark blue background */
+  background-color: white;
 }
 
 .login-box {

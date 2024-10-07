@@ -2,43 +2,43 @@
   <div class="forum-container">
     <h1>Forum</h1>
 
-    <!-- Form to Post a New Topic -->
+    <!-- Formulier om een nieuw onderwerp te plaatsen -->
     <div class="new-topic-form">
-      <h3>Post a New Topic</h3>
+      <h3>Plaats een nieuw onderwerp</h3>
       <form @submit.prevent="postNewTopic">
         <div class="form-group">
-          <label for="title">Title</label>
+          <label for="title">Titel</label>
           <input type="text" v-model="newTopic.title" required />
         </div>
         <div class="form-group">
-          <label for="content">Content</label>
+          <label for="content">Inhoud</label>
           <textarea v-model="newTopic.content" required></textarea>
         </div>
-        <button type="submit">Post Topic</button>
+        <button type="submit">Plaats Onderwerp</button>
       </form>
     </div>
 
-    <!-- List of Topics -->
+    <!-- Lijst van Onderwerpen -->
     <div class="topics-list">
-      <h3>Topics</h3>
+      <h3>Onderwerpen</h3>
       <div v-for="topic in topics" :key="topic.id" class="topic-item">
         <h4>{{ topic.title }}</h4>
         <p>{{ topic.content }}</p>
 
-        <!-- Replies for each topic -->
+        <!-- Reacties voor elk onderwerp -->
         <div class="replies-list">
-          <h5>Replies:</h5>
+          <h5>Reacties:</h5>
           <ul>
             <li v-for="reply in topic.replies" :key="reply.id">{{ reply.content }}</li>
           </ul>
         </div>
 
-        <!-- Form to Post a Reply -->
+        <!-- Formulier om een reactie te plaatsen -->
         <div class="reply-form">
-          <h5>Post a Reply</h5>
+          <h5>Plaats een reactie</h5>
           <form @submit.prevent="postReply(topic.id)">
-            <textarea v-model="replyContent[topic.id]" placeholder="Write your reply"></textarea>
-            <button type="submit">Reply</button>
+            <textarea v-model="replyContent[topic.id]" placeholder="Schrijf je reactie"></textarea>
+            <button type="submit">Reageer</button>
           </form>
         </div>
       </div>
@@ -57,46 +57,46 @@ export default {
         title: "",
         content: "",
       },
-      replyContent: {}, // Object to store reply for each topic
+      replyContent: {}, // Object om reacties voor elk onderwerp op te slaan
     };
   },
   methods: {
-    // Fetch all topics from the server
+    // Haal alle onderwerpen van de server op
     async fetchTopics() {
       try {
         const response = await axios.get("http://localhost:8080/api/forum/topics");
         this.topics = response.data;
       } catch (error) {
-        console.error("Error fetching topics:", error);
+        console.error("Fout bij het ophalen van onderwerpen:", error);
       }
     },
 
-    // Post a new topic
+    // Plaats een nieuw onderwerp
     async postNewTopic() {
       try {
         await axios.post("http://localhost:8080/api/forum/topics", this.newTopic);
         this.newTopic.title = "";
         this.newTopic.content = "";
-        this.fetchTopics(); // Reload topics after posting
+        this.fetchTopics(); // Herlaad de onderwerpen na het plaatsen
       } catch (error) {
-        console.error("Error posting topic:", error);
+        console.error("Fout bij het plaatsen van het onderwerp:", error);
       }
     },
 
-    // Post a reply to a topic
+    // Plaats een reactie op een onderwerp
     async postReply(topicId) {
       try {
         const reply = { content: this.replyContent[topicId] };
         await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, reply);
-        this.replyContent[topicId] = ""; // Clear the reply content
-        this.fetchTopics(); // Reload topics after posting reply
+        this.replyContent[topicId] = ""; // Wis de reactie-inhoud
+        this.fetchTopics(); // Herlaad de onderwerpen na het plaatsen van de reactie
       } catch (error) {
-        console.error("Error posting reply:", error);
+        console.error("Fout bij het plaatsen van de reactie:", error);
       }
     },
   },
   created() {
-    this.fetchTopics(); // Fetch topics when the component is created
+    this.fetchTopics(); // Haal de onderwerpen op wanneer de component wordt aangemaakt
   },
 };
 </script>

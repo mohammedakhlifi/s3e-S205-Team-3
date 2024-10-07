@@ -1,40 +1,40 @@
 <template>
   <div class="home">
 
-    <!-- Banner Section -->
+    <!-- Banner Sectie -->
     <section class="banner">
       <div class="banner-content">
-        <h1>Your Political Guide</h1>
-        <p>Stay informed, make the right decision, and track votes per party and province in real-time.</p>
+        <h1>Jouw Politieke Gids</h1>
+        <p>Blijf geïnformeerd, neem de juiste beslissing, en volg de stemmen per partij en provincie in real-time.</p>
         <router-link to="/election-result">
-          <button class="cta-btn">Explore Election Results</button>
+          <button class="cta-btn">Bekijk Verkiezingsresultaten</button>
         </router-link>
       </div>
     </section>
 
-    <!-- Info Sections -->
+    <!-- Info Secties -->
     <section class="info">
       <div class="info-section">
-        <h2>Discover Political Parties</h2>
-        <p>Learn more about the parties participating in the elections, their ideologies, and key policies.</p>
+        <h2>Ontdek Politieke Partijen</h2>
+        <p>Leer meer over de partijen die deelnemen aan de verkiezingen, hun ideologieën en kernbeleid.</p>
         <router-link to="/parties">
-          <button class="info-btn">View Parties</button>
+          <button class="info-btn">Bekijk Partijen</button>
         </router-link>
       </div>
 
       <div class="info-section">
-        <h2>Track Votes by Province</h2>
-        <p>Get real-time insights on how each party is performing across different provinces.</p>
+        <h2>Volg Stemmen per Provincie</h2>
+        <p>Krijg real-time inzicht in hoe elke partij presteert in verschillende provincies.</p>
         <router-link to="/vote-tracking">
-          <button class="info-btn">Track Votes</button>
+          <button class="info-btn">Volg Stemmen</button>
         </router-link>
       </div>
 
       <div class="info-section">
-        <h2>Engage with the Community</h2>
-        <p>Join discussions and debates on key political topics, and share your opinions.</p>
+        <h2>Doe Mee met de Gemeenschap</h2>
+        <p>Doe mee aan discussies en debatten over belangrijke politieke onderwerpen, en deel je mening.</p>
         <router-link to="/quiz">
-          <button class="info-btn">Join the Conversation</button>
+          <button class="info-btn">Doe Mee aan de Discussie</button>
         </router-link>
       </div>
     </section>
@@ -51,16 +51,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Home Page Styling */
+/* Styling voor de Home Pagina */
 
-/* General Layout */
+/* Algemene Layout */
 .home {
   font-family: 'Arial', sans-serif;
 }
 
-/* Banner Section */
+/* Banner Sectie */
 .banner {
-  background-image: url('https://example.com/banner-image.jpg'); /* Replace with an actual banner image */
+  background-image: url('https://example.com/banner-image.jpg'); /* Vervang door een echte banner afbeelding */
   background-size: cover;
   background-position: center;
   height: 70vh;
@@ -72,7 +72,7 @@ export default defineComponent({
 }
 
 .banner-content {
-  background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
+  background-color: rgba(0, 0, 0, 0.6); /* Donkere overlay */
   padding: 30px;
   border-radius: 10px;
 }
@@ -102,7 +102,7 @@ export default defineComponent({
   background-color: #ff5714;
 }
 
-/* Info Sections */
+/* Info Secties */
 .info {
   display: flex;
   justify-content: space-around;
@@ -140,7 +140,7 @@ export default defineComponent({
   background-color: #1a1a99;
 }
 
-/* Mobile Responsive */
+/* Mobiel Responsief */
 @media (max-width: 900px) {
   .banner-content h1 {
     font-size: 2.5rem;
