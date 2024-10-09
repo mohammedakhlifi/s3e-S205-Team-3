@@ -101,6 +101,7 @@ export default {
   justify-content: center;
   flex-grow: 1;
   gap: 30px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .nav-link {
