@@ -24,7 +24,7 @@ const routes = [
     // Newly added routes
     { path: '/admin', component: AdminPanel },        // Admin Panel route
     // Catch-all route for 404 Not Found
-    { path: '/:pathMatch(.*)*', component: NotFound }  // Wildcard for unmatched routes
+    { path: '/:pathMatch(.*)*', component: NotFound },  // Wildcard for unmatched routes
     { path: '/personal-profile', component: PersonalProfile},
 ];
 
