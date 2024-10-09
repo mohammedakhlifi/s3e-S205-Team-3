@@ -7,8 +7,9 @@ import Quiz from "@/components/pages/Quiz.vue";
 import ContactUs from "@/components/pages/ContactUs.vue";
 import ForumPage from "@/components/pages/ForumPage.vue"; // Import ForumPage
 import AdminPanel from "@/components/pages/AdminPanel.vue"; // Import AdminPanel
-import NotFound from "@/components/pages/NotFound.vue";
+import NotFound from "@/components/pages/NotFound.vue"; // 404 Not Found Page
 import parties from "@/components/pages/Parties.vue"; // 404 Not Found Page
+import PersonalProfile from "@/components/pages/PersonalProfile.vue";
 
 const routes = [
     { path: '/', component: HomePage },
@@ -24,6 +25,7 @@ const routes = [
     { path: '/admin', component: AdminPanel },        // Admin Panel route
     // Catch-all route for 404 Not Found
     { path: '/:pathMatch(.*)*', component: NotFound }  // Wildcard for unmatched routes
+    { path: '/personal-profile', component: PersonalProfile},
 ];
 
 const router = createRouter({
