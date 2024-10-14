@@ -19,8 +19,14 @@ public class PostService {
         this.replyRepository = replyRepository;
     }
 
+    // Bestaande methode om alle posts op te halen
     public List<Post> getAllPosts() {
         return postRepository.findAll();
+    }
+
+    // Nieuwe methode om de laatste 5 posts op te halen
+    public List<Post> getLatestFivePosts() {
+        return postRepository.findLatestFivePosts();
     }
 
     public Post createPost(Post post) {

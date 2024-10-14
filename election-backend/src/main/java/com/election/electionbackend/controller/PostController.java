@@ -25,6 +25,12 @@ public class PostController {
         return postService.getAllPosts();
     }
 
+    // Fetch the latest five posts
+    @GetMapping("/topics/latest")
+    public List<Post> getLatestFivePosts() {
+        return postService.getLatestFivePosts();
+    }
+
     // Create a new post
     @PostMapping("/topics")
     public ResponseEntity<Post> createPost(@RequestBody Post post) {

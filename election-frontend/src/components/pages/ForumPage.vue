@@ -64,7 +64,7 @@ export default {
     // Haal alle onderwerpen van de server op
     async fetchTopics() {
       try {
-        const response = await axios.get("http://localhost:8080/api/forum/topics");
+        const response = await axios.get("http://localhost:8080/api/forum/topics/latest")
         this.topics = response.data;
       } catch (error) {
         console.error("Fout bij het ophalen van onderwerpen:", error);
