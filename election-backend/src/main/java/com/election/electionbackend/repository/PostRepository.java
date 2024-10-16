@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query(value = "SELECT * FROM Post ORDER BY id DESC LIMIT 5", nativeQuery = true)
+    @Query(value = "SELECT * FROM Post ORDER BY CREATED_AT DESC LIMIT 5", nativeQuery = true)
     List<Post> findLatestFivePosts();
 }

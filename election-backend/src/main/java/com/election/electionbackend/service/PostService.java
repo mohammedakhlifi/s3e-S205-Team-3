@@ -24,10 +24,10 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    // Nieuwe methode om de laatste 5 posts op te halen
     public List<Post> getLatestFivePosts() {
         return postRepository.findLatestFivePosts();
     }
+
 
     public Post createPost(Post post) {
         return postRepository.save(post);
