@@ -5,6 +5,7 @@
       <div v-for="topic in topics" :key="topic.id" class="topic-item">
         <h4>{{ topic.title }}</h4>
         <p>{{ topic.content }}</p>
+        <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
       </div>
     </div>
   </div>
@@ -27,6 +28,10 @@ export default {
       } catch (error) {
         console.error("Fout bij het ophalen van onderwerpen:", error);
       }
+    },
+    formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return new Date(dateString).toLocaleDateString('nl-NL', options);
     }
   },
   created() {
@@ -81,5 +86,11 @@ h1 {
   color: #555;
   font-size: 1rem;
   line-height: 1.5;
+}
+
+.topic-date {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 10px;
 }
 </style>
