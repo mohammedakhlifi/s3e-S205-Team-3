@@ -5,23 +5,24 @@ import Login from "@/components/pages/Login.vue";
 import Register from "@/components/pages/Register.vue";
 import Quiz from "@/components/pages/Quiz.vue";
 import ContactUs from "@/components/pages/ContactUs.vue";
-import ForumPage from "@/components/pages/ForumPage.vue";
-import OverviewPage from "@/components/pages/OverviewPage.vue"; // Correct import
-import AdminPanel from "@/components/pages/AdminPanel.vue";
+import ForumPage from "@/components/pages/ForumPage.vue"; // Import ForumPage
+import AdminPanel from "@/components/pages/AdminPanel.vue"; // Import AdminPanel
 import NotFound from "@/components/pages/NotFound.vue";
-import Parties from "@/components/pages/Parties.vue";
+import parties from "@/components/pages/Parties.vue"; // 404 Not Found Page
 
 const routes = [
     { path: '/', component: HomePage },
     { path: '/election-result', component: ElectionResultPage },
-    { path: '/parties', component: Parties },
+    { path: '/parties', component: parties },
     { path: '/quiz', component: Quiz },
     { path: '/contact-us', component: ContactUs },
-    { path: '/forum', component: ForumPage }, // Route for forum page
-    { path: '/forum/overview', component: OverviewPage },
+    { path: '/forum', component: ForumPage },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-    { path: '/admin', component: AdminPanel },
+
+    // Newly added routes
+    { path: '/admin', component: AdminPanel },        // Admin Panel route
+    // Catch-all route for 404 Not Found
     { path: '/:pathMatch(.*)*', component: NotFound }  // Wildcard for unmatched routes
 ];
 

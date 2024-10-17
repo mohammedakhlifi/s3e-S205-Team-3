@@ -49,8 +49,7 @@ export default {
         { name: "Verkiezingsresultaat", url: "/election-result" },
         { name: "Partijen", url: "/parties" },
         { name: "Quiz", url: "/quiz" },
-        { name: "Forum", url: "/forum" },
-        { name: "Overview", url: "/forum/overview" },
+        { name: "Forum", url: "/forum" }, // Forum link toegevoegd
         { name: "Neem contact op", url: "/contact-us" }
       ],
 
