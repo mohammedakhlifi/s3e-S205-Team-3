@@ -23,6 +23,10 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    public List<Post> getLatestFivePosts() {
+        return postRepository.findLatestFivePosts();
+    }
+
     public Post createPost(Post post) {
         return postRepository.save(post);
     }

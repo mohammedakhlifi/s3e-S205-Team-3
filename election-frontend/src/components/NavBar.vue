@@ -50,9 +50,8 @@ export default {
         { name: "Partijen", url: "/parties" },
         { name: "Quiz", url: "/quiz" },
         { name: "Forum", url: "/forum" }, // Forum link toegevoegd
-        { name: "Neem contact op", url: "/contact-us" },
-        { name: "Mijn Profiel", url: "/personal-profile" },
-
+        { name: "Overzicht", url: "/forum/overview" },
+        { name: "Neem contact op", url: "/contact-us" }
       ],
 
       authButtons: [
