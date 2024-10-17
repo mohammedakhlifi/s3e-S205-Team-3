@@ -5,25 +5,36 @@ import Login from "@/components/pages/Login.vue";
 import Register from "@/components/pages/Register.vue";
 import Quiz from "@/components/pages/Quiz.vue";
 import ContactUs from "@/components/pages/ContactUs.vue";
-import ForumPage from "@/components/pages/ForumPage.vue"; // Import ForumPage
-import AdminPanel from "@/components/pages/AdminPanel.vue"; // Import AdminPanel
+import ForumPage from "@/components/pages/ForumPage.vue";
+import OverviewPage from "@/components/pages/OverviewPage.vue";
+import AdminPanel from "@/components/pages/AdminPanel.vue";
 import NotFound from "@/components/pages/NotFound.vue";
-import parties from "@/components/pages/Parties.vue"; // 404 Not Found Page
+import Parties from "@/components/pages/Parties.vue";
 
 const routes = [
     { path: '/', component: HomePage },
     { path: '/election-result', component: ElectionResultPage },
-    { path: '/parties', component: parties },
+    { path: '/parties', component: Parties },
     { path: '/quiz', component: Quiz },
     { path: '/contact-us', component: ContactUs },
     { path: '/forum', component: ForumPage },
+    { path: '/forum/overview', component: OverviewPage }, // Route naar overzichtspagina
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-
-    // Newly added routes
-    { path: '/admin', component: AdminPanel },        // Admin Panel route
-    // Catch-all route for 404 Not Found
-    { path: '/:pathMatch(.*)*', component: NotFound }  // Wildcard for unmatched routes
+    {
+        path: '/admin',
+        component: AdminPanel,
+        beforeEnter: (to, from, next) => {
+            // Controleer authenticatie
+            const isAuthenticated = true; // Pas deze controle aan naar jouw authenticatielogica
+            if (isAuthenticated) {
+                next(); // Ga door naar de adminpagina
+            } else {
+                next('/login'); // Omleiden naar login als de gebruiker niet ingelogd is
+            }
+        }
+    },
+    { path: '/:pathMatch(.*)*', component: NotFound }  // Wildcard voor niet-bestaande routes
 ];
 
 const router = createRouter({

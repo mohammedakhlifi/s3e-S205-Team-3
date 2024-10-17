@@ -19,7 +19,6 @@ public class PostController {
         this.postService = postService;
     }
 
-    // Fetch all posts with replies
     @GetMapping("/topics")
     public List<Post> getAllPosts() {
         return postService.getAllPosts();
@@ -30,15 +29,12 @@ public class PostController {
         return postService.getLatestFivePosts();
     }
 
-
-    // Create a new post
     @PostMapping("/topics")
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         Post createdPost = postService.createPost(post);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
-    // Add a reply to a post
     @PostMapping("/topics/{postId}/replies")
     public ResponseEntity<Reply> addReply(@PathVariable Long postId, @RequestBody Reply reply) {
         Reply createdReply = postService.addReplyToPost(postId, reply);
