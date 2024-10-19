@@ -47,15 +47,14 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<User> getPersonalProfile(@PathVariable String email ) {
+    @GetMapping("/user")
+    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.findByEmail(email);
         if (user != null) {
-            return ResponseEntity.ok(user);  // Return the user if found
+            return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(420).body(null);  // Return 404 if user not found
+            return ResponseEntity.status(404).body(null); // Gebruiker niet gevonden
         }
-
     }
 
     // A simple token generation method (replace with JWT or other secure logic)
