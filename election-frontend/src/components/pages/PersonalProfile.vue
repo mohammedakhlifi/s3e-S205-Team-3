@@ -3,11 +3,11 @@
 <div id="wrapper">
   <!--ProfielFoto sectie-->
   <div class="row">
-  <div id="PFS">
+  <div v-if="user" id="PFS">
     <img src="../../assets/img/defpic3%20(2).jpg" alt="default profile picture">
-    <p>Naam</p>
+    <p>Naam: {{ user.name }} {{ user.email }}</p>
     <p>Voorstander</p>
-    <p>Provincie, stad</p>
+    <p>Provincie, stad {{user.province}}</p>
   </div>
 
   <!--Gegevens sectie-->
@@ -40,10 +40,37 @@
 
 
 <script>
+import axios from 'axios';
 import { defineComponent } from 'vue';
+
 
 export default defineComponent({
   name: 'PersonalProfile',
+  data() {
+    return {
+      user: null,
+    };
+  },
+  mounted() {
+
+    this.fetchUserByEmail();
+  },
+  methods: {
+
+    //op deze manier wordt de email en gegevens niet gepakt......
+   async fetchUserByEmail(email) {
+     try {
+
+       const response = await axios.get(`http://localhost:8080/api/${email}`);
+       console.log('User found:', response.data);
+       console.log("response data", response.data);
+       console.log("response status", response.status);
+       this.user = response.data;
+     } catch (error) {
+       console.error('User not found:', error.response.status);
+     }
+   }
+  }
 });
 </script>
 
