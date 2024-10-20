@@ -24,23 +24,6 @@
       <div v-for="topic in topics" :key="topic.id" class="topic-item">
         <h4>{{ topic.title }}</h4>
         <p>{{ topic.content }}</p>
-
-        <!-- Reacties voor elk onderwerp -->
-        <div class="replies-list">
-          <h5>Reacties:</h5>
-          <ul>
-            <li v-for="reply in topic.replies" :key="reply.id">{{ reply.content }}</li>
-          </ul>
-        </div>
-
-        <!-- Formulier om een reactie te plaatsen -->
-        <div class="reply-form">
-          <h5>Plaats een reactie</h5>
-          <form @submit.prevent="postReply(topic.id)" class="form">
-            <textarea v-model="replyContent[topic.id]" placeholder="Schrijf je reactie" required></textarea>
-            <button type="submit" class="submit-btn">Reageer</button>
-          </form>
-        </div>
       </div>
     </div>
   </div>
@@ -56,8 +39,7 @@ export default {
       newTopic: {
         title: "",
         content: "",
-      },
-      replyContent: {}, // Object om reacties voor elk onderwerp op te slaan
+      }
     };
   },
   methods: {
@@ -82,18 +64,6 @@ export default {
         console.error("Fout bij het plaatsen van het onderwerp:", error);
       }
     },
-
-    // Plaats een reactie op een onderwerp
-    async postReply(topicId) {
-      try {
-        const reply = { content: this.replyContent[topicId] };
-        await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, reply);
-        this.replyContent[topicId] = ""; // Wis de reactie-inhoud
-        this.fetchTopics(); // Herlaad de onderwerpen na het plaatsen van de reactie
-      } catch (error) {
-        console.error("Fout bij het plaatsen van de reactie:", error);
-      }
-    },
   },
   created() {
     this.fetchTopics(); // Haal de onderwerpen op wanneer de component wordt aangemaakt
@@ -115,7 +85,7 @@ export default {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h3, h4, h5 {
+h1, h3, h4 {
   color: #002f6c; /* Header color */
 }
 
@@ -222,31 +192,4 @@ textarea {
   font-size: 1rem;
   line-height: 1.5;
 }
-
-.replies-list h5 {
-  margin-top: 20px;
-  font-size: 1.1rem;
-  color: #002f6c; /* Reply header color */
-}
-
-.replies-list ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.replies-list ul li {
-  padding: 10px;
-  background-color: #f2f2f2;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.reply-form {
-  margin-top: 15px;
-}
-
-.reply-form textarea {
-  min-height: 80px; /* Minimum height for reply textarea */
-}
 </style>
-

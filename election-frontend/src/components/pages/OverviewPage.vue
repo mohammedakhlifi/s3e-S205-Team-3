@@ -1,6 +1,8 @@
 <template>
   <div class="overview-container">
     <h1>Overzicht van vragen</h1>
+
+    <!-- Lijst van onderwerpen -->
     <div class="topics-list">
       <div v-for="topic in topics" :key="topic.id" class="topic-item">
         <h4>{{ topic.title }}</h4>
@@ -17,7 +19,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      topics: [],
+      topics: [], // Opslag voor de opgehaalde topics
     };
   },
   methods: {
@@ -35,7 +37,7 @@ export default {
     }
   },
   created() {
-    this.fetchTopics();
+    this.fetchTopics(); // Haal de onderwerpen op wanneer de component wordt aangemaakt
   }
 };
 </script>
@@ -48,7 +50,6 @@ export default {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -69,23 +70,15 @@ h1 {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
-}
-
-.topic-item:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .topic-item h4 {
   color: #002f6c;
   margin-bottom: 10px;
-  font-size: 1.5rem;
 }
 
 .topic-item p {
   color: #555;
-  font-size: 1rem;
-  line-height: 1.5;
 }
 
 .topic-date {
