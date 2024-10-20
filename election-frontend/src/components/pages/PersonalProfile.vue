@@ -7,19 +7,20 @@
     <img src="../../assets/img/defpic3%20(2).jpg" alt="default profile picture">
     <p>Naam: {{user.name}}</p>
     <p>Voorstander</p>
-    <p>Provincie, stad }</p>
+    <p>Provincie, Stad: {{user.province}}, {{user.city}}</p>
   </div>
 
   <!--Gegevens sectie-->
   <div id="gegevens">
-    <p>Mijn Gegevens</p>
-    <p>Naam</p>
-    <p>Achternaam</p>
-    <p>Gebruikersnaam</p>
-    <p>Email</p>
-    <p>Stad</p>
-    <p>Provincie</p>
-    <p>Voorstander van</p>
+    <p class="details">Mijn Gegevens</p>
+    <p class="details">Naam: {{user.name}}</p>
+    <p class="details">Achternaam</p>
+    <p class="details">Gebruikersnaam</p>
+    <p class="details">Email: {{this.email}}</p>
+    <p class="details">Stad: {{user.city}}</p>
+    <p class="details">Provincie: {{user.province}} </p>
+    <p class="details">Voorstander van</p>
+    <br>
     <button id="edit">Bewerken</button>
   </div>
   </div>
@@ -123,6 +124,18 @@ export default defineComponent({
   gap: 10px;
 }
 
+.details {
+  border: 1px solid #312e2e;
+  padding: 5px;
+}
+
+#edit {
+  background-color: #155fbc;
+  color: #FFF;
+  margin-left: 20px;
+  padding: 10px;
+  border-radius: 5px;
+}
 
 
 </style>
