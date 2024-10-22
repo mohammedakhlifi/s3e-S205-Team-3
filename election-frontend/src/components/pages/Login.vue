@@ -39,14 +39,15 @@ export default {
 
         localStorage.setItem('token', token);
         localStorage.setItem('role', role);
-
+        localStorage.setItem('email', this.login.email)
         this.message = 'Inloggen geslaagd!';
-
+        console.log("Ingelogd met e-mailadres:", this.login.email); // Console loggen van de e-mail
         if (role === 'admin') {
           this.$router.push('/admin');
         } else {
           this.$router.push('/');
         }
+        console.log("u bent ingelogd!", this.login)
       } catch (error) {
         this.message = 'Inloggen mislukt. Probeer het opnieuw.';
         console.error(error);
