@@ -44,4 +44,5 @@ public class PostController {
         Reply createdReply = postService.addReplyToPost(postId, reply);
         return new ResponseEntity<>(createdReply, HttpStatus.CREATED);
     }
+
 }

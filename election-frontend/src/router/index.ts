@@ -17,6 +17,7 @@ const routes = [
     { path: '/parties', component: Parties },
     { path: '/quiz', component: Quiz },
     { path: '/contact-us', component: ContactUs },
+    { path: '/forum', name: 'ForumPage', component: ForumPage },
     { path: '/forum', component: ForumPage }, // Route for forum page
     { path: '/forum/overview', component: OverviewPage },
     { path: '/login', component: Login },

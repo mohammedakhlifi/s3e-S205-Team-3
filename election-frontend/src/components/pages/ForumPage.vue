@@ -19,13 +19,7 @@
     </div>
 
     <!-- Lijst van Onderwerpen -->
-    <div class="topics-list">
-      <h3>Onderwerpen</h3>
-      <div v-for="topic in topics" :key="topic.id" class="topic-item">
-        <h4>{{ topic.title }}</h4>
-        <p>{{ topic.content }}</p>
-      </div>
-    </div>
+
   </div>
 </template>
 
