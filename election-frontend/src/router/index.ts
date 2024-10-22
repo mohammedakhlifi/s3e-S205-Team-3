@@ -10,6 +10,7 @@ import OverviewPage from "@/components/pages/OverviewPage.vue"; // Correct impor
 import AdminPanel from "@/components/pages/AdminPanel.vue";
 import NotFound from "@/components/pages/NotFound.vue";
 import Parties from "@/components/pages/Parties.vue";
+import PersonalProfile from "@/components/pages/PersonalProfile.vue";
 
 const routes = [
     { path: '/', component: HomePage },
@@ -23,7 +24,8 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     { path: '/admin', component: AdminPanel },
-    { path: '/:pathMatch(.*)*', component: NotFound }  // Wildcard for unmatched routes
+    { path: '/:pathMatch(.*)*', component: NotFound },  // Wildcard for unmatched routes
+    { path: '/personal-profile', component: PersonalProfile},
 ];
 
 const router = createRouter({
