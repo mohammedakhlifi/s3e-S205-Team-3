@@ -1,5 +1,7 @@
 package com.election.electionbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -11,15 +13,19 @@ public class Reply {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
+    @JsonBackReference
     private Post post;
+
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
     private Long userId;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     // Getters and Setters
 
