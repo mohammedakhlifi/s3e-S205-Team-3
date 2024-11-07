@@ -191,7 +191,7 @@ h1 {
 
 .submit-reply-button{
   margin-top: 10px;
-  padding: 8px 12px;
+  padding: 9px 12px;
   background-color: #4caf50;
   color: white;
   border: none;
