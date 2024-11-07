@@ -8,9 +8,15 @@
       <div class="topics-list">
         <!-- Itereer over de topics en toon elk topic -->
         <div v-for="topic in topics" :key="topic.id" class="topic-item">
-          <h4>{{ topic.title }}</h4>
-          <p>{{ topic.content }}</p>
-          <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
+          <div class="topic-header">
+            <div class="topic-info">
+              <h4>{{ topic.title }}</h4>
+              <p>{{ topic.content }}</p>
+              <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
+            </div>
+            <!-- Knop aan de rechterkant voor het bekijken van reacties -->
+
+          </div>
 
           <!-- Reageer-knop en invoerveld voor reactie -->
           <button @click="toggleReplyInput(topic.id)" class="reply-button">Reageer</button>
@@ -20,17 +26,22 @@
             <textarea v-model="newReplyContent" placeholder="Schrijf je reactie..." rows="3"></textarea>
             <button @click="submitReply(topic.id)" class="submit-reply-button">Plaats reactie</button>
           </div>
+
+          <!-- Reacties tonen wanneer de knop is ingedrukt -->
+          <div v-if="showReplies[topic.id]" class="replies-container">
+            <div v-if="topic.replies && topic.replies.length">
+              <h3>Reacties</h3>
+              <div v-for="reply in topic.replies" :key="reply.id" class="reply-item">
+                <p>{{ reply.content }}</p>
+                <p class="reply-date">Antwoord gepost op: {{ formatDate(reply.createdAt) }}</p>
+              </div>
+            </div>
+            <div v-else>
+              <p>Er zijn nog geen reacties.</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Icoon rechtsonder voor navigatie naar forum -->
-    <div class="icon-container" @click="goToForum">
-      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60" height="60" viewBox="0 0 48 48">
-        <path fill="#4caf50" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path>
-        <path fill="#fff" d="M21,14h6v20h-6V14z"></path>
-        <path fill="#fff" d="M14,21h20v6H14V21z"></path>
-      </svg>
     </div>
   </div>
 </template>
@@ -42,6 +53,7 @@ export default {
   data() {
     return {
       topics: [],
+      showReplies: {}, // Object om de zichtbaarheid van reacties per topic te controleren
       showReplyInput: null, // Controleert of het invoerveld zichtbaar is voor een specifiek topic
       newReplyContent: "", // Inhoud van de nieuwe reactie
     };
@@ -50,28 +62,24 @@ export default {
     async fetchTopics() {
       try {
         const response = await axios.get("http://localhost:8080/api/forum/topics/latest");
-        console.log("Opgehaalde topics:", response.data); // Log de hele data om te controleren
+        console.log("Opgehaalde topics:", response.data);
         this.topics = response.data;
       } catch (error) {
         console.error("Fout bij het ophalen van onderwerpen:", error);
       }
     },
 
-
     formatDate(dateString) {
-      console.log("Datum ontvangen door formatDate:", dateString); // Log de ontvangen datum
-      if (!dateString) return "Datum niet beschikbaar";
+      if (!dateString) return 'Datum niet beschikbaar';
       const date = new Date(dateString);
-      if (isNaN(date)) return "Ongeldige datum";
+      if (isNaN(date)) return 'Ongeldige datum';
 
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
       return date.toLocaleDateString('nl-NL', options);
-    }
-    ,
+    },
 
-
-    goToForum() {
-      this.$router.push({ name: 'ForumPage' });
+    toggleReplies(topicId) {
+      this.$set(this.showReplies, topicId, !this.showReplies[topicId]);
     },
 
     toggleReplyInput(topicId) {
@@ -80,17 +88,25 @@ export default {
 
     async submitReply(topicId) {
       try {
-        await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
+        const response = await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
           content: this.newReplyContent,
         });
-        this.newReplyContent = ""; // Reset het invoerveld na het verzenden
-        this.showReplyInput = null; // Verberg het invoerveld
-        await this.fetchTopics(); // Haal de topics opnieuw op om data te verversen
+        console.log("Geplaatste reactie:", response.data); // Controleer de respons van de nieuwe reactie
+
+        // Vind het topic en voeg de nieuwe reactie toe aan de replies-array
+        const topic = this.topics.find(t => t.id === topicId);
+        if (topic) {
+          topic.replies.push(response.data); // Voeg de nieuwe reactie toe aan de replies van het topic
+        }
+
+        // Reset het invoerveld en open de uitklapsectie
+        this.newReplyContent = "";
+        this.showReplyInput = null;
+        this.showReplies[topicId] = true;
       } catch (error) {
         console.error("Fout bij het plaatsen van de reactie:", error);
       }
     }
-
   },
   created() {
     this.fetchTopics();
@@ -127,25 +143,53 @@ h1 {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-.topic-item h4 {
-  color: #002f6c;
+.topic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topic-info {
+  flex-grow: 1;
+}
+
+.reply-button, .toggle-replies-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reply-button {
+  display: block;
+  margin-top: 15px;
+}
+
+.replies-container {
+  margin-top: 20px;
+}
+
+.reply-item {
+  background-color: #f1f1f1;
+  padding: 10px;
   margin-bottom: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #4caf50;
 }
 
-.topic-item p {
-  color: #555;
-}
-
-.topic-date {
+.topic-date, .reply-date {
   font-size: 0.9rem;
   color: #888;
   margin-top: 10px;
 }
 
-/* Reageer-knop styling */
-.reply-button {
+.submit-reply-button{
   margin-top: 10px;
   padding: 8px 12px;
   background-color: #4caf50;
@@ -155,76 +199,4 @@ h1 {
   cursor: pointer;
 }
 
-/* Invoerveld styling */
-.reply-input-container {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  resize: vertical;
-}
-
-.submit-reply-button {
-  align-self: flex-end;
-  padding: 8px 12px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* Icoon rechtsonder styling */
-.icon-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-/* Media queries voor responsiviteit */
-@media (max-width: 768px) {
-  .overview-container {
-    margin: 20px;
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  .topic-item {
-    padding: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .overview-container {
-    margin: 10px;
-    padding: 10px;
-  }
-
-  h1 {
-    font-size: 1.2rem;
-  }
-
-  .topic-item {
-    padding: 8px;
-  }
-
-  .icon-container {
-    width: 50px;
-    height: 50px;
-    bottom: 15px;
-    right: 15px;
-  }
-}
 </style>
