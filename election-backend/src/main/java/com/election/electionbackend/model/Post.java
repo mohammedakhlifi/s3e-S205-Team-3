@@ -1,5 +1,6 @@
 package com.election.electionbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Post {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Reply> replies;
 
     // Deze methode wordt automatisch aangeroepen wanneer een nieuwe post wordt aangemaakt
