@@ -1,6 +1,7 @@
 package com.election.electionbackend.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
@@ -17,10 +18,10 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String password; // Store hashed password
 
     @Column(nullable = false)
-    private String birthDate;
+    private LocalDate birthDate; // Changed to LocalDate
 
     @Column(nullable = false)
     private String city;
@@ -64,11 +65,11 @@ public class User {
         this.password = password;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
