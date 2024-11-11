@@ -13,7 +13,7 @@ public class MainController {
     public Map<String, String> getTestRoot() {
         // Create a JSON-like response
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Backend is running");
+        response.put("message", "");
         return response;
     }
 }
