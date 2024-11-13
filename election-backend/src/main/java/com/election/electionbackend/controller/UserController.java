@@ -57,6 +57,9 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user/update")
+
+
     // A simple token generation method (replace with JWT or other secure logic)
     private String generateToken(User user) {
         return user.getEmail() + "-token"; // Simplified token for demonstration purposes
