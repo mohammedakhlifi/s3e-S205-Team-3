@@ -31,6 +31,9 @@ public class User {
     @Column(nullable = false)
     private String role; // New role field
 
+    @Column
+    private String voorstander;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -95,4 +98,8 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public String getVoorstander() { return voorstander; }
+
+    public void setVoorstander(String voorstander) { this.voorstander = voorstander; }
 }

@@ -12,15 +12,16 @@
 
       <!--Gegevens sectie-->
       <div id="gegevens">
-        <p class="section-title">Mijn Gegevens</p>
-
-        <div v-if="editMode">
-          <label>Naam: <input v-model="editedUser.name" /></label>
-          <label>Achternaam: <input v-model="editedUser.lastname" /></label>
-          <label>Gebruikersnaam: <input v-model="editedUser.username" /></label>
-          <label>Email: <input v-model="editedUser.email" /></label>
-          <label>Stad: <input v-model="editedUser.city" /></label>
-          <label>Provincie: <input v-model="editedUser.province" /></label>
+        <p class="section-title" v-if="!editMode">Mijn Gegevens</p>
+        <p v-if="editMode" class="section-title">Nieuwe Gegevens</p>
+        <div id="editMode" v-if="editMode">
+         <input class="editField" v-model="editedUser.name" placeholder="Voornaam"/>
+          <input class="editField" v-model="editedUser.lastname" placeholder="Achternaam" />
+          <input class="editField" v-model="editedUser.username"  placeholder="Gebruikersnaam"/>
+          <input class="editField" v-model="editedUser.email" placeholder="Email"/>
+          <input class="editField" v-model="editedUser.city" placeholder="Stad"/>
+          <input class="editField" v-model="editedUser.province" placeholder="Provincie" />
+          <input class="editField" v-model="editedUser.voorstander" placeholder="Partij Voorstander" />
         </div>
         <div v-else>
           <p class="details">Naam: {{ user.name }}</p>
@@ -30,22 +31,31 @@
           <p class="details">Stad: {{ user.city }}</p>
           <p class="details">Provincie: {{ user.province }}</p>
         </div>
-
+        <br>
         <button id="edit" v-if="!editMode" @click="toggleEdit">Bewerken</button>
-        <button v-if="editMode" @click="saveChanges">Opslaan</button>
-        <button v-if="editMode" @click="cancelEdit">Annuleren</button>
+        <button class="editModeButtons"  v-if="editMode" @click="saveChanges">Opslaan</button>
+        <button class="editModeButtons" id="cancelButton" v-if="editMode" @click="cancelEdit">Annuleren</button>
+
       </div>
     </div>
+
 
     <div class="row">
       <!--Platformen sectie-->
       <div id="platformen">
         <p class="section-title">Platformen</p>
+        <div v-if="editMode" id="mySocials">
+        <input class="socials"/>
+        <input class="socials" />
+        <input class="socials" />
+        <input class="socials" />
+        </div>
       </div>
 
       <!--Omschrijving sectie-->
       <div id="omschrijving">
         <p class="section-title">Omschrijving</p>
+        <textarea id="profileDesc" v-if="editMode" v-model="editedUser.description"/>
       </div>
     </div>
   </div>
@@ -182,6 +192,20 @@ export default defineComponent({
   background-color: #ff5714;
 }
 
+.editModeButtons {
+  color: #FFF;
+  background-color: #34c556;
+  width: 5vw;
+  height: 5vh;
+  border-radius: 7px;
+
+}
+
+#cancelButton {
+  background-color: indianred;
+  margin-left: 10px;
+}
+
 /* Platform and Description Sections */
 #platformen, #omschrijving {
   background-color: #ffffff;
@@ -191,11 +215,52 @@ export default defineComponent({
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+#platformen {
+  display: flex;
+  flex-direction: column;
+}
+
+.socials {
+  width: 15vw;
+  height: 3vh;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+#mySocials {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
 .row {
   display: flex;
   justify-content: space-between;
   gap: 20px;
   margin-bottom: 20px;
+}
+
+#editMode {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+}
+
+.editField {
+  width: 20vw;
+  height: 4vh;
+  border-radius: 4px;
+}
+
+#profileDesc {
+  height: 20vh;
+  width: 27vw;
+  resize: none;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  border-radius: 4px;
 }
 
 /* Responsive Design */
