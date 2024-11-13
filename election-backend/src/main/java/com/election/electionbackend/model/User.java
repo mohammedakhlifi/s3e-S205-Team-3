@@ -34,6 +34,12 @@ public class User {
     @Column
     private String voorstander;
 
+    @Column
+    private String firstname;
+
+    @Column
+    private String lastname;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -102,4 +108,8 @@ public class User {
     public String getVoorstander() { return voorstander; }
 
     public void setVoorstander(String voorstander) { this.voorstander = voorstander; }
+
+    public String getFirstname() { return firstname; }
+
+    public void setFirstname(String firstname) { this.firstname = firstname; }
 }
