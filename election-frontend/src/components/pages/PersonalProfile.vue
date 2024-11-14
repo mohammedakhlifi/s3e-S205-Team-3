@@ -6,7 +6,7 @@
       <div id="PFS">
         <img src="../../assets/img/defpic3%20(2).jpg" alt="default profile picture">
         <p class="info">Naam: {{ editMode ? editedUser.name : user.name }}</p>
-        <p class="info">Voorstander</p>
+        <p class="info">Voorstander:</p>
         <p class="info">Provincie, Stad: {{ editMode ? editedUser.province : user.province }}, {{ editMode ? editedUser.city : user.city }}</p>
       </div>
 
@@ -15,18 +15,18 @@
         <p class="section-title" v-if="!editMode">Mijn Gegevens</p>
         <p v-if="editMode" class="section-title">Nieuwe Gegevens</p>
         <div id="editMode" v-if="editMode">
-         <input class="editField" v-model="editedUser.name" placeholder="Voornaam"/>
+         <input class="editField" v-model="editedUser.name" placeholder="Gebruikersnaam"/>
+          <input class="editField" v-model="editedUser.firstname"  placeholder="Voornaam"/>
           <input class="editField" v-model="editedUser.lastname" placeholder="Achternaam" />
-          <input class="editField" v-model="editedUser.username"  placeholder="Gebruikersnaam"/>
           <input class="editField" v-model="editedUser.email" placeholder="Email"/>
           <input class="editField" v-model="editedUser.city" placeholder="Stad"/>
           <input class="editField" v-model="editedUser.province" placeholder="Provincie" />
           <input class="editField" v-model="editedUser.voorstander" placeholder="Partij Voorstander" />
         </div>
         <div v-else>
-          <p class="details">Naam: {{ user.name }}</p>
-          <p class="details">Achternaam</p>
-          <p class="details">Gebruikersnaam</p>
+          <p class="details">Gebruikersnaam: {{ user.name }}</p>
+          <p class="details">Voornaam: {{ user.firstname }}</p>
+          <p class="details">Achternaam: {{ user.lastname }}</p>
           <p class="details">Email: {{ email }}</p>
           <p class="details">Stad: {{ user.city }}</p>
           <p class="details">Provincie: {{ user.province }}</p>
