@@ -57,7 +57,30 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/update")
+    @PutMapping("/user/update")
+    public ResponseEntity<String> updateUser(@RequestBody User updatedUser) {
+        try {
+            User existingUser = userService.findByEmail(updatedUser.getEmail());
+            if (existingUser != null) {
+                existingUser.setName(updatedUser.getName());
+                existingUser.setFirstname(updatedUser.getFirstname());
+                existingUser.setLastname(updatedUser.getLastname());
+                existingUser.setPassword(updatedUser.getPassword());
+                existingUser.setCity(updatedUser.getCity());
+                existingUser.setProvince(updatedUser.getProvince());
+                existingUser.setVoorstander(updatedUser.getVoorstander());
+
+                userService.saveUser(existingUser);
+                return ResponseEntity.ok("User updated successfully!");
+            } else {
+                return ResponseEntity.status(404).body("User not found!");
+            }
+
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error updating user: " + e.getMessage());
+        }
+    }
 
 
     // A simple token generation method (replace with JWT or other secure logic)

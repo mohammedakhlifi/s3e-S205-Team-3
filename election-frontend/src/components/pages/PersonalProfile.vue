@@ -6,7 +6,7 @@
       <div id="PFS">
         <img src="../../assets/img/defpic3%20(2).jpg" alt="default profile picture">
         <p class="info">Naam: {{ editMode ? editedUser.name : user.name }}</p>
-        <p class="info">Voorstander:</p>
+        <p class="info">Voorstander: {{ editMode ? editedUser.voorstander : user.voorstander }} </p>
         <p class="info">Provincie, Stad: {{ editMode ? editedUser.province : user.province }}, {{ editMode ? editedUser.city : user.city }}</p>
       </div>
 
@@ -18,18 +18,20 @@
          <input class="editField" v-model="editedUser.name" placeholder="Gebruikersnaam"/>
           <input class="editField" v-model="editedUser.firstname"  placeholder="Voornaam"/>
           <input class="editField" v-model="editedUser.lastname" placeholder="Achternaam" />
-          <input class="editField" v-model="editedUser.email" placeholder="Email"/>
+          <input class="editField" v-model="editedUser.password" placeholder="Wachtwoord"/>
           <input class="editField" v-model="editedUser.city" placeholder="Stad"/>
           <input class="editField" v-model="editedUser.province" placeholder="Provincie" />
-          <input class="editField" v-model="editedUser.voorstander" placeholder="Partij Voorstander" />
+          <input class="editField" v-model="editedUser.voorstander"  placeholder="Partij Voorstander" />
         </div>
         <div v-else>
           <p class="details">Gebruikersnaam: {{ user.name }}</p>
           <p class="details">Voornaam: {{ user.firstname }}</p>
           <p class="details">Achternaam: {{ user.lastname }}</p>
           <p class="details">Email: {{ email }}</p>
+          <p class="details">Wachtwoord: {{ user.password }}</p>
           <p class="details">Stad: {{ user.city }}</p>
           <p class="details">Provincie: {{ user.province }}</p>
+          <p class="details">Voorstander van partij: </p>
         </div>
         <br>
         <button id="edit" v-if="!editMode" @click="toggleEdit">Bewerken</button>
@@ -85,7 +87,8 @@ export default defineComponent({
           params: { email: this.email }
         });
         this.user = response.data;
-        this.editedUser = { ...response.data };
+        this.editedUser = { ...response.data,
+        voorstander: response.data.voorstander || "" };
       } catch (error) {
         console.error('User not found:', error.response.status);
       }
@@ -100,6 +103,7 @@ export default defineComponent({
     async saveChanges() {
       try {
         const response = await axios.put(`http://localhost:8080/api/user/update`, this.editedUser);
+        console.log("editedUser: ",this.editedUser)
         this.user = { ...this.editedUser };
         this.editMode = false;
       } catch (error) {
@@ -119,7 +123,7 @@ export default defineComponent({
   margin: 0 auto;
   background-color: #f5f8fc;
   border-radius: 15px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Title Styling */
