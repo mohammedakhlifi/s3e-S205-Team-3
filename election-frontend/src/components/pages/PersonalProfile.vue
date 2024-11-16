@@ -31,7 +31,7 @@
           <p class="details">Wachtwoord: {{ user.password }}</p>
           <p class="details">Stad: {{ user.city }}</p>
           <p class="details">Provincie: {{ user.province }}</p>
-          <p class="details">Voorstander van partij: </p>
+          <p class="details">Voorstander van partij: {{editedUser.voorstander}} </p>
         </div>
         <br>
         <button id="edit" v-if="!editMode" @click="toggleEdit">Bewerken</button>
@@ -46,17 +46,23 @@
       <!--Platformen sectie-->
       <div id="platformen">
         <p class="section-title">Platformen</p>
+        <p class="details" v-if="!editMode">Voeg je social media platformen toe!</p>
+
         <div v-if="editMode" id="mySocials">
-        <input class="socials"/>
-        <input class="socials" />
-        <input class="socials" />
-        <input class="socials" />
+
+        <input type="url" v-model="editedUser.social1" class="socials"/>
+        <input type="url" class="socials" />
+        <input type="url" class="socials" />
+        <input type="url" class="socials" />
+
+
         </div>
       </div>
 
       <!--Omschrijving sectie-->
       <div id="omschrijving">
         <p class="section-title">Omschrijving</p>
+        <p class="details" v-if="!editMode">Nog geen omschrijving</p>
         <textarea id="profileDesc" v-if="editMode" v-model="editedUser.description"/>
       </div>
     </div>
@@ -75,6 +81,7 @@ export default defineComponent({
       user: {},
       editedUser: {},
       editMode: false,
+
     };
   },
   mounted() {
