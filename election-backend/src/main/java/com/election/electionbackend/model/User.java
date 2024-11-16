@@ -21,7 +21,7 @@ public class User {
     private String password; // Store hashed password
 
     @Column(nullable = false)
-    private LocalDate birthDate; // Changed to LocalDate
+    private LocalDate birthDate;
 
     @Column(nullable = false)
     private String city;
@@ -32,13 +32,10 @@ public class User {
     @Column(nullable = false)
     private String role; // New role field
 
-    @Column
-    private String voorstander;
-
-    @Column
+    @Column(nullable = false)
     private String firstname;
 
-    @Column
+    @Column(nullable = false)
     private String lastname;
 
     // Getters and Setters
@@ -106,15 +103,19 @@ public class User {
         this.role = role;
     }
 
-    public String getVoorstander() { return voorstander; }
+    public String getFirstname() {
+        return firstname;
+    }
 
-    public void setVoorstander(String voorstander) { this.voorstander = voorstander; }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-    public String getFirstname() { return firstname; }
+    public String getLastname() {
+        return lastname;
+    }
 
-    public void setFirstname(String firstname) { this.firstname = firstname; }
-
-    public String getLastname() { return lastname; }
-
-    public void setLastname(String lastname) { this.lastname = lastname; }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 }
