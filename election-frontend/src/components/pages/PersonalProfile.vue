@@ -47,7 +47,7 @@
       <div id="platformen">
         <p class="section-title">Platformen</p>
         <div v-if="!editMode">
-        <p class="details" >Voeg je social media platformen toe!</p>
+        <p class="details" v-if="!editMode && !editedUser.social1" >Voeg je social media platformen toe!</p>
         <p class="details" >Social media 1: {{editedUser.social1}} </p>
         <p class ="details" >Social media 2: {{editedUser.social2}}</p>
         <p class="details" >Social media 3: {{editedUser.social3}}</p>
@@ -66,8 +66,10 @@
       <!--Omschrijving sectie-->
       <div id="omschrijving">
         <p class="section-title">Omschrijving</p>
-        <p class="details" v-if="!editMode">Nog geen omschrijving</p>
-        <textarea id="profileDesc" v-if="editMode" />
+        <p class="details" v-if="!editMode && !editedUser.profielOmschrijving">Nog geen omschrijving</p>
+        <p v-else-if="!editMode">{{editedUser.profielOmschrijving}}</p>
+        <textarea id="profileDesc"  v-model="editedUser.profielOmschrijving" v-if="editMode" />
+
       </div>
     </div>
   </div>
@@ -103,7 +105,9 @@ export default defineComponent({
         social1: response.data.social1 || "",
         social2: response.data.social2 || "",
         social3: response.data.social3 || "",
-        social4: response.data.social4 || ""};
+        social4: response.data.social4 || "",
+        profielOmschrijving: response.data.profielOmschrijving || "" };
+
       } catch (error) {
         console.error('User not found:', error.response.status);
       }
@@ -123,6 +127,7 @@ export default defineComponent({
         this.user = { ...this.editedUser };
         this.editMode = false;
         console.log(this.editedUser.voorstander);
+        console.log("omshcrijving: ", this.editedUser.profielOmschrijving)
 
       } catch (error) {
         console.error('Error updating user:', error.response.status);

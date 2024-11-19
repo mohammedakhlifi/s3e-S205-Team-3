@@ -73,7 +73,7 @@ public class UserController {
                 existingUser.setSocial2(updatedUser.getSocial2());
                 existingUser.setSocial3(updatedUser.getSocial3());
                 existingUser.setSocial4(updatedUser.getSocial4());
-
+                existingUser.setProfielOmschrijving((updatedUser.getProfielOmschrijving()));
 
 
                 userService.saveUser(existingUser);
