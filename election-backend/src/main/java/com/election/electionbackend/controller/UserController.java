@@ -69,6 +69,12 @@ public class UserController {
                 existingUser.setCity(updatedUser.getCity());
                 existingUser.setProvince(updatedUser.getProvince());
                 existingUser.setVoorstander(updatedUser.getVoorstander());
+                existingUser.setSocial1(updatedUser.getSocial1());
+                existingUser.setSocial2(updatedUser.getSocial2());
+                existingUser.setSocial3(updatedUser.getSocial3());
+                existingUser.setSocial4(updatedUser.getSocial4());
+
+
 
                 userService.saveUser(existingUser);
                 return ResponseEntity.ok("User updated successfully!");

@@ -56,6 +56,7 @@ public class User {
     @Column
     private String profielOmschrijving;
 
+
     // Getters and Setters
     public Long getId() {
         return id;
