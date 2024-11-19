@@ -32,11 +32,31 @@ public class User {
     @Column(nullable = false)
     private String role; // New role field
 
-    @Column(nullable = false)
+    @Column
+    private String voorstander;
+
+    @Column
     private String firstname;
 
-    @Column(nullable = false)
+    @Column
     private String lastname;
+
+    //Columns for social media platforms
+    @Column
+    private String social1;
+
+    @Column
+    private String social2;
+
+    @Column
+    private String social3;
+
+    @Column
+    private String social4;
+
+    @Column
+    private String profielOmschrijving;
+
 
     // Getters and Setters
     public Long getId() {
@@ -103,6 +123,11 @@ public class User {
         this.role = role;
     }
 
+    public String getVoorstander() { return voorstander; }
+
+    public void setVoorstander(String voorstander) { this.voorstander = voorstander; }
+
+
     public String getFirstname() {
         return firstname;
     }
@@ -118,4 +143,24 @@ public class User {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
+    public String getSocial1() { return social1; }
+
+    public void setSocial1(String social1) {this.social1 = social1;}
+
+    public String getSocial2() { return social2;}
+
+    public void setSocial2(String social2) {this.social2 = social2;}
+
+    public String getSocial3() { return social3; }
+
+    public void setSocial3(String social3) {this.social3 = social3;}
+
+    public String getSocial4() { return social4;}
+
+    public void setSocial4(String social4) {this.social4 = social4;}
+
+    public String getProfielOmschrijving()  { return profielOmschrijving; }
+
+    public void setProfielOmschrijving(String profielOmschrijving) {this.profielOmschrijving = profielOmschrijving;}
 }

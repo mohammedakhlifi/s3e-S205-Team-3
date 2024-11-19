@@ -6,7 +6,7 @@
       <div id="PFS">
         <img src="../../assets/img/defpic3%20(2).jpg" alt="default profile picture">
         <p class="info">Naam: {{ editMode ? editedUser.name : user.name }}</p>
-        <p class="info">Voorstander</p>
+        <p class="info">Voorstander: {{ editMode ? editedUser.voorstander : user.voorstander }} </p>
         <p class="info">Provincie, Stad: {{ editMode ? editedUser.province : user.province }}, {{ editMode ? editedUser.city : user.city }}</p>
       </div>
 
@@ -15,21 +15,23 @@
         <p class="section-title" v-if="!editMode">Mijn Gegevens</p>
         <p v-if="editMode" class="section-title">Nieuwe Gegevens</p>
         <div id="editMode" v-if="editMode">
-         <input class="editField" v-model="editedUser.name" placeholder="Voornaam"/>
+         <input class="editField" v-model="editedUser.name" placeholder="Gebruikersnaam"/>
+          <input class="editField" v-model="editedUser.firstname"  placeholder="Voornaam"/>
           <input class="editField" v-model="editedUser.lastname" placeholder="Achternaam" />
-          <input class="editField" v-model="editedUser.username"  placeholder="Gebruikersnaam"/>
-          <input class="editField" v-model="editedUser.email" placeholder="Email"/>
+          <input class="editField" v-model="editedUser.password" placeholder="Wachtwoord"/>
           <input class="editField" v-model="editedUser.city" placeholder="Stad"/>
           <input class="editField" v-model="editedUser.province" placeholder="Provincie" />
-          <input class="editField" v-model="editedUser.voorstander" placeholder="Partij Voorstander" />
+          <input class="editField" v-model="editedUser.voorstander"  placeholder="Partij Voorstander" />
         </div>
         <div v-else>
-          <p class="details">Naam: {{ user.name }}</p>
-          <p class="details">Achternaam</p>
-          <p class="details">Gebruikersnaam</p>
+          <p class="details">Gebruikersnaam: {{ user.name }}</p>
+          <p class="details">Voornaam: {{ user.firstname }}</p>
+          <p class="details">Achternaam: {{ user.lastname }}</p>
           <p class="details">Email: {{ email }}</p>
+          <p class="details">Wachtwoord: {{ user.password }}</p>
           <p class="details">Stad: {{ user.city }}</p>
           <p class="details">Provincie: {{ user.province }}</p>
+          <p class="details">Voorstander van partij: {{editedUser.voorstander}} </p>
         </div>
         <br>
         <button id="edit" v-if="!editMode" @click="toggleEdit">Bewerken</button>
@@ -44,18 +46,30 @@
       <!--Platformen sectie-->
       <div id="platformen">
         <p class="section-title">Platformen</p>
-        <div v-if="editMode" id="mySocials">
-        <input class="socials"/>
-        <input class="socials" />
-        <input class="socials" />
-        <input class="socials" />
+        <div v-if="!editMode">
+        <p class="details" v-if="!editMode && !editedUser.social1" >Voeg je social media platformen toe!</p>
+        <p class="details" >Social media 1: {{editedUser.social1}} </p>
+        <p class ="details" >Social media 2: {{editedUser.social2}}</p>
+        <p class="details" >Social media 3: {{editedUser.social3}}</p>
+        <p class="details" >Social media 4: {{editedUser.social4}}</p>
         </div>
+
+        <div v-if="editMode" id="mySocials">
+        <input type="url" v-model="editedUser.social1" class="socials"/>
+        <input type="url" v-model="editedUser.social2" class="socials" />
+        <input type="url" v-model="editedUser.social3" class="socials" />
+        <input type="url" v-model="editedUser.social4" class="socials" />
+        </div>
+
       </div>
 
       <!--Omschrijving sectie-->
       <div id="omschrijving">
         <p class="section-title">Omschrijving</p>
-        <textarea id="profileDesc" v-if="editMode" v-model="editedUser.description"/>
+        <p class="details" v-if="!editMode && !editedUser.profielOmschrijving">Nog geen omschrijving</p>
+        <p v-else-if="!editMode">{{editedUser.profielOmschrijving}}</p>
+        <textarea id="profileDesc"  v-model="editedUser.profielOmschrijving" v-if="editMode" />
+
       </div>
     </div>
   </div>
@@ -73,6 +87,7 @@ export default defineComponent({
       user: {},
       editedUser: {},
       editMode: false,
+
     };
   },
   mounted() {
@@ -85,7 +100,14 @@ export default defineComponent({
           params: { email: this.email }
         });
         this.user = response.data;
-        this.editedUser = { ...response.data };
+        this.editedUser = { ...response.data,
+        voorstander: response.data.voorstander || "",
+        social1: response.data.social1 || "",
+        social2: response.data.social2 || "",
+        social3: response.data.social3 || "",
+        social4: response.data.social4 || "",
+        profielOmschrijving: response.data.profielOmschrijving || "" };
+
       } catch (error) {
         console.error('User not found:', error.response.status);
       }
@@ -100,8 +122,13 @@ export default defineComponent({
     async saveChanges() {
       try {
         const response = await axios.put(`http://localhost:8080/api/user/update`, this.editedUser);
+        console.log("editedUser: ",this.editedUser)
+        console.log("user:", this.user)
         this.user = { ...this.editedUser };
         this.editMode = false;
+        console.log(this.editedUser.voorstander);
+        console.log("omshcrijving: ", this.editedUser.profielOmschrijving)
+
       } catch (error) {
         console.error('Error updating user:', error.response.status);
       }
@@ -119,7 +146,7 @@ export default defineComponent({
   margin: 0 auto;
   background-color: #f5f8fc;
   border-radius: 15px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Title Styling */
