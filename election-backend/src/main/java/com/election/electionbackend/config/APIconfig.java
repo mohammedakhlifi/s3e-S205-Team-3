@@ -12,7 +12,7 @@ public class APIconfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOriginPatterns("http://localhost:*", "http://*.hva.nl:*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")  // Allow all headers
-                .allowCredentials(true);  // Allow credentials like cookies or authorization headers
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }

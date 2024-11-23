@@ -1,6 +1,5 @@
 <template>
   <div class="admin-wrapper">
-    <!-- Sidebar -->
     <div class="sidebar">
       <h3>Admin Panel</h3>
       <ul>
@@ -10,7 +9,6 @@
       </ul>
     </div>
 
-    <!-- Main Content Area -->
     <div class="admin-container">
       <h2>Users List</h2>
       <div class="table-wrapper">
@@ -58,16 +56,11 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const token = localStorage.getItem('token'); // Fetch token from localStorage
-        const response = await axios.get('http://localhost:8080/api/admin/users', {
-          headers: {
-            Authorization: `Bearer ${token}` // Ensure the token is correctly sent in the Authorization header
-          }
-        });
+        const response = await axios.get('http://localhost:8080/api/admin/users');
         this.users = response.data;
       } catch (error) {
         this.message = 'Error fetching users or you do not have admin privileges.';
-        console.error(error);
+        console.error('Error:', error.response ? error.response.data : error.message);
       }
     }
   }

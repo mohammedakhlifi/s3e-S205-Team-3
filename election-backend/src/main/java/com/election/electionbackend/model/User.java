@@ -1,6 +1,7 @@
 package com.election.electionbackend.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
@@ -17,10 +18,10 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String password; // Store hashed password
 
     @Column(nullable = false)
-    private String birthDate;
+    private LocalDate birthDate;
 
     @Column(nullable = false)
     private String city;
@@ -30,6 +31,12 @@ public class User {
 
     @Column(nullable = false)
     private String role; // New role field
+
+    @Column(nullable = false)
+    private String firstname;
+
+    @Column(nullable = false)
+    private String lastname;
 
     // Getters and Setters
     public Long getId() {
@@ -64,11 +71,11 @@ public class User {
         this.password = password;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -94,5 +101,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }

@@ -11,7 +11,7 @@
     <!-- Display Backend Status -->
     <div class="backend-status">
       <div v-if="backendStatus">
-        <p>Backend Status: {{ backendStatus.message }}</p>
+        <p> {{ backendStatus.message }}</p>
       </div>
       <div v-else>
         <p>Loading backend status...</p>

@@ -19,20 +19,33 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Register a new user
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            // Save user with role (frontend should send the role)
-            if (user.getRole() == null || user.getRole().isEmpty()) {
-                user.setRole("visitor"); // Default to 'visitor' role if not provided
+            // Validate that firstname and lastname are provided
+            if (user.getFirstname() == null || user.getFirstname().isEmpty()) {
+                return ResponseEntity.status(400).body("Firstname is required.");
             }
+            if (user.getLastname() == null || user.getLastname().isEmpty()) {
+                return ResponseEntity.status(400).body("Lastname is required.");
+            }
+
+            // Set default role if not provided
+            if (user.getRole() == null || user.getRole().isEmpty()) {
+                user.setRole("visitor"); // Default to 'visitor' role
+            }
+
+            // Save the user
             userService.saveUser(user);
             return ResponseEntity.ok("User registered successfully!");
+
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Error registering user: " + e.getMessage());
         }
     }
 
+    // Login user and generate a token
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user) {
         User existingUser = userService.findByEmail(user.getEmail());
@@ -47,17 +60,18 @@ public class UserController {
         }
     }
 
+    // Fetch user by email
     @GetMapping("/user")
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.findByEmail(email);
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(404).body(null); // Gebruiker niet gevonden
+            return ResponseEntity.status(404).body(null); // User not found
         }
     }
 
-    // A simple token generation method (replace with JWT or other secure logic)
+    // Simple token generation method (you should replace this with a proper JWT mechanism)
     private String generateToken(User user) {
         return user.getEmail() + "-token"; // Simplified token for demonstration purposes
     }

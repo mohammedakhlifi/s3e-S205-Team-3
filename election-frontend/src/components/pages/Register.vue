@@ -4,7 +4,17 @@
       <h2>Registreren</h2>
       <form @submit.prevent="registerUser">
         <div class="form-group">
-          <label for="name">Naam</label>
+          <label for="firstname">Voornaam</label>
+          <input type="text" v-model="user.firstname" id="firstname" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lastname">Achternaam</label>
+          <input type="text" v-model="user.lastname" id="lastname" required />
+        </div>
+
+        <div class="form-group">
+          <label for="name">Gebruikersnaam</label>
           <input type="text" v-model="user.name" id="name" required />
         </div>
 
@@ -63,45 +73,52 @@ export default {
   data() {
     return {
       user: {
+        firstname: "",
+        lastname: "",  // Added lastname field
         name: "",
         email: "",
         password: "",
         birthDate: "",
         province: "",
         city: "",
-        role: ""
+        role: "",
       },
-      message: "",
-      provinces: ["Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland"],
+      provinces: [
+        "Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen",
+        "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel",
+        "Utrecht", "Zeeland", "Zuid-Holland"
+      ],
       cities: [],
+      message: "",
+      citiesByProvince: {
+        "Drenthe": ["Assen", "Emmen", "Hoogeveen", "Meppel", "Coevorden", "Klazienaveen"],
+        "Flevoland": ["Almere", "Lelystad", "Dronten", "Zeewolde", "Swifterbant", "Biddinghuizen"],
+        "Friesland": ["Leeuwarden", "Sneek", "Drachten", "Heerenveen", "Harlingen", "Franeker"],
+        "Gelderland": ["Arnhem", "Nijmegen", "Apeldoorn", "Ede", "Doetinchem", "Tiel", "Zutphen"],
+        "Groningen": ["Groningen", "Delfzijl", "Winschoten", "Veendam", "Leek", "Appingedam"],
+        "Limburg": ["Maastricht", "Venlo", "Roermond", "Sittard", "Heerlen", "Weert"],
+        "Noord-Brabant": ["Eindhoven", "Tilburg", "Breda", "Helmond", "’s-Hertogenbosch", "Oss"],
+        "Noord-Holland": ["Amsterdam", "Haarlem", "Alkmaar", "Zaandam", "Hilversum", "Purmerend"],
+        "Overijssel": ["Zwolle", "Enschede", "Deventer", "Hengelo", "Ommen", "Raalte", "Hardenberg"],
+        "Utrecht": ["Utrecht", "Amersfoort", "Nieuwegein", "Veenendaal", "Zeist", "Houten"],
+        "Zeeland": ["Middelburg", "Vlissingen", "Goes", "Maren-Kessel", "Borsele", "Terneuzen"],
+        "Zuid-Holland": ["Rotterdam", "Den Haag", "Leiden", "Delft", "Zoetermeer", "Schiedam", "Gouda"]
+      }
     };
   },
   methods: {
-    async registerUser() {
-      try {
-        const response = await axios.post("http://localhost:8080/api/register", this.user);
-        this.message = "Gebruiker succesvol geregistreerd!";
-      } catch (error) {
-        this.message = "Fout bij het registreren. Probeer het opnieuw.";
-        console.error(error);
-      }
+    registerUser() {
+      axios
+          .post("http://localhost:8080/api/register", this.user)
+          .then((response) => {
+            this.message = response.data;
+          })
+          .catch((error) => {
+            this.message = error.response.data;
+          });
     },
     fetchCities() {
-      const citiesByProvince = {
-        "Drenthe": ["Assen", "Emmen", "Hoogeveen"],
-        "Flevoland": ["Almere", "Lelystad", "Emmeloord"],
-        "Friesland": ["Leeuwarden", "Sneek", "Drachten"],
-        "Gelderland": ["Arnhem", "Nijmegen", "Apeldoorn"],
-        "Groningen": ["Groningen", "Delfzijl", "Winschoten"],
-        "Limburg": ["Maastricht", "Venlo", "Roermond"],
-        "Noord-Brabant": ["Eindhoven", "Breda", "Tilburg"],
-        "Noord-Holland": ["Amsterdam", "Haarlem", "Alkmaar"],
-        "Overijssel": ["Zwolle", "Enschede", "Deventer"],
-        "Utrecht": ["Utrecht", "Amersfoort", "Nieuwegein"],
-        "Zeeland": ["Middelburg", "Vlissingen", "Goes"],
-        "Zuid-Holland": ["Rotterdam", "Den Haag", "Leiden"]
-      };
-      this.cities = citiesByProvince[this.user.province] || [];
+      this.cities = this.citiesByProvince[this.user.province] || [];
     },
   },
 };
