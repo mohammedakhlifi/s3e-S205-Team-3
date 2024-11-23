@@ -186,7 +186,6 @@ h1 {
 .replies-container {
   margin-top: 20px;
 }
-//.
 .reply-item {
   background-color: #f1f1f1;
   padding: 10px;
