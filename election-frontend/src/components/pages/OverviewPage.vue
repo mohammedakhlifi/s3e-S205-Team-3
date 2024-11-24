@@ -174,7 +174,7 @@ position: relative;
 .topic-info h4 {
 font-weight: bold; /* Dikgedrukt */
 font-size: 1.2rem; /* Groter lettertype */
-color: #002f6c; /* Donkerblauwe kleur voor nadruk */
+color: #4caf50; /* Donkerblauwe kleur voor nadruk */
 margin-bottom: 5px; /* Ruimte onder de titel */
 }
 
