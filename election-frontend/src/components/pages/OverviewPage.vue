@@ -16,10 +16,6 @@
             </div>
           </div>
 
-          <!-- Reacties bekijken/verbergen -->
-          <button @click="toggleReplies(topic.id)" class="toggle-replies-button">
-            {{ showReplies[topic.id] ? "Verberg reacties" : "Reacties weergeven" }}
-          </button>
 
           <!-- Reacties container -->
           <div v-if="showReplies[topic.id]" class="replies-container">
