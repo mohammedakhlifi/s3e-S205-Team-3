@@ -16,16 +16,12 @@
             </div>
           </div>
 
-          <!-- Reageer-knop -->
-          <button @click="toggleReplyInput(topic.id)" class="reply-button">Reageer</button>
+          <!-- Reacties bekijken/verbergen -->
+          <button @click="toggleReplies(topic.id)" class="toggle-replies-button">
+            {{ showReplies[topic.id] ? "Verberg reacties" : "Reacties weergeven" }}
+          </button>
 
-          <!-- Invoerveld voor reacties -->
-          <div v-if="showReplyInput === topic.id" class="reply-input-container">
-            <textarea v-model="newReplyContent" placeholder="Schrijf je reactie..." rows="3"></textarea>
-            <button @click="submitReply(topic.id)" class="submit-reply-button">Plaats reactie</button>
-          </div>
-
-          <!-- Reacties bekijken -->
+          <!-- Reacties container -->
           <div v-if="showReplies[topic.id]" class="replies-container">
             <div v-if="topic.replies && topic.replies.length">
               <h3>Reacties</h3>
@@ -37,6 +33,17 @@
             <div v-else>
               <p>Er zijn nog geen reacties.</p>
             </div>
+          </div>
+
+          <!-- Invoerveld voor reacties -->
+          <div class="reply-input-container">
+            <textarea
+                v-model="repliesContent[topic.id]"
+                placeholder="Schrijf je reactie..."
+                rows="3"
+                @keydown.enter.prevent="submitReply(topic.id)"
+                class="reply-textarea"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -61,8 +68,7 @@ export default {
     return {
       topics: [], // Lijst met topics
       showReplies: {}, // Object om zichtbaarheid van reacties te controleren
-      showReplyInput: null, // Controleert of een invoerveld wordt getoond
-      newReplyContent: "", // Inhoud van een nieuwe reactie
+      repliesContent: {}, // Inhoud van de reacties per topic
     };
   },
   methods: {
@@ -97,27 +103,28 @@ export default {
       this.$set(this.showReplies, topicId, !this.showReplies[topicId]);
     },
 
-    // Toon of verberg invoerveld voor een nieuwe reactie
-    toggleReplyInput(topicId) {
-      this.showReplyInput = this.showReplyInput === topicId ? null : topicId;
-    },
-
     // Plaats een nieuwe reactie
     async submitReply(topicId) {
       try {
+        const content = this.repliesContent[topicId];
+        if (!content || content.trim() === "") {
+          console.warn("Reactie-inhoud is leeg");
+          return;
+        }
+
         const response = await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
-          content: this.newReplyContent,
+          content,
         });
 
         // Voeg de nieuwe reactie toe aan de juiste topic
         const topic = this.topics.find((t) => t.id === topicId);
         if (topic) {
+          topic.replies = topic.replies || [];
           topic.replies.push(response.data);
         }
 
         // Reset het invoerveld en open reactiesectie
-        this.newReplyContent = "";
-        this.showReplyInput = null;
+        this.repliesContent[topicId] = "";
         this.showReplies[topicId] = true;
       } catch (error) {
         console.error("Fout bij het plaatsen van de reactie:", error);
@@ -135,90 +142,122 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 /* Overzicht container styling */
 .overview-container {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+max-width: 800px;
+margin: 50px auto;
+padding: 20px;
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #002f6c;
+text-align: center;
+font-size: 2rem;
+margin-bottom: 20px;
+color: #002f6c;
 }
 
 .topics-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+display: flex;
+flex-direction: column;
+gap: 20px;
 }
 
 .topic-item {
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
+background-color: #f9f9f9;
+padding: 15px;
+border-radius: 8px;
+box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+position: relative;
 }
 
-.reply-button,
-.submit-reply-button {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.reply-button:hover,
-.submit-reply-button:hover {
-  background-color: #45a049;
-}
-
-.replies-container {
-  margin-top: 20px;
-}
-.reply-item {
-  background-color: #f1f1f1;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border-left: 4px solid #4caf50;
+/* Styling voor de titel */
+.topic-info h4 {
+font-weight: bold; /* Dikgedrukt */
+font-size: 1.2rem; /* Groter lettertype */
+color: #002f6c; /* Donkerblauwe kleur voor nadruk */
+margin-bottom: 5px; /* Ruimte onder de titel */
 }
 
 .topic-date,
 .reply-date {
-  font-size: 0.9rem;
-  color: #888;
-  margin-top: 10px;
+font-size: 0.9rem;
+color: #888;
+margin-top: 10px;
+}
+
+/* Styling voor de Reacties weergeven-knop */
+.toggle-replies-button {
+margin-top: 10px;
+padding: 8px 12px;
+background-color: #4caf50;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-size: 0.9rem;
+}
+
+.toggle-replies-button:hover {
+background-color: #45a049;
+}
+
+/* Reacties sectie */
+.replies-container {
+margin-top: 20px;
+}
+
+.reply-item {
+background-color: #f1f1f1;
+padding: 10px;
+margin-bottom: 10px;
+border-radius: 5px;
+border-left: 4px solid #4caf50;
+}
+
+/* Invoerveld styling */
+.reply-input-container {
+margin-top: 10px;
+}
+
+.reply-textarea {
+width: 100%;
+padding: 8px; /* Iets kleinere padding */
+border: 1px solid #ccc;
+border-radius: 4px;
+font-size: 1rem;
+line-height: 1.2; /* Compactere tekst */
+resize: none;
+box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.reply-textarea:focus {
+outline: none;
+border-color: #4caf50;
+box-shadow: 0px 0px 4px rgba(76, 175, 80, 0.5);
 }
 
 /* Plus-knop styling */
 .icon-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #4caf50;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  z-index: 1000;
+position: fixed;
+bottom: 20px;
+right: 20px;
+background-color: #4caf50;
+border-radius: 50%;
+width: 60px;
+height: 60px;
+display: flex;
+justify-content: center;
+align-items: center;
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+cursor: pointer;
+z-index: 1000;
 }
 
 .icon-container:hover {
-  background-color: #45a049;
+background-color: #45a049;
 }
 </style>
