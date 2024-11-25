@@ -19,6 +19,16 @@
         </div>
 
         <div class="form-group">
+          <label for="firstname">Voornaam</label>
+          <input type="text" v-model="user.firstname" id="firstname" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lastnmae">Achternaam</label>
+          <input type="text" v-model="user.lastname" id="lastname" required />
+        </div>
+
+        <div class="form-group">
           <label for="email">E-mail</label>
           <input type="email" v-model="user.email" id="email" required />
         </div>
@@ -76,6 +86,8 @@ export default {
         firstname: "",
         lastname: "",  // Added lastname field
         name: "",
+        firstname: "",
+        lastname: "",
         email: "",
         password: "",
         birthDate: "",
