@@ -13,9 +13,13 @@
               <h4>{{ topic.title }}</h4>
               <p>{{ topic.content }}</p>
               <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
+
+              <!-- Toon het aantal reacties -->
+              <p class="topic-reply-count">
+                Reacties: {{ topic.replies ? topic.replies.length : 0 }}
+              </p>
             </div>
           </div>
-
 
           <!-- Reacties container -->
           <div v-if="showReplies[topic.id]" class="replies-container">
@@ -141,119 +145,126 @@ export default {
 <style>
 /* Overzicht container styling */
 .overview-container {
-max-width: 800px;
-margin: 50px auto;
-padding: 20px;
-background-color: #fff;
-border-radius: 8px;
-box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-text-align: center;
-font-size: 2rem;
-margin-bottom: 20px;
-color: #002f6c;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #002f6c;
 }
 
 .topics-list {
-display: flex;
-flex-direction: column;
-gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .topic-item {
-background-color: #f9f9f9;
-padding: 15px;
-border-radius: 8px;
-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-position: relative;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 /* Styling voor de titel */
 .topic-info h4 {
-font-weight: bold; /* Dikgedrukt */
-font-size: 1.2rem; /* Groter lettertype */
-color: #4caf50; /* Donkerblauwe kleur voor nadruk */
-margin-bottom: 5px; /* Ruimte onder de titel */
+  font-weight: bold; /* Dikgedrukt */
+  font-size: 1.2rem; /* Groter lettertype */
+  color: #4caf50; /* Donkerblauwe kleur voor nadruk */
+  margin-bottom: 5px; /* Ruimte onder de titel */
+}
+
+/* Styling voor aantal reacties */
+.topic-reply-count {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 5px;
 }
 
 .topic-date,
 .reply-date {
-font-size: 0.9rem;
-color: #888;
-margin-top: 10px;
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 10px;
 }
 
 /* Styling voor de Reacties weergeven-knop */
 .toggle-replies-button {
-margin-top: 10px;
-padding: 8px 12px;
-background-color: #4caf50;
-color: white;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-font-size: 0.9rem;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .toggle-replies-button:hover {
-background-color: #45a049;
+  background-color: #45a049;
 }
 
 /* Reacties sectie */
 .replies-container {
-margin-top: 20px;
+  margin-top: 20px;
 }
 
 .reply-item {
-background-color: #f1f1f1;
-padding: 10px;
-margin-bottom: 10px;
-border-radius: 5px;
-border-left: 4px solid #4caf50;
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #4caf50;
 }
 
 /* Invoerveld styling */
 .reply-input-container {
-margin-top: 10px;
+  margin-top: 10px;
 }
 
 .reply-textarea {
-width: 100%;
-padding: 8px; /* Iets kleinere padding */
-border: 1px solid #ccc;
-border-radius: 4px;
-font-size: 1rem;
-line-height: 1.2; /* Compactere tekst */
-resize: none;
-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  line-height: 1.2;
+  resize: none;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .reply-textarea:focus {
-outline: none;
-border-color: #4caf50;
-box-shadow: 0px 0px 4px rgba(76, 175, 80, 0.5);
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0px 0px 4px rgba(76, 175, 80, 0.5);
 }
 
 /* Plus-knop styling */
 .icon-container {
-position: fixed;
-bottom: 20px;
-right: 20px;
-background-color: #4caf50;
-border-radius: 50%;
-width: 60px;
-height: 60px;
-display: flex;
-justify-content: center;
-align-items: center;
-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-cursor: pointer;
-z-index: 1000;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 1000;
 }
 
 .icon-container:hover {
-background-color: #45a049;
+  background-color: #45a049;
 }
 </style>
