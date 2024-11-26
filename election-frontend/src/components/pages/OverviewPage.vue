@@ -38,7 +38,7 @@
             </div>
           </div>
 
-          <!-- Invoerveld en knop voor reacties -->
+          <!-- Invoerveld voor reacties -->
           <div class="reply-input-container">
             <textarea
                 v-model="repliesContent[topic.id]"
@@ -47,12 +47,6 @@
                 @keydown.enter.prevent="submitReply(topic.id)"
                 class="reply-textarea"
             ></textarea>
-            <button
-                class="reply-submit-button"
-                @click="submitReply(topic.id)"
-            >
-              Verstuur
-            </button>
           </div>
         </div>
       </div>
@@ -68,6 +62,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -133,8 +128,8 @@ export default {
         }
 
         // Reset het invoerveld en open reactiesectie
-        this.repliesContent[topic.id] = "";
-        this.showReplies[topicId] = true; // Zorg dat reacties blijven staan
+        this.repliesContent[topicId] = "";
+        this.showReplies[topicId] = true;
       } catch (error) {
         console.error("Fout bij het plaatsen van de reactie:", error);
       }
@@ -144,6 +139,14 @@ export default {
     goToForum() {
       this.$router.push("/forum"); // Zorg dat deze route bestaat
     },
+
+    methods: {
+      // Toon of verberg reacties
+      toggleReplies(topicId) {
+        this.$set(this.showReplies, topicId, !this.showReplies[topicId]);
+      },
+    },
+
   },
   created() {
     this.fetchTopics();
@@ -180,6 +183,45 @@ h1 {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Styling voor de titel */
+.topic-info h4 {
+  font-weight: bold; /* Dikgedrukt */
+  font-size: 1.2rem; /* Groter lettertype */
+  color: #4caf50; /* Donkerblauwe kleur voor nadruk */
+  margin-bottom: 5px; /* Ruimte onder de titel */
+}
+
+/* Styling voor aantal reacties */
+.topic-reply-count {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 5px;
+}
+
+.topic-date,
+.reply-date {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 10px;
+}
+
+/* Styling voor de Reacties weergeven-knop */
+.toggle-replies-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.toggle-replies-button:hover {
+  background-color: #45a049;
 }
 
 /* Reacties sectie */
@@ -188,47 +230,56 @@ h1 {
 }
 
 .reply-item {
+  background-color: #f1f1f1;
   padding: 10px;
   margin-bottom: 10px;
-  background-color: #f1f1f1;
   border-radius: 5px;
   border-left: 4px solid #4caf50;
 }
 
-/* Invoerveld en knop styling */
+/* Invoerveld styling */
 .reply-input-container {
-  display: flex;
-  gap: 10px;
   margin-top: 10px;
-  align-items: center;
 }
 
 .reply-textarea {
-  flex: 1;
+  width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+  line-height: 1.2;
   resize: none;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.reply-submit-button {
-  padding: 8px 16px;
+.reply-textarea:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0px 0px 4px rgba(76, 175, 80, 0.5);
+}
+
+/* Plus-knop styling */
+.icon-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  z-index: 1000;
 }
 
-.reply-submit-button:hover {
+.icon-container:hover {
   background-color: #45a049;
 }
 
-.reply-submit-button:focus {
-  outline: none;
-  box-shadow: 0 0 4px rgba(76, 175, 80, 0.8);
-}
+
+
 </style>
