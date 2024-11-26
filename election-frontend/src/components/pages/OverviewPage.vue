@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Container voor het overzicht van vragen -->
+    <!-- Overzicht van vragen -->
     <div class="overview-container">
       <h1>Overzicht van vragen</h1>
 
@@ -8,23 +8,48 @@
       <div class="topics-list">
         <!-- Itereer over de topics en toon elk topic -->
         <div v-for="topic in topics" :key="topic.id" class="topic-item">
-          <h4>{{ topic.title }}</h4>
-          <p>{{ topic.content }}</p>
-          <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
+          <div class="topic-header">
+            <div class="topic-info">
+              <h4>{{ topic.title }}</h4>
+              <p>{{ topic.content }}</p>
+              <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
 
-          <!-- Reageer-knop en invoerveld voor reactie -->
-          <button @click="toggleReplyInput(topic.id)" class="reply-button">Reageer</button>
+              <!-- Toon het aantal reacties -->
+              <p class="topic-reply-count">
+                Reacties: {{ topic.replies ? topic.replies.length : 0 }}
+              </p>
+            </div>
+          </div>
 
-          <!-- Invoerveld alleen tonen als showReplyInput gelijk is aan het topic ID -->
-          <div v-if="showReplyInput === topic.id" class="reply-input-container">
-            <textarea v-model="newReplyContent" placeholder="Schrijf je reactie..." rows="3"></textarea>
-            <button @click="submitReply(topic.id)" class="submit-reply-button">Plaats reactie</button>
+          <!-- Reacties container -->
+          <div v-if="showReplies[topic.id]" class="replies-container">
+            <div v-if="topic.replies && topic.replies.length">
+              <h3>Reacties</h3>
+              <div v-for="reply in topic.replies" :key="reply.id" class="reply-item">
+                <p>{{ reply.content }}</p>
+                <p class="reply-date">Antwoord gepost op: {{ formatDate(reply.createdAt) }}</p>
+              </div>
+            </div>
+            <div v-else>
+              <p>Er zijn nog geen reacties.</p>
+            </div>
+          </div>
+
+          <!-- Invoerveld voor reacties -->
+          <div class="reply-input-container">
+            <textarea
+                v-model="repliesContent[topic.id]"
+                placeholder="Schrijf je reactie..."
+                rows="3"
+                @keydown.enter.prevent="submitReply(topic.id)"
+                class="reply-textarea"
+            ></textarea>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Icoon rechtsonder voor navigatie naar forum -->
+    <!-- Plus-knop -->
     <div class="icon-container" @click="goToForum">
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60" height="60" viewBox="0 0 48 48">
         <path fill="#4caf50" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path>
@@ -36,70 +61,89 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      topics: [],
-      showReplyInput: null, // Controleert of het invoerveld zichtbaar is voor een specifiek topic
-      newReplyContent: "", // Inhoud van de nieuwe reactie
+      topics: [], // Lijst met topics
+      showReplies: {}, // Object om zichtbaarheid van reacties te controleren
+      repliesContent: {}, // Inhoud van de reacties per topic
     };
   },
   methods: {
+    // Haal topics op van de backend
     async fetchTopics() {
       try {
         const response = await axios.get("http://localhost:8080/api/forum/topics/latest");
-        console.log("Opgehaalde topics:", response.data); // Log de hele data om te controleren
         this.topics = response.data;
       } catch (error) {
         console.error("Fout bij het ophalen van onderwerpen:", error);
       }
     },
 
-
+    // Formatteer de datum
     formatDate(dateString) {
-      console.log("Datum ontvangen door formatDate:", dateString); // Log de ontvangen datum
       if (!dateString) return "Datum niet beschikbaar";
       const date = new Date(dateString);
       if (isNaN(date)) return "Ongeldige datum";
 
-      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-      return date.toLocaleDateString('nl-NL', options);
-    }
-    ,
-
-
-    goToForum() {
-      this.$router.push({ name: 'ForumPage' });
+      const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+      return date.toLocaleDateString("nl-NL", options);
     },
 
-    toggleReplyInput(topicId) {
-      this.showReplyInput = this.showReplyInput === topicId ? null : topicId; // Toon/verberg invoerveld voor specifieke topic
+    // Toon of verberg reacties
+    toggleReplies(topicId) {
+      this.$set(this.showReplies, topicId, !this.showReplies[topicId]);
     },
 
+    // Plaats een nieuwe reactie
     async submitReply(topicId) {
       try {
-        await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
-          content: this.newReplyContent,
+        const content = this.repliesContent[topicId];
+        if (!content || content.trim() === "") {
+          console.warn("Reactie-inhoud is leeg");
+          return;
+        }
+
+        const response = await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
+          content,
         });
-        this.newReplyContent = ""; // Reset het invoerveld na het verzenden
-        this.showReplyInput = null; // Verberg het invoerveld
-        await this.fetchTopics(); // Haal de topics opnieuw op om data te verversen
+
+        // Voeg de nieuwe reactie toe aan de juiste topic
+        const topic = this.topics.find((t) => t.id === topicId);
+        if (topic) {
+          topic.replies = topic.replies || [];
+          topic.replies.push(response.data);
+        }
+
+        // Reset het invoerveld en open reactiesectie
+        this.repliesContent[topicId] = "";
+        this.showReplies[topicId] = true;
       } catch (error) {
         console.error("Fout bij het plaatsen van de reactie:", error);
       }
-    }
+    },
 
+    // Navigeer naar de forum pagina
+    goToForum() {
+      this.$router.push("/forum"); // Zorg dat deze route bestaat
+    },
   },
   created() {
     this.fetchTopics();
-  }
+  },
 };
 </script>
 
-<style scoped>
-/* Styling voor de overzichtspagina */
+<style>
+/* Overzicht container styling */
 .overview-container {
   max-width: 800px;
   margin: 50px auto;
@@ -127,25 +171,33 @@ h1 {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-.topic-item h4 {
-  color: #002f6c;
-  margin-bottom: 10px;
+/* Styling voor de titel */
+.topic-info h4 {
+  font-weight: bold; /* Dikgedrukt */
+  font-size: 1.2rem; /* Groter lettertype */
+  color: #4caf50; /* Donkerblauwe kleur voor nadruk */
+  margin-bottom: 5px; /* Ruimte onder de titel */
 }
 
-.topic-item p {
+/* Styling voor aantal reacties */
+.topic-reply-count {
+  font-size: 0.9rem;
   color: #555;
+  margin-top: 5px;
 }
 
-.topic-date {
+.topic-date,
+.reply-date {
   font-size: 0.9rem;
   color: #888;
   margin-top: 10px;
 }
 
-/* Reageer-knop styling */
-.reply-button {
+/* Styling voor de Reacties weergeven-knop */
+.toggle-replies-button {
   margin-top: 10px;
   padding: 8px 12px;
   background-color: #4caf50;
@@ -153,78 +205,66 @@ h1 {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.toggle-replies-button:hover {
+  background-color: #45a049;
+}
+
+/* Reacties sectie */
+.replies-container {
+  margin-top: 20px;
+}
+
+.reply-item {
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #4caf50;
 }
 
 /* Invoerveld styling */
 .reply-input-container {
   margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
-textarea {
+.reply-textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  resize: vertical;
+  font-size: 1rem;
+  line-height: 1.2;
+  resize: none;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.submit-reply-button {
-  align-self: flex-end;
-  padding: 8px 12px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.reply-textarea:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0px 0px 4px rgba(76, 175, 80, 0.5);
 }
 
-/* Icoon rechtsonder styling */
+/* Plus-knop styling */
 .icon-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  background-color: #4caf50;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   z-index: 1000;
 }
 
-/* Media queries voor responsiviteit */
-@media (max-width: 768px) {
-  .overview-container {
-    margin: 20px;
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  .topic-item {
-    padding: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .overview-container {
-    margin: 10px;
-    padding: 10px;
-  }
-
-  h1 {
-    font-size: 1.2rem;
-  }
-
-  .topic-item {
-    padding: 8px;
-  }
-
-  .icon-container {
-    width: 50px;
-    height: 50px;
-    bottom: 15px;
-    right: 15px;
-  }
+.icon-container:hover {
+  background-color: #45a049;
 }
 </style>

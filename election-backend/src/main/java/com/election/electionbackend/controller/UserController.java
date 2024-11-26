@@ -23,17 +23,9 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            // Validate that firstname and lastname are provided
-            if (user.getFirstname() == null || user.getFirstname().isEmpty()) {
-                return ResponseEntity.status(400).body("Firstname is required.");
-            }
-            if (user.getLastname() == null || user.getLastname().isEmpty()) {
-                return ResponseEntity.status(400).body("Lastname is required.");
-            }
-
-            // Set default role if not provided
+            // Save user with role (frontend should send the role)
             if (user.getRole() == null || user.getRole().isEmpty()) {
-                user.setRole("visitor"); // Default to 'visitor' role
+                user.setRole("visitor"); // Default to 'visitor' role if not provided
             }
 
             // Save the user
@@ -67,11 +59,43 @@ public class UserController {
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(404).body(null); // User not found
+            return ResponseEntity.status(404).body(null); // Gebruiker niet gevonden
         }
     }
 
-    // Simple token generation method (you should replace this with a proper JWT mechanism)
+    @PutMapping("/user/update")
+    public ResponseEntity<String> updateUser(@RequestBody User updatedUser) {
+        try {
+            User existingUser = userService.findByEmail(updatedUser.getEmail());
+            if (existingUser != null) {
+                existingUser.setName(updatedUser.getName());
+                existingUser.setFirstname(updatedUser.getFirstname());
+                existingUser.setLastname(updatedUser.getLastname());
+                existingUser.setPassword(updatedUser.getPassword());
+                existingUser.setCity(updatedUser.getCity());
+                existingUser.setProvince(updatedUser.getProvince());
+                existingUser.setVoorstander(updatedUser.getVoorstander());
+                existingUser.setSocial1(updatedUser.getSocial1());
+                existingUser.setSocial2(updatedUser.getSocial2());
+                existingUser.setSocial3(updatedUser.getSocial3());
+                existingUser.setSocial4(updatedUser.getSocial4());
+                existingUser.setProfielOmschrijving((updatedUser.getProfielOmschrijving()));
+
+
+                userService.saveUser(existingUser);
+                return ResponseEntity.ok("User updated successfully!");
+            } else {
+                return ResponseEntity.status(404).body("User not found!");
+            }
+
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error updating user: " + e.getMessage());
+        }
+    }
+
+
+    // A simple token generation method (replace with JWT or other secure logic)
     private String generateToken(User user) {
         return user.getEmail() + "-token"; // Simplified token for demonstration purposes
     }
