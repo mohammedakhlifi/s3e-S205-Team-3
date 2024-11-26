@@ -14,8 +14,11 @@
               <p>{{ topic.content }}</p>
               <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
 
-              <!-- Toon het aantal reacties -->
-              <p class="topic-reply-count">
+              <!-- Klikbaar aantal reacties -->
+              <p
+                  class="topic-reply-count clickable"
+                  @click="toggleReplies(topic.id)"
+              >
                 Reacties: {{ topic.replies ? topic.replies.length : 0 }}
               </p>
             </div>
@@ -35,7 +38,7 @@
             </div>
           </div>
 
-          <!-- Invoerveld voor reacties -->
+          <!-- Invoerveld en knop voor reacties -->
           <div class="reply-input-container">
             <textarea
                 v-model="repliesContent[topic.id]"
@@ -44,6 +47,12 @@
                 @keydown.enter.prevent="submitReply(topic.id)"
                 class="reply-textarea"
             ></textarea>
+            <button
+                class="reply-submit-button"
+                @click="submitReply(topic.id)"
+            >
+              Verstuur
+            </button>
           </div>
         </div>
       </div>
@@ -124,8 +133,8 @@ export default {
         }
 
         // Reset het invoerveld en open reactiesectie
-        this.repliesContent[topicId] = "";
-        this.showReplies[topicId] = true;
+        this.repliesContent[topic.id] = "";
+        this.showReplies[topicId] = true; // Zorg dat reacties blijven staan
       } catch (error) {
         console.error("Fout bij het plaatsen van de reactie:", error);
       }
@@ -171,45 +180,6 @@ h1 {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-}
-
-/* Styling voor de titel */
-.topic-info h4 {
-  font-weight: bold; /* Dikgedrukt */
-  font-size: 1.2rem; /* Groter lettertype */
-  color: #4caf50; /* Donkerblauwe kleur voor nadruk */
-  margin-bottom: 5px; /* Ruimte onder de titel */
-}
-
-/* Styling voor aantal reacties */
-.topic-reply-count {
-  font-size: 0.9rem;
-  color: #555;
-  margin-top: 5px;
-}
-
-.topic-date,
-.reply-date {
-  font-size: 0.9rem;
-  color: #888;
-  margin-top: 10px;
-}
-
-/* Styling voor de Reacties weergeven-knop */
-.toggle-replies-button {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.toggle-replies-button:hover {
-  background-color: #45a049;
 }
 
 /* Reacties sectie */
@@ -218,53 +188,47 @@ h1 {
 }
 
 .reply-item {
-  background-color: #f1f1f1;
   padding: 10px;
   margin-bottom: 10px;
+  background-color: #f1f1f1;
   border-radius: 5px;
   border-left: 4px solid #4caf50;
 }
 
-/* Invoerveld styling */
+/* Invoerveld en knop styling */
 .reply-input-container {
+  display: flex;
+  gap: 10px;
   margin-top: 10px;
+  align-items: center;
 }
 
 .reply-textarea {
-  width: 100%;
+  flex: 1;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
-  line-height: 1.2;
   resize: none;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.reply-textarea:focus {
-  outline: none;
-  border-color: #4caf50;
-  box-shadow: 0px 0px 4px rgba(76, 175, 80, 0.5);
-}
-
-/* Plus-knop styling */
-.icon-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+.reply-submit-button {
+  padding: 8px 16px;
   background-color: #4caf50;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
   cursor: pointer;
-  z-index: 1000;
+  transition: background-color 0.3s ease;
 }
 
-.icon-container:hover {
+.reply-submit-button:hover {
   background-color: #45a049;
+}
+
+.reply-submit-button:focus {
+  outline: none;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.8);
 }
 </style>
