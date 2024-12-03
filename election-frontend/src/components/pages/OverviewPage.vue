@@ -6,13 +6,16 @@
 
       <!-- Lijst van onderwerpen -->
       <div class="topics-list">
-        <!-- Itereer over de topics en toon elk topic -->
+
         <div v-for="topic in topics" :key="topic.id" class="topic-item">
+          <!-- v-for: Itereert over de lijst met topics die in data() zijn opgeslagen, voor elke topic maakt het een nieuwe HTML-blok aan. -->
           <div class="topic-header">
             <div class="topic-info">
-              <h4>{{ topic.title }}</h4>
+              <h4 @click="$router.push(`/forum/topics/${topic.id}`)" class="clickable">{{ topic.title }}</h4>
+              <!-- @click: Het klik-attribuut is verbonden aan een functie die de router gebruikt om te navigeren. -->
               <p>{{ topic.content }}</p>
               <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
+              <!-- formatDate: Zet een onbewerkte datum om naar een leesbaar formaat. -->
 
               <!-- Klikbaar aantal reacties -->
               <p
@@ -21,11 +24,13 @@
               >
                 Reacties: {{ topic.replies ? topic.replies.length : 0 }}
               </p>
+              <!-- @click: Klik op aantal reacties wisselt tussen tonen en verbergen van de reacties. -->
             </div>
           </div>
 
           <!-- Reacties container -->
           <div v-if="showReplies[topic.id]" class="replies-container">
+            <!-- v-if: Controleert of showReplies[topic.id] waar is. Als dat klopt, worden de reacties van het topic getoond. -->
             <div v-if="topic.replies && topic.replies.length">
               <h3>Reacties</h3>
               <div v-for="reply in topic.replies" :key="reply.id" class="reply-item">
@@ -47,12 +52,15 @@
                 @keydown.enter.prevent="submitReply(topic.id)"
                 class="reply-textarea"
             ></textarea>
+            <!-- v-model: Het inputveld is verbonden met repliesContent[topic.id]. Wat de gebruiker typt, wordt opgeslagen in dit object. -->
+            <!-- @keydown.enter.prevent: Roept submitReply(topic.id) aan. Prevent voorkomt dat Enter een nieuwe regel toevoegt. -->
             <button
                 class="reply-submit-button"
                 @click="submitReply(topic.id)"
             >
               Verstuur
             </button>
+            <!-- De knop stuurt de reactie naar de backend door submitReply(topic.id) aan te roepen. -->
           </div>
         </div>
       </div>
@@ -66,6 +74,7 @@
         <path fill="#fff" d="M14,21h20v6H14V21z"></path>
       </svg>
     </div>
+    <!-- SVG-knop: Bij klikken voert deze de goToForum-methode uit, die de gebruiker naar de forumpagina navigeert. -->
   </div>
 </template>
 
@@ -75,13 +84,13 @@ import axios from "axios";
 export default {
   data() {
     return {
-      topics: [], // Lijst met topics
-      showReplies: {}, // Object om zichtbaarheid van reacties te controleren
-      repliesContent: {}, // Inhoud van de reacties per topic
+      topics: [], // Topics: Bevat een lijst van topics, opgehaald via de fetchTopics()-functie.
+      showReplies: {}, // showReplies: Object dat controleert welke reacties per topic zichtbaar zijn.
+      repliesContent: {}, // repliesContent: Slaat de tekst op die een gebruiker invoert als reactie per topic.
     };
   },
   methods: {
-    // Haal topics op van de backend
+    // fetchTopics(): Stuurt een HTTP GET-verzoek naar de backend om de laatste topics op te halen. De data wordt opgeslagen in topics.
     async fetchTopics() {
       try {
         const response = await axios.get("http://localhost:8080/api/forum/topics/latest");
@@ -90,6 +99,7 @@ export default {
         console.error("Fout bij het ophalen van onderwerpen:", error);
       }
     },
+
 
     // Formatteer de datum
     formatDate(dateString) {
@@ -106,11 +116,13 @@ export default {
       };
       return date.toLocaleDateString("nl-NL", options);
     },
+    // formatDate(dateString): Formatteert een datum naar een leesbare Nederlandse stijl.
 
-    // Toon of verberg reacties
+    // toggleReplies(topicId): Wisselt tussen tonen en verbergen van reacties door showReplies[topicId] te toggelen.
     toggleReplies(topicId) {
       this.$set(this.showReplies, topicId, !this.showReplies[topicId]);
     },
+
 
     // Plaats een nieuwe reactie
     async submitReply(topicId) {
@@ -133,6 +145,7 @@ export default {
         }
 
         // Reset het invoerveld en open reactiesectie
+        // submitReply(topicId): Controleert of het inputveld niet leeg is, stuurt een HTTP POST-verzoek naar de backend en voegt de nieuwe reactie toe aan de topics-lijst.
         this.repliesContent[topic.id] = "";
         this.showReplies[topicId] = true; // Zorg dat reacties blijven staan
       } catch (error) {
@@ -140,16 +153,20 @@ export default {
       }
     },
 
-    // Navigeer naar de forum pagina
+    // goToForum(): Navigeert naar de algemene forumpagina via de Vue-router.
     goToForum() {
-      this.$router.push("/forum"); // Zorg dat deze route bestaat
+      this.$router.push("/forum");
     },
+
   },
+  // created(): Wordt uitgevoerd bij het laden van de component en roept fetchTopics() aan om topics op te halen.
   created() {
     this.fetchTopics();
   },
+
 };
 </script>
+
 
 <style>
 /* Overzicht container styling */
@@ -226,6 +243,15 @@ h1 {
 .reply-submit-button:hover {
   background-color: #45a049;
 }
+
+.icon-container {
+  position: fixed; /* Zorg ervoor dat het icoon op een vaste positie blijft bij scrollen */
+  bottom: 20px; /* Plaats het icoon 20px van de onderkant */
+  right: 20px; /* Plaats het icoon 20px van de rechterkant */
+  cursor: pointer; /* Zorg voor een pointer-cursor bij hover */
+}
+
+
 
 .reply-submit-button:focus {
   outline: none;
