@@ -165,7 +165,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vh; /* Zorg ervoor dat het in het midden van het scherm staat */
   padding: 20px;
 }
 
