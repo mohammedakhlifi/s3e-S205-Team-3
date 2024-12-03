@@ -1,15 +1,25 @@
 <template>
   <div class="parties-container">
-    <h1>Partijen van Nederland</h1>
-    <div class="provinces-grid">
-      <div v-for="province in provinces" :key="province.name" class="province-item">
-        <h2>{{ province.name }}</h2>
-        <div class="parties-list">
-          <div v-for="party in province.parties" :key="party.name" class="party-item">
-            <h3>{{ party.name }}</h3>
-            <p><strong>Lijsttrekker:</strong> {{ party.leader }}</p>
-          </div>
-        </div>
+    <h1>Politieke Partijen in Nederland</h1>
+    <div class="parties-grid">
+      <div v-for="party in parties" :key="party.name" class="party-item">
+        <img :src="party.image" :alt="party.name" class="party-logo" />
+        <h2>{{ party.name }}</h2>
+        <p><strong>Hoofd:</strong> {{ party.leader }}</p>
+        <button @click="showMoreInfo(party)">Meer info</button>
+      </div>
+    </div>
+    <div v-if="selectedParty" class="modal" @click.self="closeModal">
+      <div class="modal-content">
+        <h2>{{ selectedParty.name }}</h2>
+        <img :src="selectedParty.image" :alt="selectedParty.name" class="modal-image" />
+        <p><strong>Hoofd:</strong> {{ selectedParty.leader }}</p>
+        <p><strong>Beschrijving:</strong> {{ selectedParty.description }}</p>
+        <p><strong>Belangrijke Standpunten:</strong></p>
+        <ul>
+          <li v-for="(point, index) in selectedParty.keyPoints" :key="index">{{ point }}</li>
+        </ul>
+        <button @click="closeModal">Sluiten</button>
       </div>
     </div>
   </div>
@@ -19,119 +29,63 @@
 export default {
   data() {
     return {
-      provinces: [
+      parties: [
         {
-          name: 'Noord-Holland',
-          parties: [
-            { name: 'VVD', leader: 'Mark Rutte' },
-            { name: 'D66', leader: 'Sjoerd Sjoerdsma' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Jesse Klaver' },
-            { name: 'PvdA', leader: 'Lilianne Ploumen' },
-            { name: 'SP', leader: 'Marijnissen' },
+          name: 'VVD',
+          leader: 'Dylan Yesilgöz',
+          description: 'Vrijheid en verantwoordelijkheid, economische groei, en een kleinere overheid.',
+          keyPoints: [
+            'Economische groei stimuleren',
+            'Focus op nationale veiligheid',
+            'Meer werkgelegenheid',
           ],
+          image: 'https://example.com/vvd-logo.png',
         },
         {
-          name: 'Zuid-Holland',
-          parties: [
-            { name: 'VVD', leader: 'Bram van Ojik' },
-            { name: 'D66', leader: 'Jan van Zanen' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Vera Bergkamp' },
-            { name: 'PvdA', leader: 'Khalid M. Ali' },
-            { name: 'SP', leader: 'Lilian Marijnissen' },
+          name: 'D66',
+          leader: 'Rob Jetten',
+          description: 'Progressieve waarden, klimaatverandering, en onderwijsvernieuwing.',
+          keyPoints: [
+            'Investeren in onderwijs',
+            'Klimaatbeleid versterken',
+            'Meer gelijkheid in de samenleving',
           ],
+          image: 'https://example.com/d66-logo.png',
         },
         {
-          name: 'Utrecht',
-          parties: [
-            { name: 'VVD', leader: 'Fleur Agema' },
-            { name: 'D66', leader: 'Jesse Klaver' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Bram van Ojik' },
-            { name: 'PvdA', leader: 'John Kerstens' },
-            { name: 'SP', leader: 'Renske Leijten' },
+          name: 'PVV',
+          leader: 'Geert Wilders',
+          description: 'Streng immigratiebeleid en een kritische houding ten opzichte van de EU.',
+          keyPoints: [
+            'Beperken immigratie',
+            'Meer politie op straat',
+            'Strengere aanpak van criminaliteit',
           ],
+          image: 'https://example.com/pvv-logo.png',
         },
         {
-          name: 'Noord-Brabant',
-          parties: [
-            { name: 'VVD', leader: 'Joost van der Meer' },
-            { name: 'D66', leader: 'Sjoerd Sjoerdsma' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Jesse Klaver' },
-            { name: 'PvdA', leader: 'Thijs Reuten' },
-            { name: 'SP', leader: 'Ron Meyer' },
+          name: 'GroenLinks',
+          leader: 'Jesse Klaver',
+          description: 'Duurzaamheid en sociale gelijkheid staan centraal in het beleid.',
+          keyPoints: [
+            'Klimaatverandering aanpakken',
+            'Eerlijke verdeling van rijkdom',
+            'Investeren in schone energie',
           ],
+          image: 'https://example.com/groenlinks-logo.png',
         },
-        {
-          name: 'Limburg',
-          parties: [
-            { name: 'VVD', leader: 'Bram van Ojik' },
-            { name: 'D66', leader: 'Wouter Koolmees' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Laura Bromet' },
-            { name: 'PvdA', leader: 'Wouter Koolmees' },
-            { name: 'SP', leader: 'Ron Meyer' },
-          ],
-        },
-        {
-          name: 'Gelderland',
-          parties: [
-            { name: 'VVD', leader: 'Mark Rutte' },
-            { name: 'D66', leader: 'Sjoerd Sjoerdsma' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Jesse Klaver' },
-            { name: 'PvdA', leader: 'Paul Depla' },
-            { name: 'SP', leader: 'Renske Leijten' },
-          ],
-        },
-        {
-          name: 'Flevoland',
-          parties: [
-            { name: 'VVD', leader: 'Fleur Agema' },
-            { name: 'D66', leader: 'Jesse Klaver' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Bram van Ojik' },
-            { name: 'PvdA', leader: 'Jeroen Dijsselbloem' },
-            { name: 'SP', leader: 'Ron Meyer' },
-          ],
-        },
-        {
-          name: 'Drenthe',
-          parties: [
-            { name: 'VVD', leader: 'Bram van Ojik' },
-            { name: 'D66', leader: 'Jesse Klaver' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Bram van Ojik' },
-            { name: 'PvdA', leader: 'Henk Nijhof' },
-            { name: 'SP', leader: 'Renske Leijten' },
-          ],
-        },
-        {
-          name: 'Overijssel',
-          parties: [
-            { name: 'VVD', leader: 'Mark Rutte' },
-            { name: 'D66', leader: 'Sjoerd Sjoerdsma' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Jesse Klaver' },
-            { name: 'PvdA', leader: 'Henk Nijhof' },
-            { name: 'SP', leader: 'Renske Leijten' },
-          ],
-        },
-        {
-          name: 'Friesland',
-          parties: [
-            { name: 'VVD', leader: 'Fleur Agema' },
-            { name: 'D66', leader: 'Wouter Koolmees' },
-            { name: 'PVV', leader: 'Geert Wilders' },
-            { name: 'GroenLinks', leader: 'Bram van Ojik' },
-            { name: 'PvdA', leader: 'Wouter Koolmees' },
-            { name: 'SP', leader: 'Ron Meyer' },
-          ],
-        },
+        // Voeg alle overige partijen op dezelfde manier toe
       ],
+      selectedParty: null,
     };
+  },
+  methods: {
+    showMoreInfo(party) {
+      this.selectedParty = party;
+    },
+    closeModal() {
+      this.selectedParty = null;
+    },
   },
 };
 </script>
@@ -149,49 +103,78 @@ export default {
 
 h1 {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
   color: #333;
 }
 
-.provinces-grid {
+.parties-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 kolommen */
-  gap: 20px; /* Ruimte tussen items */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-.province-item {
+.party-item {
   background-color: #fff;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-h2 {
-  color: #333;
-  font-size: 1.5rem;
+.party-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.party-logo {
+  width: 100px;
+  height: auto;
   margin-bottom: 10px;
 }
 
-.parties-list {
+button {
   margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.party-item {
-  margin-top: 10px; /* Ruimte tussen partij items */
-  padding: 10px;
-  border-left: 4px solid #ffd700; /* Linker rand voor partij item */
-  background-color: #fff; /* Witte achtergrond voor partij item */
+button:hover {
+  background-color: #0056b3;
 }
 
-.party-item h3 {
-  color: #333;
-  font-size: 1rem;
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
-.party-item p {
-  color: #555;
-  font-size: 1rem;
-  line-height: 0.9;
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-image {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
 }
 </style>
