@@ -50,7 +50,8 @@ export default {
         { name: "Partijen", url: "/parties" },
         { name: "Quiz", url: "/quiz" },
         { name: "Forum", url: "/forum/overview" },
-        { name: "Mijn Profiel", url: "/personal-profile" }
+        { name: "Mijn Profiel", url: "/personal-profile" },
+
       ],
 
       authButtons: [
