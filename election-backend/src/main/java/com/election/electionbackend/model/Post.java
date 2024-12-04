@@ -21,6 +21,8 @@ public class Post {
 
     private LocalDateTime createdAt;
 
+    private String createdBy;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Reply> replies;
@@ -80,4 +82,8 @@ public class Post {
     public void setReplies(List<Reply> replies) {
         this.replies = replies;
     }
+
+    public String getCreatedBy() { return createdBy; }
+
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
 }

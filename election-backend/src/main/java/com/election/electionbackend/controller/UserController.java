@@ -56,6 +56,7 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.findByEmail(email);
+        System.out.println(user.getName());
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
