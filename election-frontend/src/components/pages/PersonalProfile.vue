@@ -122,13 +122,8 @@ export default defineComponent({
     async saveChanges() {
       try {
         const response = await axios.put(`http://localhost:8080/api/user/update`, this.editedUser);
-        console.log("editedUser: ",this.editedUser)
-        console.log("user:", this.user)
         this.user = { ...this.editedUser };
         this.editMode = false;
-        console.log(this.editedUser.voorstander);
-        console.log("omshcrijving: ", this.editedUser.profielOmschrijving)
-
       } catch (error) {
         console.error('Error updating user:', error.response.status);
       }

@@ -10,7 +10,7 @@ import AdminPanel from "@/components/pages/AdminPanel.vue";
 import NotFound from "@/components/pages/NotFound.vue";
 import Parties from "@/components/pages/Parties.vue";
 import PersonalProfile from "@/components/pages/PersonalProfile.vue";
-import TopicDetail from "@/components/pages/TopicDetail.vue"; // Static import
+import UserProfile from "@/components/pages/UserProfile.vue"
 
 const routes = [
     { path: '/', component: HomePage },
@@ -18,23 +18,19 @@ const routes = [
     { path: '/parties', component: Parties },
     { path: '/quiz', component: Quiz },
     { path: '/forum', name: 'ForumPage', component: ForumPage },
+    { path: '/forum', component: ForumPage }, // Route for forum page
     { path: '/forum/overview', component: OverviewPage },
-    {
-        path: '/forum/topics/:id',
-        name: 'TopicDetail',
-        component: TopicDetail, // Gebruik een correcte import
-    }
-    ,
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     { path: '/admin', component: AdminPanel },
-    { path: '/:pathMatch(.*)*', component: NotFound }, // Wildcard for unmatched routes
-    { path: '/personal-profile', component: PersonalProfile },
+    { path: '/:pathMatch(.*)*', component: NotFound },  // Wildcard for unmatched routes
+    { path: '/personal-profile', component: PersonalProfile},
+    { path: '/user-profile', component: UserProfile},
 ];
 
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes
 });
 
 export default router;

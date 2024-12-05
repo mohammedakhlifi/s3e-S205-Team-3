@@ -33,7 +33,11 @@ export default {
       newTopic: {
         title: "",
         content: "",
-      }
+        createdBy:"",
+
+      },
+      email: localStorage.getItem("email"),
+      createdBy: "",
     };
   },
   methods: {
@@ -42,6 +46,7 @@ export default {
       try {
         const response = await axios.get("http://localhost:8080/api/forum/topics/latest")
         this.topics = response.data;
+        console.log("response fetch", this.topics);
       } catch (error) {
         console.error("Fout bij het ophalen van onderwerpen:", error);
       }
@@ -50,17 +55,36 @@ export default {
     // Plaats een nieuw onderwerp
     async postNewTopic() {
       try {
+        this.newTopic.createdBy = this.createdBy;
         await axios.post("http://localhost:8080/api/forum/topics", this.newTopic);
         this.newTopic.title = "";
         this.newTopic.content = "";
         this.fetchTopics(); // Herlaad de onderwerpen na het plaatsen
+
       } catch (error) {
         console.error("Fout bij het plaatsen van het onderwerp:", error);
       }
     },
+
+    async fetchUsername() {
+      try {
+        const response = await axios.get("http://localhost:8080/api/user", {
+          params: {email: this.email},
+        });
+        if (response.data) {
+          this.createdBy = response.data.name;
+        } else {
+          console.warn("Gebruiker niet gevonden");
+        }
+      } catch (error) {
+        console.error("Fout bij het ophalen van de gebruikersnaam", error);
+      }
+      console.log("username:", this.createdBy);
+    },
   },
   created() {
     this.fetchTopics(); // Haal de onderwerpen op wanneer de component wordt aangemaakt
+    this.fetchUsername();
   },
 };
 </script>
