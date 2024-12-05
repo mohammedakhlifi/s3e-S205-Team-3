@@ -12,7 +12,7 @@
             <div class="topic-info">
               <h4>{{ topic.title }}</h4>
               <p>{{ topic.content }}</p>
-              <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
+              <p class="topic-date">Gepost door {{ topic.createdBy || 'Onbekend' }} op: {{ formatDate(topic.createdAt) }}</p>
 
               <!-- Toon het aantal reacties -->
               <p class="topic-reply-count">
@@ -69,6 +69,8 @@ export default {
       topics: [], // Lijst met topics
       showReplies: {}, // Object om zichtbaarheid van reacties te controleren
       repliesContent: {}, // Inhoud van de reacties per topic
+      email: localStorage.getItem("email"),
+
     };
   },
   methods: {
@@ -131,6 +133,8 @@ export default {
       }
     },
 
+
+
     // Navigeer naar de forum pagina
     goToForum() {
       this.$router.push("/forum"); // Zorg dat deze route bestaat
@@ -138,6 +142,7 @@ export default {
   },
   created() {
     this.fetchTopics();
+
   },
 };
 </script>

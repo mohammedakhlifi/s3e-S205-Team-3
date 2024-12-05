@@ -10,6 +10,7 @@ import AdminPanel from "@/components/pages/AdminPanel.vue";
 import NotFound from "@/components/pages/NotFound.vue";
 import Parties from "@/components/pages/Parties.vue";
 import PersonalProfile from "@/components/pages/PersonalProfile.vue";
+import UserProfile from "@/components/pages/UserProfile.vue"
 
 const routes = [
     { path: '/', component: HomePage },
@@ -24,6 +25,7 @@ const routes = [
     { path: '/admin', component: AdminPanel },
     { path: '/:pathMatch(.*)*', component: NotFound },  // Wildcard for unmatched routes
     { path: '/personal-profile', component: PersonalProfile},
+    { path: '/user-profile', component: UserProfile},
 ];
 
 const router = createRouter({
