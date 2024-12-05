@@ -74,6 +74,17 @@ export default {
           ],
           image: 'https://example.com/groenlinks-logo.png',
         },
+        {
+          name: 'FVD',
+          leader: 'Thierry Baudet',
+          description: 'Economisch neo-liberale partij, meer dynamiek, en een kleinere overheid.',
+          keyPoints: [
+            'Economische groei stimuleren',
+            'Focus op nationale veiligheid',
+            'Meer werkgelegenheid',
+          ],
+          image: 'https://example.com/vvd-logo.png',
+        }
         // Voeg alle overige partijen op dezelfde manier toe
       ],
       selectedParty: null,
