@@ -2,7 +2,7 @@
   <div>
     <!-- Overzicht van vragen -->
     <div class="overview-container">
-      <h1>Overzicht van vragen</h1>
+      <h1>Overzicht van vragen.</h1>
 
       <!-- Lijst van onderwerpen -->
       <div class="topics-list">
