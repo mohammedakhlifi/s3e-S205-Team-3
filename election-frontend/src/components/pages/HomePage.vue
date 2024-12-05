@@ -25,7 +25,7 @@
       <div class="info-section">
         <h2>Volg Stemmen per Provincie</h2>
         <p>Krijg real-time inzicht in hoe elke partij presteert in verschillende provincies.</p>
-        <router-link to="/vote-tracking">
+        <router-link to="/election-result">
           <button class="info-btn">Volg Stemmen</button>
         </router-link>
       </div>
@@ -33,7 +33,7 @@
       <div class="info-section">
         <h2>Doe Mee met de Gemeenschap</h2>
         <p>Doe mee aan discussies en debatten over belangrijke politieke onderwerpen, en deel je mening.</p>
-        <router-link to="/quiz">
+        <router-link to="/forum/overview">
           <button class="info-btn">Doe Mee aan de Discussie</button>
         </router-link>
       </div>
