@@ -12,14 +12,12 @@
             <div class="topic-info">
               <h4>{{ topic.title }}</h4>
               <p>{{ topic.content }}</p>
-              <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
+              <p class="topic-date">Gepost door <router-link :to="{ name: 'UserProfile', params: { username: topic.createdBy } }" class="custom-router-link">
+                {{ topic.createdBy }}
+              </router-link> op: {{ formatDate(topic.createdAt) }}</p>
 
               <!-- Klikbaar aantal reacties -->
-              <p
-                  class="topic-reply-count clickable"
-                  @click="openRepliesModal(topic)"
-              >
-                Reacties: {{ topic.replies ? topic.replies.length : 0 }}
+              <p class="topic-reply-count clickable" @click="openRepliesModal(topic)"> Reacties: {{ topic.replies ? topic.replies.length : 0 }}
               </p>
             </div>
           </div>
@@ -309,6 +307,22 @@ h1 {
 .topic-item {
   word-wrap: break-word; /* Lange woorden afbreken */
   overflow-wrap: break-word;
+}
+
+.custom-router-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.custom-router-link:hover {
+  color: #4caf50;
+  text-decoration: underline;
+
+  .custom-router-link:focus {
+    outline: none;
+  }
 }
 
 </style>

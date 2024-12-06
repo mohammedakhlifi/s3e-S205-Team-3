@@ -25,7 +25,7 @@ const routes = [
     { path: '/admin', component: AdminPanel },
     { path: '/:pathMatch(.*)*', component: NotFound },  // Wildcard for unmatched routes
     { path: '/personal-profile', component: PersonalProfile},
-    { path: '/user-profile', component: UserProfile},
+    { path: '/user-profile/:username', name: 'UserProfile', component: UserProfile},
 ];
 
 const router = createRouter({

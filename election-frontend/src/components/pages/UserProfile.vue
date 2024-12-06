@@ -4,15 +4,15 @@
 <div id="mainInfo">
   <img src="../../assets/img/defpic3%20(2).jpg" alt="default profile picture">
   <div id="infoDetails">
-  <h3>Gebruikersnaam</h3>
-  <h3>Voorstander</h3>
-  <h3>Amsterdam, Noord-Holland</h3>
-  <p id="description">Omschrijving</p>
+    <h2>{{user.name}}</h2>
+  <h3>{{user.voorstander}}</h3>
+  <h3>{{user.city}}, {{user.province}}</h3>
+  <p id="description">{{user.profielOmschrijving}}</p>
   </div>
 </div>
   </div>
   <div id="platforms" class="userProfile">
-
+    <h2>Volg {{user.name}}</h2>
   </div>
 
 </template>
@@ -21,14 +21,16 @@
 import axios from 'axios';
 import {defineComponent} from "vue";
 export default defineComponent({
-  name: "UserProfile",
+
   data() {
     return {
       user: {
-        username: "",
+        name: "", // Haal de gebruikersnaam uit de route-parameters,
         voorstander: "",
+        province: "",
+        city: "",
         partij: "",
-        omschrijving: "",
+        profielOmschrijving: "",
         platformen: "",
       },
       message: "",
@@ -40,10 +42,17 @@ export default defineComponent({
   methods: {
     async fetchUserInfoByName() {
     try {
+      const username = this.$route.params.username;
       const response = await axios.get(`http://localhost:8080/api/user/name`, {
-        params: { name: "user555" }
+        params: { name: username }
       })
+
+      this.user = response.data;
+      console.log("user: ", this.user)
+      console.log("Gebruikersinformatie: ", response.data);
+
         console.log("response: ", response.data)
+      console.log("username: ", username)
     }catch (error) {
       console.error('its an error:', error.response.status);
     }
@@ -92,6 +101,7 @@ export default defineComponent({
   justify-content: center;
   gap: 10px;
 }
+
 
 
 
