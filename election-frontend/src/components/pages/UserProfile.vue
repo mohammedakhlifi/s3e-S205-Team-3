@@ -18,22 +18,35 @@
 </template>
 
 <script>
+import axios from 'axios';
 import {defineComponent} from "vue";
 export default defineComponent({
   name: "UserProfile",
   data() {
     return {
-      username: {},
-      voorstander: {},
-      partij: {},
-      omschrijving: {},
-      platformen: {}
+      user: {
+        username: "",
+        voorstander: "",
+        partij: "",
+        omschrijving: "",
+        platformen: "",
+      },
+      message: "",
     }
   },
-
+  mounted() {
+    this.fetchUserInfoByName();
+  },
   methods: {
-    async fetchUserInfo() {
-
+    async fetchUserInfoByName() {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/user/name`, {
+        params: { name: "user555" }
+      })
+        console.log("response: ", response.data)
+    }catch (error) {
+      console.error('its an error:', error.response.status);
+    }
 
       }
     }

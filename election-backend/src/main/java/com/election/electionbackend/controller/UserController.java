@@ -64,6 +64,17 @@ public class UserController {
         }
     }
 
+    // Fetch user by name
+    @GetMapping("/user/name")
+    public ResponseEntity<User> getUserByName(@RequestParam String name) {
+        User user = userService.findByName(name);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(404).body(null); // Gebruiker niet gevonden
+        }
+    }
+
     @PutMapping("/user/update")
     public ResponseEntity<String> updateUser(@RequestBody User updatedUser) {
         try {
