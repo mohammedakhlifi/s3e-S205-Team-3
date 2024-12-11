@@ -4,15 +4,22 @@
 <div id="mainInfo">
   <img src="../../assets/img/defpic3%20(2).jpg" alt="default profile picture">
   <div id="infoDetails">
-    <h2>{{user.name}}</h2>
-  <h3>{{user.voorstander}}</h3>
-  <h3>{{user.city}}, {{user.province}}</h3>
-  <p id="description">{{user.profielOmschrijving}}</p>
+    <h2 class="details">Naam: {{user.name}}</h2>
+  <h3 class="details">Voorstander van de partij: {{user.voorstander}}</h3>
+  <h3 class="details">{{user.city}}, {{user.province}}</h3>
+  <p class="details" id="description">{{user.profielOmschrijving}}</p>
   </div>
 </div>
   </div>
   <div id="platforms" class="userProfile">
-    <h2>Volg {{user.name}}</h2>
+    <div class="left-platforms">
+      <p>{{user.social1}}</p>
+      <p>{{user.social2}}</p>
+    </div>
+    <div class="right-platforms">
+      <p>{{user.social3}}</p>
+      <p>{{user.social4}}</p>
+    </div>
   </div>
 
 </template>
@@ -25,13 +32,17 @@ export default defineComponent({
   data() {
     return {
       user: {
-        name: "", // Haal de gebruikersnaam uit de route-parameters,
+        name: "",
         voorstander: "",
         province: "",
         city: "",
         partij: "",
         profielOmschrijving: "",
         platformen: "",
+        social1: "",
+        social2: "",
+        social3: "",
+        social4: "",
       },
       message: "",
     }
@@ -100,6 +111,34 @@ export default defineComponent({
   flex-direction: column;
   justify-content: center;
   gap: 10px;
+}
+
+.details {
+  color: #555;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#platforms {
+  display: flex;
+  justify-content: space-between; /* Zorgt voor ruimte tussen de twee groepen */
+  width: 50%; /* Brede container */
+}
+
+.left-platforms,
+.right-platforms {
+  display: flex; /* Horizontale uitlijning */
+  flex-direction: column;
+  gap: 20px; /* Horizontale ruimte tussen items */
+  font-size: 21px;
+}
+
+.left-platforms {
+  justify-content: flex-start; /* Links uitlijnen */
+}
+
+.right-platforms {
+  justify-content: flex-end; /* Rechts uitlijnen */
 }
 
 
