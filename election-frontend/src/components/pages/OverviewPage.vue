@@ -2,7 +2,7 @@
   <div>
     <!-- Overzicht van vragen -->
     <div class="overview-container">
-      <h1>Overzicht van vragen</h1>
+      <h1>Overzicht van vragen.</h1>
 
       <!-- Lijst van onderwerpen -->
       <div class="topics-list">
@@ -12,38 +12,16 @@
             <div class="topic-info">
               <h4>{{ topic.title }}</h4>
               <p>{{ topic.content }}</p>
-              <p class="topic-date">Gepost door {{ topic.createdBy || 'Onbekend' }} op: {{ formatDate(topic.createdAt) }}</p>
+              <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
 
-              <!-- Toon het aantal reacties -->
-              <p class="topic-reply-count">
+              <!-- Klikbaar aantal reacties -->
+              <p
+                  class="topic-reply-count clickable"
+                  @click="openRepliesModal(topic)"
+              >
                 Reacties: {{ topic.replies ? topic.replies.length : 0 }}
               </p>
             </div>
-          </div>
-
-          <!-- Reacties container -->
-          <div v-if="showReplies[topic.id]" class="replies-container">
-            <div v-if="topic.replies && topic.replies.length">
-              <h3>Reacties</h3>
-              <div v-for="reply in topic.replies" :key="reply.id" class="reply-item">
-                <p>{{ reply.content }}</p>
-                <p class="reply-date">Antwoord gepost op: {{ formatDate(reply.createdAt) }}</p>
-              </div>
-            </div>
-            <div v-else>
-              <p>Er zijn nog geen reacties.</p>
-            </div>
-          </div>
-
-          <!-- Invoerveld voor reacties -->
-          <div class="reply-input-container">
-            <textarea
-                v-model="repliesContent[topic.id]"
-                placeholder="Schrijf je reactie..."
-                rows="3"
-                @keydown.enter.prevent="submitReply(topic.id)"
-                class="reply-textarea"
-            ></textarea>
           </div>
         </div>
       </div>
@@ -57,6 +35,41 @@
         <path fill="#fff" d="M14,21h20v6H14V21z"></path>
       </svg>
     </div>
+
+    <!-- Pop-up Modal -->
+    <div v-if="showModal" class="modal-overlay">
+      <div class="modal">
+        <h2>Reacties voor: {{ currentTopic?.title }}</h2>
+
+        <!-- Scrollbare reactiescontainer -->
+        <div class="replies-container">
+          <div v-if="currentTopic?.replies && currentTopic.replies.length">
+            <div v-for="reply in currentTopic.replies" :key="reply.id" class="reply-item">
+              <p>{{ reply.content }}</p>
+              <p class="reply-date">Antwoord gepost op: {{ formatDate(reply.createdAt) }}</p>
+            </div>
+          </div>
+          <div v-else>
+            <p>Er zijn nog geen reacties.</p>
+          </div>
+        </div>
+
+        <!-- Reactie invoerveld -->
+        <div class="reply-input-container">
+          <textarea
+              v-model="newReplyContent"
+              placeholder="Schrijf je reactie..."
+              rows="3"
+          ></textarea>
+          <button @click="submitReply(currentTopic.id)" class="submit-reply-button">
+            Plaats reactie
+          </button>
+        </div>
+
+        <!-- Sluitknop -->
+        <button class="close-button" @click="closeModal">Sluiten</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -69,8 +82,9 @@ export default {
       topics: [], // Lijst met topics
       showReplies: {}, // Object om zichtbaarheid van reacties te controleren
       repliesContent: {}, // Inhoud van de reacties per topic
-      email: localStorage.getItem("email"),
-
+      showModal: false, // Toont de pop-up modal
+      currentTopic: null, // Huidig geselecteerde topic
+      newReplyContent: "", // Reactie-inhoud
     };
   },
   methods: {
@@ -100,40 +114,45 @@ export default {
       return date.toLocaleDateString("nl-NL", options);
     },
 
-    // Toon of verberg reacties
-    toggleReplies(topicId) {
-      this.$set(this.showReplies, topicId, !this.showReplies[topicId]);
+    // Open de pop-up modal en stel het geselecteerde topic in
+    openRepliesModal(topic) {
+      this.currentTopic = { ...topic }; // Maak een kopie van het topic
+      this.showModal = true;
+    },
+
+    // Sluit de pop-up modal
+    closeModal() {
+      this.showModal = false;
+      this.currentTopic = null;
+      this.newReplyContent = "";
     },
 
     // Plaats een nieuwe reactie
     async submitReply(topicId) {
       try {
-        const content = this.repliesContent[topicId];
-        if (!content || content.trim() === "") {
-          console.warn("Reactie-inhoud is leeg");
+        const content = this.newReplyContent.trim();
+        if (!content) {
+          alert("De reactie mag niet leeg zijn!");
           return;
         }
 
+        // Verstuur de reactie naar de backend
         const response = await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
           content,
         });
 
-        // Voeg de nieuwe reactie toe aan de juiste topic
-        const topic = this.topics.find((t) => t.id === topicId);
-        if (topic) {
-          topic.replies = topic.replies || [];
-          topic.replies.push(response.data);
+        // Voeg de nieuwe reactie toe aan de huidige lijst (alleen in de modal)
+        if (this.currentTopic) {
+          if (!this.currentTopic.replies) this.currentTopic.replies = [];
+          this.currentTopic.replies.push(response.data);
         }
 
-        // Reset het invoerveld en open reactiesectie
-        this.repliesContent[topicId] = "";
-        this.showReplies[topicId] = true;
+        // Reset het invoerveld
+        this.newReplyContent = "";
       } catch (error) {
         console.error("Fout bij het plaatsen van de reactie:", error);
       }
     },
-
-
 
     // Navigeer naar de forum pagina
     goToForum() {
@@ -142,12 +161,12 @@ export default {
   },
   created() {
     this.fetchTopics();
-
   },
 };
 </script>
 
-<style>
+
+<style scoped>
 /* Overzicht container styling */
 .overview-container {
   max-width: 800px;
@@ -179,47 +198,53 @@ h1 {
   position: relative;
 }
 
-/* Styling voor de titel */
 .topic-info h4 {
-  font-weight: bold; /* Dikgedrukt */
-  font-size: 1.2rem; /* Groter lettertype */
-  color: #4caf50; /* Donkerblauwe kleur voor nadruk */
-  margin-bottom: 5px; /* Ruimte onder de titel */
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #4caf50;
+  margin-bottom: 5px;
 }
 
-/* Styling voor aantal reacties */
 .topic-reply-count {
   font-size: 0.9rem;
   color: #555;
   margin-top: 5px;
-}
-
-.topic-date,
-.reply-date {
-  font-size: 0.9rem;
-  color: #888;
-  margin-top: 10px;
-}
-
-/* Styling voor de Reacties weergeven-knop */
-.toggle-replies-button {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
 }
 
-.toggle-replies-button:hover {
-  background-color: #45a049;
+.topic-reply-count:hover {
+  color: #4caf50;
 }
 
-/* Reacties sectie */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .replies-container {
-  margin-top: 20px;
+  flex-grow: 1;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 15px;
 }
 
 .reply-item {
@@ -230,46 +255,60 @@ h1 {
   border-left: 4px solid #4caf50;
 }
 
-/* Invoerveld styling */
-.reply-input-container {
-  margin-top: 10px;
-}
-
-.reply-textarea {
+.reply-input-container textarea {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 1rem;
-  line-height: 1.2;
-  resize: none;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.reply-textarea:focus {
-  outline: none;
-  border-color: #4caf50;
-  box-shadow: 0px 0px 4px rgba(76, 175, 80, 0.5);
-}
-
-/* Plus-knop styling */
-.icon-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #4caf50;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+.close-button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  z-index: 1000;
 }
 
-.icon-container:hover {
-  background-color: #45a049;
+.close-button:hover {
+  background-color: darkred;
 }
+
+/* Styling voor de Plaats reactie-knop */
+.submit-reply-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #4caf50; /* Groene kleur */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.submit-reply-button:hover {
+  background-color: #45a049; /* Iets donkerder groen bij hover */
+}
+
+.submit-reply-button:active {
+  background-color: #3e8e41; /* Nog iets donkerder bij klik */
+}
+
+.topic-item p,
+.topic-info p {
+  word-wrap: break-word; /* Breekt lange woorden af */
+  overflow-wrap: break-word; /* Compatibiliteit met moderne browsers */
+  white-space: normal; /* Zorg dat tekst meerdere regels kan gebruiken */
+  max-width: 100%; /* Houd de tekst binnen de container */
+}
+
+.topic-item {
+  word-wrap: break-word; /* Lange woorden afbreken */
+  overflow-wrap: break-word;
+}
+
 </style>
