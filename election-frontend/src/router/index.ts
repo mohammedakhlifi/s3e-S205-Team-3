@@ -10,22 +10,26 @@ import AdminPanel from "@/components/pages/AdminPanel.vue";
 import NotFound from "@/components/pages/NotFound.vue";
 import Parties from "@/components/pages/Parties.vue";
 import PersonalProfile from "@/components/pages/PersonalProfile.vue";
-import UserProfile from "@/components/pages/UserProfile.vue"
+import UserProfile from "@/components/pages/UserProfile.vue";
+import ReplyModel from "@/components/pages/ReplyModel.vue";
+
 
 const routes = [
     { path: '/', component: HomePage },
     { path: '/election-result', component: ElectionResultPage },
     { path: '/parties', component: Parties },
     { path: '/quiz', component: Quiz },
-    { path: '/forum', name: 'ForumPage', component: ForumPage },
-    { path: '/forum', component: ForumPage }, // Route for forum page
-    { path: '/forum/overview', component: OverviewPage },
+    { path: '/forum', name: 'ForumPage', component: ForumPage },  // Enkel voor ForumPage
+    { path: '/forum/overview', component: OverviewPage }, // Overview voor forum
+    { path:'/forum/overview', component: ReplyModel },
+
+
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     { path: '/admin', component: AdminPanel },
-    { path: '/:pathMatch(.*)*', component: NotFound },  // Wildcard for unmatched routes
-    { path: '/personal-profile', component: PersonalProfile},
-    { path: '/user-profile', component: UserProfile},
+    { path: '/:pathMatch(.*)*', component: NotFound },  // Wildcard voor niet-gematchte routes
+    { path: '/personal-profile', component: PersonalProfile },
+    { path: '/user-profile', component: UserProfile },
 ];
 
 const router = createRouter({
