@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-
-
     <!-- Banner Sectie -->
     <section class="banner">
       <div class="banner-content">
@@ -13,40 +11,16 @@
       </div>
     </section>
 
-
-    <div class="snowflakes" aria-hidden="true">
-      <div class="intro"> Find 250+ Ready to use demo at <a href="https://codeconvey.com">Codeconvey.com</a></div>
-      <div class="snowflake">
-        ❅
+    <!-- Extra Informatie Sectie -->
+    <section class="intro-section">
+      <div class="intro">
+        <h2>Informatie die je Nodig Hebt</h2>
+        <p>Verkiezingen kunnen overweldigend zijn. Hier vind je alles wat je nodig hebt om weloverwogen beslissingen te maken.</p>
+        <router-link to="/overview">
+          <button class="cta-btn">Meer Informatie</button>
+        </router-link>
       </div>
-      <div class="snowflake">
-        ❅
-      </div>
-      <div class="snowflake">
-        ❆
-      </div>
-      <div class="snowflake">
-        ❄
-      </div>
-      <div class="snowflake">
-        ❅
-      </div>
-      <div class="snowflake">
-        ❆
-      </div>
-      <div class="snowflake">
-        ❄
-      </div>
-      <div class="snowflake">
-        ❅
-      </div>
-      <div class="snowflake">
-        ❆
-      </div>
-      <div class="snowflake">
-        ❄
-      </div>
-    </div>
+    </section>
 
     <!-- Info Secties -->
     <section class="info">
@@ -61,7 +35,7 @@
       <div class="info-section">
         <h2>Volg Stemmen per Provincie</h2>
         <p>Krijg real-time inzicht in hoe elke partij presteert in verschillende provincies.</p>
-        <router-link to="/election-result">
+        <router-link to="/province-stats">
           <button class="info-btn">Volg Stemmen</button>
         </router-link>
       </div>
@@ -75,6 +49,43 @@
       </div>
     </section>
 
+    <!-- Snowflakes voor extra flair -->
+    <div class="snowflakes" aria-hidden="true">
+      <div class="snowflake">❅</div>
+      <div class="snowflake">❆</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❅</div>
+    </div>
+
+    <!-- Footer Sectie -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: info@politiekgids.nl</p>
+          <p>Telefoon: +31 20 123 4567</p>
+        </div>
+        <div class="footer-section">
+          <h3>Volg Ons</h3>
+          <ul>
+            <li><a href="#" class="social-link">Facebook</a></li>
+            <li><a href="#" class="social-link">Twitter</a></li>
+            <li><a href="#" class="social-link">Instagram</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Informatie</h3>
+          <ul>
+            <li><a href="#" class="footer-link">Privacybeleid</a></li>
+            <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
+            <li><a href="#" class="footer-link">Cookiebeleid</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -87,8 +98,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Styling voor de Home Pagina */
-
 /* Algemene Layout */
 .home {
   font-family: 'Arial', sans-serif;
@@ -96,52 +105,24 @@ export default defineComponent({
 
 /* Banner Sectie */
 .banner {
-  background-image: url('@/assets/img/tweedekamer.jpg'); /* Zorg ervoor dat het pad naar je afbeelding klopt */
+  background-image: url('@/assets/img/tweedekamer.jpg');
   background-size: cover;
   background-position: center;
-  height: 70vh; /* Pas de hoogte aan als dat nodig is */
+  height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   color: white;
-}
-
-body{
-  background:red;
-}
-.intro,
-.intro a{
-  color:#fff;
-  font-family:
-  }
-/* customizable snowflake styling */
-.snowflake {
-  color: #fff;
-  font-size: 1em;
-  font-family: Arial;
-  text-shadow: 0 0 1px #000;
-}
-
-@-webkit-keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@-webkit-keyframes snowflakes-shake{0%{-webkit-transform:translateX(0px);transform:translateX(0px)}50%{-webkit-transform:translateX(80px);transform:translateX(80px)}100%{-webkit-transform:translateX(0px);transform:translateX(0px)}}@keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@keyframes snowflakes-shake{0%{transform:translateX(0px)}50%{transform:translateX(80px)}100%{transform:translateX(0px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default;-webkit-animation-name:snowflakes-fall,snowflakes-shake;-webkit-animation-duration:10s,3s;-webkit-animation-timing-function:linear,ease-in-out;-webkit-animation-iteration-count:infinite,infinite;-webkit-animation-play-state:running,running;animation-name:snowflakes-fall,snowflakes-shake;animation-duration:10s,3s;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite;animation-play-state:running,running}.snowflake:nth-of-type(0){left:1%;-webkit-animation-delay:0s,0s;animation-delay:0s,0s}.snowflake:nth-of-type(1){left:10%;-webkit-animation-delay:1s,1s;animation-delay:1s,1s}.snowflake:nth-of-type(2){left:20%;-webkit-animation-delay:6s,.5s;animation-delay:6s,.5s}.snowflake:nth-of-type(3){left:30%;-webkit-animation-delay:4s,2s;animation-delay:4s,2s}.snowflake:nth-of-type(4){left:40%;-webkit-animation-delay:2s,2s;animation-delay:2s,2s}.snowflake:nth-of-type(5){left:50%;-webkit-animation-delay:8s,3s;animation-delay:8s,3s}.snowflake:nth-of-type(6){left:60%;-webkit-animation-delay:6s,2s;animation-delay:6s,2s}.snowflake:nth-of-type(7){left:70%;-webkit-animation-delay:2.5s,1s;animation-delay:2.5s,1s}.snowflake:nth-of-type(8){left:80%;-webkit-animation-delay:1s,0s;animation-delay:1s,0s}.snowflake:nth-of-type(9){left:90%;-webkit-animation-delay:3s,1.5s;animation-delay:3s,1.5s}
-/* Demo Purpose Only*/
-.demo {
-  font-family: 'Raleway', sans-serif;
-  color:#fff;
-  display: block;
-  margin: 0 auto;
-  padding: 15px 0;
-  text-align: center;
-}
-.demo a{
-  font-family: 'Raleway', sans-serif;
-  color: #000;
+  position: relative;
 }
 
 .banner-content {
   background-color: rgba(0, 0, 0, 0.6); /* Donkere overlay */
   padding: 30px;
   border-radius: 10px;
+  max-width: 80%;
+  margin: 0 auto;
 }
 
 .banner-content h1 {
@@ -155,7 +136,7 @@ body{
 }
 
 .cta-btn {
-  background-color: #ff4500;
+  background-color: #002f6c;
   color: white;
   border: none;
   padding: 15px 30px;
@@ -166,7 +147,24 @@ body{
 }
 
 .cta-btn:hover {
-  background-color: #ff5714;
+  background-color: #003a8c;
+}
+
+/* Introductie Sectie */
+.intro-section {
+  background-color: #f4f4f9;
+  padding: 50px 0;
+  text-align: center;
+}
+
+.intro-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.intro-section p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
 /* Info Secties */
@@ -175,11 +173,13 @@ body{
   justify-content: space-around;
   margin: 50px 0;
   padding: 0 30px;
+  flex-wrap: wrap;
 }
 
 .info-section {
   text-align: center;
   width: 30%;
+  margin-bottom: 30px;
 }
 
 .info-section h2 {
@@ -193,7 +193,7 @@ body{
 }
 
 .info-btn {
-  background-color: #000054;
+  background-color: #002f6c;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -204,7 +204,126 @@ body{
 }
 
 .info-btn:hover {
-  background-color: #1a1a99;
+  background-color: #003a8c;
+}
+
+/* Snowflakes voor extra flair */
+.snowflakes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  pointer-events: none;
+  user-select: none;
+}
+
+.snowflake {
+  position: fixed;
+  top: -10%;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 0 0 1px #000;
+  animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
+}
+
+@keyframes snowflakes-fall {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes snowflakes-shake {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.snowflake:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s, 0s;
+}
+
+.snowflake:nth-child(2) {
+  left: 25%;
+  animation-delay: 2s, 1s;
+}
+
+.snowflake:nth-child(3) {
+  left: 50%;
+  animation-delay: 4s, 2s;
+}
+
+.snowflake:nth-child(4) {
+  left: 75%;
+  animation-delay: 6s, 3s;
+}
+
+/* Footer Styling met Donkerblauwe Achtergrond */
+.footer {
+  background-color: #002f6c;
+  padding: 50px 0;
+  color: white;
+  font-size: 1rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.footer-section {
+  width: 30%;
+}
+
+.footer-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.footer-section p,
+.footer-section ul {
+  font-size: 1rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #ffd700;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+.footer-bottom p {
+  font-size: 0.9rem;
+  color: #ddd;
 }
 
 /* Mobiel Responsief */
@@ -220,7 +339,17 @@ body{
 
   .info-section {
     width: 90%;
-    margin-bottom: 30px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-section {
+    width: 80%;
+    text-align: center;
+    margin-bottom: 20px;
   }
 }
 </style>

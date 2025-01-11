@@ -23,6 +23,37 @@
       </div>
     </div>
   </div>
+
+  <div class="parties">
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: info@politiekgids.nl</p>
+          <p>Telefoon: +31 20 123 4567</p>
+        </div>
+        <div class="footer-section">
+          <h3>Volg Ons</h3>
+          <ul>
+            <li><a href="#" class="social-link">Facebook</a></li>
+            <li><a href="#" class="social-link">Twitter</a></li>
+            <li><a href="#" class="social-link">Instagram</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Informatie</h3>
+          <ul>
+            <li><a href="#" class="footer-link">Privacybeleid</a></li>
+            <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
+            <li><a href="#" class="footer-link">Cookiebeleid</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -74,7 +105,94 @@ export default {
           ],
           image: 'https://example.com/groenlinks-logo.png',
         },
-        // Voeg alle overige partijen op dezelfde manier toe
+        {
+          name: 'CDA',
+          leader: 'Wopke Hoekstra',
+          description: 'Ouderlijke waarden, aandacht voor het gezin en het midden- en kleinbedrijf.',
+          keyPoints: [
+            'Steunen van het MKB',
+            'Investeren in het gezinsbeleid',
+            'Veiligheid in buurten verbeteren',
+          ],
+          image: 'https://example.com/cda-logo.png',
+        },
+        {
+          name: 'SP',
+          leader: 'Lilian Marijnissen',
+          description: 'Socialistische partij die zich richt op armoedebestrijding en gelijke kansen.',
+          keyPoints: [
+            'Strijd tegen armoede',
+            'Verbeteren van de gezondheidszorg',
+            'Gelijke kansen voor iedereen',
+          ],
+          image: 'https://example.com/sp-logo.png',
+        },
+        {
+          name: 'PVDAG',
+          leader: 'Kees van der Staaij',
+          description: 'Conservatief-christelijke partij die zich richt op morele waarden en gezin.',
+          keyPoints: [
+            'Waarde van gezin centraal stellen',
+            'Behoud van christelijke normen en waarden',
+            'Investeren in basisbeveiliging',
+          ],
+          image: 'https://example.com/pvdag-logo.png',
+        },
+        {
+          name: 'SGP',
+          leader: 'Kees van der Staaij',
+          description: 'Christelijk-politieke partij die zich inzet voor de Bijbel en het gezinsbeleid.',
+          keyPoints: [
+            'Zorg voor de zwakken in de samenleving',
+            'Behoud van christelijke normen',
+            'Aandacht voor het milieu',
+          ],
+          image: 'https://example.com/sgp-logo.png',
+        },
+        {
+          name: '50PLUS',
+          leader: 'Jan Nagel',
+          description: 'Focus op de rechten van ouderen en verbetering van hun levenskwaliteit.',
+          keyPoints: [
+            'Pensioen voor ouderen verbeteren',
+            'Gezondheidszorg voor ouderen verbeteren',
+            'Veiligheid voor ouderen vergroten',
+          ],
+          image: 'https://example.com/50plus-logo.png',
+        },
+        {
+          name: 'DENK',
+          leader: 'Tunahan Kuzu',
+          description: 'Politieke partij die zich richt op de positie van minderheden in Nederland.',
+          keyPoints: [
+            'Gelijke kansen voor minderheden',
+            'Verbeteren integratiebeleid',
+            'Leren van andere culturen',
+          ],
+          image: 'https://example.com/denk-logo.png',
+        },
+        {
+          name: 'Partij voor de Dieren',
+          leader: 'Caroline van der Plas',
+          description: 'Zorg voor dierenwelzijn, milieu en de natuur staan centraal.',
+          keyPoints: [
+            'Dierenrechten beschermen',
+            'Klimaatverandering aanpakken',
+            'Behoud van natuur en biodiversiteit',
+          ],
+          image: 'https://example.com/pvdd-logo.png',
+        },
+        {
+          name: 'Forum voor Democratie',
+          leader: 'Thierry Baudet',
+          description: 'Conservatief en eurosceptisch met nadruk op nationale soevereiniteit.',
+          keyPoints: [
+            'Afname van belastingdruk',
+            'Eurosceptisch beleid',
+            'Versterking van de nationale identiteit',
+          ],
+          image: 'https://example.com/fvd-logo.png',
+        }
       ],
       selectedParty: null,
     };
@@ -95,17 +213,17 @@ export default {
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #fff; /* Achtergrondkleur is nu wit */
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
+  color: black; /* Zwarte tekst */
 }
 
 h1 {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 30px;
-  color: #333;
 }
 
 .parties-grid {
@@ -115,7 +233,7 @@ h1 {
 }
 
 .party-item {
-  background-color: #fff;
+  background-color: #f9f9f9; /* Achtergrondkleur van de partijitem is lichtgrijs */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -137,8 +255,8 @@ h1 {
 button {
   margin-top: 10px;
   padding: 10px 15px;
-  background-color: #007BFF;
-  color: white;
+  background-color: #ffd700;
+  color: #002f6c;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -146,7 +264,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #bfa500;
 }
 
 .modal {
@@ -176,5 +294,63 @@ button:hover {
   width: 150px;
   height: auto;
   margin-bottom: 20px;
+}
+
+/* Footer Styling met Donkerblauwe Achtergrond */
+.footer {
+  background-color: #002f6c;
+  padding: 50px 0;
+  color: white;
+  font-size: 1rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.footer-section {
+  width: 30%;
+}
+
+.footer-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.footer-section p,
+.footer-section ul {
+  font-size: 1rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #ffd700;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+.footer-bottom p {
+  font-size: 0.9rem;
+  color: #ddd;
 }
 </style>
