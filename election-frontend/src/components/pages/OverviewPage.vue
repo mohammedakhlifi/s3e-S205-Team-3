@@ -32,7 +32,7 @@
     <!-- Plus-knop -->
     <div class="icon-container" @click="goToForum">
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60" height="60" viewBox="0 0 48 48">
-        <path fill="#4caf50" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path>
+        <path fill="#393EC2" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path>
         <path fill="#fff" d="M21,14h6v20h-6V14z"></path>
         <path fill="#fff" d="M14,21h20v6H14V21z"></path>
       </svg>
@@ -232,7 +232,7 @@ h1 {
 .topic-info h4 {
   font-weight: bold;
   font-size: 1.2rem;
-  color: #4caf50;
+  color: #393EC2;
   margin-bottom: 5px;
 }
 
@@ -244,7 +244,7 @@ h1 {
 }
 
 .topic-reply-count:hover {
-  color: #4caf50;
+  color: #393EC2;
 }
 
 .modal-overlay {
@@ -311,7 +311,7 @@ h1 {
 .submit-reply-button {
   margin-top: 10px;
   padding: 10px 15px;
-  background-color: #4caf50; /* Groene kleur */
+  background-color: #393EC2; /* Groene kleur */
   color: white;
   border: none;
   border-radius: 4px;
@@ -441,6 +441,15 @@ h1 {
   .custom-router-link:focus {
     outline: none;
   }
+
+  .icon-container {
+    position: fixed; /* Of 'absolute' als hij binnen de container moet blijven */
+    right: 20px;     /* Afstand vanaf de rechterkant */
+    bottom: 20px;    /* Afstand vanaf de onderkant */
+    cursor: pointer;
+    z-index: 1000;   /* Zorg dat de knop boven andere elementen blijft */
+  }
+
 }
 
 </style>
