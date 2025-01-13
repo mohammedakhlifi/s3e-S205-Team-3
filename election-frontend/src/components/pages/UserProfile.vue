@@ -20,6 +20,36 @@
       <p>{{user.social3}}</p>
       <p>{{user.social4}}</p>
     </div>
+
+    <!-- Footer Sectie -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: info@politiekgids.nl</p>
+          <p>Telefoon: +31 20 123 4567</p>
+        </div>
+        <div class="footer-section">
+          <h3>Volg Ons</h3>
+          <ul>
+            <li><a href="#" class="social-link">Facebook</a></li>
+            <li><a href="#" class="social-link">Twitter</a></li>
+            <li><a href="#" class="social-link">Instagram</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Informatie</h3>
+          <ul>
+            <li><a href="#" class="footer-link">Privacybeleid</a></li>
+            <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
+            <li><a href="#" class="footer-link">Cookiebeleid</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
+      </div>
+    </footer>
   </div>
 
 </template>
