@@ -57,55 +57,53 @@
 </template>
 
 <script>
-import logoPVV from '@/assets/img/logo-pvv.jpg';
-import logoGroenLinks from '@/assets/img/groenlinks.png';
-import logoVVD from '@/assets/img/vvd.png';
-import logoD66 from '@/assets/img/d66.png';
-import logoCDA from '@/assets/img/cda.png';
-import logoSP from '@/assets/img/sp.png';
-import logoPVDAG from '@/assets/img/pvdag.png';
-import logoSGP from '@/assets/img/sgp.png';
-import logo50Plus from '@/assets/img/50plus.png';
-import logoDENK from '@/assets/img/denk.png';
-import logoPvdD from '@/assets/img/pvdd.png';
-import logoFVD from '@/assets/img/fvd.png';
-
 export default {
   data() {
     return {
       parties: [
         {
-          name: 'VVD',
-          leader: 'Dylan Yesilgöz',
-          description: 'Vrijheid en verantwoordelijkheid, economische groei, en een kleinere overheid.',
+          name: 'BBB',
+          leader: 'Caroline van der Plas',
+          description: 'Belang van het platteland en boeren staat centraal.',
           keyPoints: [
-            'Economische groei stimuleren',
-            'Focus op nationale veiligheid',
-            'Meer werkgelegenheid',
+            'Boeren steunen',
+            'Behoud van landelijke gebieden',
+            'Eerlijke voedselproductie',
           ],
-          image: logoVVD,
+          image: '@/assets/img/bbb.png',
+        },
+        {
+          name: 'CU',
+          leader: 'Gert-Jan Segers',
+          description: 'Christelijk-sociale partij die nadruk legt op zorg voor kwetsbaren.',
+          keyPoints: [
+            'Aandacht voor onderwijs',
+            'Ondersteuning voor gezinnen',
+            'Verantwoord milieu- en klimaatbeleid',
+          ],
+          image: '@/assets/img/CU.png',
         },
         {
           name: 'D66',
           leader: 'Rob Jetten',
-          description: 'Progressieve waarden, klimaatverandering, en onderwijsvernieuwing.',
+          description: 'Progressieve waarden, klimaatverandering en onderwijsvernieuwing.',
           keyPoints: [
             'Investeren in onderwijs',
             'Klimaatbeleid versterken',
             'Meer gelijkheid in de samenleving',
           ],
-          image: logoD66,
+          image: '@/assets/img/d66.png',
         },
         {
-          name: 'PVV',
-          leader: 'Geert Wilders',
-          description: 'Streng immigratiebeleid en een kritische houding ten opzichte van de EU.',
+          name: 'FVD',
+          leader: 'Thierry Baudet',
+          description: 'Conservatief en eurosceptisch met nadruk op nationale soevereiniteit.',
           keyPoints: [
-            'Beperken immigratie',
-            'Meer politie op straat',
-            'Strengere aanpak van criminaliteit',
+            'Afname van belastingdruk',
+            'Eurosceptisch beleid',
+            'Versterking van de nationale identiteit',
           ],
-          image: logoPVV,
+          image: '@/assets/img/fvd.png',
         },
         {
           name: 'GroenLinks',
@@ -116,40 +114,18 @@ export default {
             'Eerlijke verdeling van rijkdom',
             'Investeren in schone energie',
           ],
-          image: logoGroenLinks,
+          image: '@/assets/img/groenlinks.png',
         },
         {
-          name: 'CDA',
-          leader: 'Wopke Hoekstra',
-          description: 'Ouderlijke waarden, aandacht voor het gezin en het midden- en kleinbedrijf.',
+          name: 'PVV',
+          leader: 'Geert Wilders',
+          description: 'Streng immigratiebeleid en een kritische houding ten opzichte van de EU.',
           keyPoints: [
-            'Steunen van het MKB',
-            'Investeren in het gezinsbeleid',
-            'Veiligheid in buurten verbeteren',
+            'Beperken immigratie',
+            'Meer politie op straat',
+            'Strengere aanpak van criminaliteit',
           ],
-          image: logoCDA,
-        },
-        {
-          name: 'SP',
-          leader: 'Lilian Marijnissen',
-          description: 'Socialistische partij die zich richt op armoedebestrijding en gelijke kansen.',
-          keyPoints: [
-            'Strijd tegen armoede',
-            'Verbeteren van de gezondheidszorg',
-            'Gelijke kansen voor iedereen',
-          ],
-          image: logoSP,
-        },
-        {
-          name: 'PVDAG',
-          leader: 'Kees van der Staaij',
-          description: 'Conservatief-christelijke partij die zich richt op morele waarden en gezin.',
-          keyPoints: [
-            'Waarde van gezin centraal stellen',
-            'Behoud van christelijke normen en waarden',
-            'Investeren in basisbeveiliging',
-          ],
-          image: logoPVDAG,
+          image: '@/assets/img/logo-pvv.jpg',
         },
         {
           name: 'SGP',
@@ -160,51 +136,25 @@ export default {
             'Behoud van christelijke normen',
             'Aandacht voor het milieu',
           ],
-          image: logoSGP,
+          image: '@/assets/img/sgp.png',
         },
         {
-          name: '50PLUS',
-          leader: 'Jan Nagel',
-          description: 'Focus op de rechten van ouderen en verbetering van hun levenskwaliteit.',
+          name: 'VVD',
+          leader: 'Dylan Yesilgöz',
+          description: 'Vrijheid en verantwoordelijkheid, economische groei, en een kleinere overheid.',
           keyPoints: [
-            'Pensioen voor ouderen verbeteren',
-            'Gezondheidszorg voor ouderen verbeteren',
-            'Veiligheid voor ouderen vergroten',
+            'Economische groei stimuleren',
+            'Focus op nationale veiligheid',
+            'Meer werkgelegenheid',
           ],
-          image: logo50Plus,
+          image: '@/assets/img/vvd.png',
         },
         {
-          name: 'DENK',
-          leader: 'Tunahan Kuzu',
-          description: 'Politieke partij die zich richt op de positie van minderheden in Nederland.',
-          keyPoints: [
-            'Gelijke kansen voor minderheden',
-            'Verbeteren integratiebeleid',
-            'Leren van andere culturen',
-          ],
-          image: logoDENK,
-        },
-        {
-          name: 'Partij voor de Dieren',
-          leader: 'Caroline van der Plas',
-          description: 'Zorg voor dierenwelzijn, milieu en de natuur staan centraal.',
-          keyPoints: [
-            'Dierenrechten beschermen',
-            'Klimaatverandering aanpakken',
-            'Behoud van natuur en biodiversiteit',
-          ],
-          image: logoPvdD,
-        },
-        {
-          name: 'Forum voor Democratie',
-          leader: 'Thierry Baudet',
-          description: 'Conservatief en eurosceptisch met nadruk op nationale soevereiniteit.',
-          keyPoints: [
-            'Afname van belastingdruk',
-            'Eurosceptisch beleid',
-            'Versterking van de nationale identiteit',
-          ],
-          image: logoFVD,
+          name: 'Placeholder Party',
+          leader: 'N/A',
+          description: 'Dit is een placeholder voor partijen met ontbrekende gegevens.',
+          keyPoints: ['Geen informatie beschikbaar.'],
+          image: '@/assets/img/defpic3 (2).jpg',
         },
       ],
       selectedParty: null,
@@ -222,5 +172,142 @@ export default {
 </script>
 
 <style scoped>
-/* Stijlen zoals eerder gegeven blijven hetzelfde */
+.parties-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  color: black;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.parties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.party-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.party-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.party-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #ffd700;
+  color: #002f6c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #bfa500;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-image {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.footer {
+  background-color: #002f6c;
+  padding: 50px 0;
+  color: white;
+  font-size: 1rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.footer-section {
+  width: 30%;
+}
+
+.footer-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #ffd700;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+.footer-bottom p {
+  font-size: 0.9rem;
+  color: #ddd;
+}
 </style>
