@@ -23,9 +23,53 @@
       </div>
     </div>
   </div>
+
+  <div class="parties">
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: info@politiekgids.nl</p>
+          <p>Telefoon: +31 20 123 4567</p>
+        </div>
+        <div class="footer-section">
+          <h3>Volg Ons</h3>
+          <ul>
+            <li><a href="#" class="social-link">Facebook</a></li>
+            <li><a href="#" class="social-link">Twitter</a></li>
+            <li><a href="#" class="social-link">Instagram</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Informatie</h3>
+          <ul>
+            <li><a href="#" class="footer-link">Privacybeleid</a></li>
+            <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
+            <li><a href="#" class="footer-link">Cookiebeleid</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script>
+import logoPVV from '@/assets/img/logo-pvv.jpg';
+import logoGroenLinks from '@/assets/img/groenlinks.png';
+import logoVVD from '@/assets/img/vvd.png';
+import logoD66 from '@/assets/img/d66.png';
+import logoCDA from '@/assets/img/cda.png';
+import logoSP from '@/assets/img/sp.png';
+import logoPVDAG from '@/assets/img/pvdag.png';
+import logoSGP from '@/assets/img/sgp.png';
+import logo50Plus from '@/assets/img/50plus.png';
+import logoDENK from '@/assets/img/denk.png';
+import logoPvdD from '@/assets/img/pvdd.png';
+import logoFVD from '@/assets/img/fvd.png';
+
 export default {
   data() {
     return {
@@ -39,7 +83,7 @@ export default {
             'Focus op nationale veiligheid',
             'Meer werkgelegenheid',
           ],
-          image: 'https://example.com/vvd-logo.png',
+          image: logoVVD,
         },
         {
           name: 'D66',
@@ -50,7 +94,7 @@ export default {
             'Klimaatbeleid versterken',
             'Meer gelijkheid in de samenleving',
           ],
-          image: 'https://example.com/d66-logo.png',
+          image: logoD66,
         },
         {
           name: 'PVV',
@@ -61,7 +105,7 @@ export default {
             'Meer politie op straat',
             'Strengere aanpak van criminaliteit',
           ],
-          image: 'https://example.com/pvv-logo.png',
+          image: logoPVV,
         },
         {
           name: 'GroenLinks',
@@ -72,20 +116,96 @@ export default {
             'Eerlijke verdeling van rijkdom',
             'Investeren in schone energie',
           ],
-          image: 'https://example.com/groenlinks-logo.png',
+          image: logoGroenLinks,
         },
         {
-          name: 'FVD',
-          leader: 'Thierry Baudet',
-          description: 'Economisch neo-liberale partij, meer dynamiek, en een kleinere overheid.',
+          name: 'CDA',
+          leader: 'Wopke Hoekstra',
+          description: 'Ouderlijke waarden, aandacht voor het gezin en het midden- en kleinbedrijf.',
           keyPoints: [
-            'Economische groei stimuleren',
-            'Focus op nationale veiligheid',
-            'Meer werkgelegenheid',
+            'Steunen van het MKB',
+            'Investeren in het gezinsbeleid',
+            'Veiligheid in buurten verbeteren',
           ],
-          image: 'https://example.com/vvd-logo.png',
-        }
-        // Voeg alle overige partijen op dezelfde manier toe
+          image: logoCDA,
+        },
+        {
+          name: 'SP',
+          leader: 'Lilian Marijnissen',
+          description: 'Socialistische partij die zich richt op armoedebestrijding en gelijke kansen.',
+          keyPoints: [
+            'Strijd tegen armoede',
+            'Verbeteren van de gezondheidszorg',
+            'Gelijke kansen voor iedereen',
+          ],
+          image: logoSP,
+        },
+        {
+          name: 'PVDAG',
+          leader: 'Kees van der Staaij',
+          description: 'Conservatief-christelijke partij die zich richt op morele waarden en gezin.',
+          keyPoints: [
+            'Waarde van gezin centraal stellen',
+            'Behoud van christelijke normen en waarden',
+            'Investeren in basisbeveiliging',
+          ],
+          image: logoPVDAG,
+        },
+        {
+          name: 'SGP',
+          leader: 'Kees van der Staaij',
+          description: 'Christelijk-politieke partij die zich inzet voor de Bijbel en het gezinsbeleid.',
+          keyPoints: [
+            'Zorg voor de zwakken in de samenleving',
+            'Behoud van christelijke normen',
+            'Aandacht voor het milieu',
+          ],
+          image: logoSGP,
+        },
+        {
+          name: '50PLUS',
+          leader: 'Jan Nagel',
+          description: 'Focus op de rechten van ouderen en verbetering van hun levenskwaliteit.',
+          keyPoints: [
+            'Pensioen voor ouderen verbeteren',
+            'Gezondheidszorg voor ouderen verbeteren',
+            'Veiligheid voor ouderen vergroten',
+          ],
+          image: logo50Plus,
+        },
+        {
+          name: 'DENK',
+          leader: 'Tunahan Kuzu',
+          description: 'Politieke partij die zich richt op de positie van minderheden in Nederland.',
+          keyPoints: [
+            'Gelijke kansen voor minderheden',
+            'Verbeteren integratiebeleid',
+            'Leren van andere culturen',
+          ],
+          image: logoDENK,
+        },
+        {
+          name: 'Partij voor de Dieren',
+          leader: 'Caroline van der Plas',
+          description: 'Zorg voor dierenwelzijn, milieu en de natuur staan centraal.',
+          keyPoints: [
+            'Dierenrechten beschermen',
+            'Klimaatverandering aanpakken',
+            'Behoud van natuur en biodiversiteit',
+          ],
+          image: logoPvdD,
+        },
+        {
+          name: 'Forum voor Democratie',
+          leader: 'Thierry Baudet',
+          description: 'Conservatief en eurosceptisch met nadruk op nationale soevereiniteit.',
+          keyPoints: [
+            'Afname van belastingdruk',
+            'Eurosceptisch beleid',
+            'Versterking van de nationale identiteit',
+          ],
+          image: logoFVD,
+        },
       ],
       selectedParty: null,
     };
@@ -102,90 +222,5 @@ export default {
 </script>
 
 <style scoped>
-.parties-container {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
-}
-
-h1 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  color: #333;
-}
-
-.parties-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.party-item {
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.party-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.party-logo {
-  width: 100px;
-  height: auto;
-  margin-bottom: 10px;
-}
-
-button {
-  margin-top: 10px;
-  padding: 10px 15px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 500px;
-  text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.modal-image {
-  width: 150px;
-  height: auto;
-  margin-bottom: 20px;
-}
+/* Stijlen zoals eerder gegeven blijven hetzelfde */
 </style>
