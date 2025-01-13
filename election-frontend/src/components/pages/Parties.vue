@@ -57,64 +57,24 @@
 </template>
 
 <script>
+import logoPVV from '@/assets/img/logo-pvv.jpg';
+import logoGroenLinks from '@/assets/img/groenlinks.png';
+import logoVVD from '@/assets/img/vvd.png';
+
 export default {
   data() {
     return {
       parties: [
         {
-          name: 'BBB',
-          leader: 'Caroline van der Plas',
-          description: 'Belang van het platteland en boeren staat centraal.',
+          name: 'VVD',
+          leader: 'Dylan Yesilgöz',
+          description: 'Vrijheid en verantwoordelijkheid, economische groei, en een kleinere overheid.',
           keyPoints: [
-            'Boeren steunen',
-            'Behoud van landelijke gebieden',
-            'Eerlijke voedselproductie',
+            'Economische groei stimuleren',
+            'Focus op nationale veiligheid',
+            'Meer werkgelegenheid',
           ],
-          image: '@/assets/img/bbb.png',
-        },
-        {
-          name: 'CU',
-          leader: 'Gert-Jan Segers',
-          description: 'Christelijk-sociale partij die nadruk legt op zorg voor kwetsbaren.',
-          keyPoints: [
-            'Aandacht voor onderwijs',
-            'Ondersteuning voor gezinnen',
-            'Verantwoord milieu- en klimaatbeleid',
-          ],
-          image: '@/assets/img/CU.png',
-        },
-        {
-          name: 'D66',
-          leader: 'Rob Jetten',
-          description: 'Progressieve waarden, klimaatverandering en onderwijsvernieuwing.',
-          keyPoints: [
-            'Investeren in onderwijs',
-            'Klimaatbeleid versterken',
-            'Meer gelijkheid in de samenleving',
-          ],
-          image: '@/assets/img/d66.png',
-        },
-        {
-          name: 'FVD',
-          leader: 'Thierry Baudet',
-          description: 'Conservatief en eurosceptisch met nadruk op nationale soevereiniteit.',
-          keyPoints: [
-            'Afname van belastingdruk',
-            'Eurosceptisch beleid',
-            'Versterking van de nationale identiteit',
-          ],
-          image: '@/assets/img/fvd.png',
-        },
-        {
-          name: 'GroenLinks',
-          leader: 'Jesse Klaver',
-          description: 'Duurzaamheid en sociale gelijkheid staan centraal in het beleid.',
-          keyPoints: [
-            'Klimaatverandering aanpakken',
-            'Eerlijke verdeling van rijkdom',
-            'Investeren in schone energie',
-          ],
-          image: '@/assets/img/groenlinks.png',
+          image: logoVVD,
         },
         {
           name: 'PVV',
@@ -125,36 +85,18 @@ export default {
             'Meer politie op straat',
             'Strengere aanpak van criminaliteit',
           ],
-          image: '@/assets/img/logo-pvv.jpg',
+          image: logoPVV,
         },
         {
-          name: 'SGP',
-          leader: 'Kees van der Staaij',
-          description: 'Christelijk-politieke partij die zich inzet voor de Bijbel en het gezinsbeleid.',
+          name: 'GroenLinks',
+          leader: 'Jesse Klaver',
+          description: 'Duurzaamheid en sociale gelijkheid staan centraal in het beleid.',
           keyPoints: [
-            'Zorg voor de zwakken in de samenleving',
-            'Behoud van christelijke normen',
-            'Aandacht voor het milieu',
+            'Klimaatverandering aanpakken',
+            'Eerlijke verdeling van rijkdom',
+            'Investeren in schone energie',
           ],
-          image: '@/assets/img/sgp.png',
-        },
-        {
-          name: 'VVD',
-          leader: 'Dylan Yesilgöz',
-          description: 'Vrijheid en verantwoordelijkheid, economische groei, en een kleinere overheid.',
-          keyPoints: [
-            'Economische groei stimuleren',
-            'Focus op nationale veiligheid',
-            'Meer werkgelegenheid',
-          ],
-          image: '@/assets/img/vvd.png',
-        },
-        {
-          name: 'Placeholder Party',
-          leader: 'N/A',
-          description: 'Dit is een placeholder voor partijen met ontbrekende gegevens.',
-          keyPoints: ['Geen informatie beschikbaar.'],
-          image: '@/assets/img/defpic3 (2).jpg',
+          image: logoGroenLinks,
         },
       ],
       selectedParty: null,
