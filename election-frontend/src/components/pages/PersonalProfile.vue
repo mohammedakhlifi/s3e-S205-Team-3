@@ -55,10 +55,13 @@
         </div>
 
         <div v-if="editMode" id="mySocials">
-        <input type="url" v-model="editedUser.social1" class="socials"/>
-        <input type="url" v-model="editedUser.social2" class="socials" />
-        <input type="url" v-model="editedUser.social3" class="socials" />
-        <input type="url" v-model="editedUser.social4" class="socials" />
+          <button id="addSocials" @click="addSocialInput">Add</button>
+
+          <div v-for="(social, index) in socialInputs" :key="index">
+                <input type="url" v-model="editedUser[social]" class="socials" >
+
+          </div>
+
         </div>
 
       </div>
@@ -87,7 +90,7 @@ export default defineComponent({
       user: {},
       editedUser: {},
       editMode: false,
-
+      socialInputs: [] , //Array voor het bijhouden van toegevoegde socials
     };
   },
   mounted() {
@@ -108,6 +111,10 @@ export default defineComponent({
         social4: response.data.social4 || "",
         profielOmschrijving: response.data.profielOmschrijving || "" };
 
+
+        this.socialInputs = Object.keys(this.editedUser)
+            .filter(key => key.startsWith(`social`) && this.editedUser[key]);
+
       } catch (error) {
         console.error('User not found:', error.response.status);
       }
@@ -127,7 +134,17 @@ export default defineComponent({
       } catch (error) {
         console.error('Error updating user:', error.response.status);
       }
-    }
+    },
+
+    addSocialInput() {
+      if (this.socialInputs.length < 4) {
+        this.socialInputs.push(`social${this.socialInputs.length + 1}`);
+      } else {
+        alert("je kunt alleen 4 socials toevoegen")
+      }
+    },
+
+
   }
 });
 </script>
@@ -159,7 +176,7 @@ export default defineComponent({
   padding: 20px;
   width: 30%;
   text-align: center;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 #PFS img {
