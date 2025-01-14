@@ -1,24 +1,15 @@
 <template>
   <div>
-    <!-- Overzicht van vragen -->
     <div class="overview-container">
-      <h1>Overzicht van vragen.</h1>
-
-      <!-- Lijst van onderwerpen -->
+      <h1>Overzicht van vragen</h1>
       <div class="topics-list">
-        <!-- Itereer over de topics en toon elk topic -->
         <div v-for="topic in topics" :key="topic.id" class="topic-item">
           <div class="topic-header">
             <div class="topic-info">
               <h4>{{ topic.title }}</h4>
               <p>{{ topic.content }}</p>
               <p class="topic-date">Gepost op: {{ formatDate(topic.createdAt) }}</p>
-
-              <!-- Klikbaar aantal reacties -->
-              <p
-                  class="topic-reply-count clickable"
-                  @click="openRepliesModal(topic)"
-              >
+              <p class="topic-reply-count clickable" @click="openRepliesModal(topic)">
                 Reacties: {{ topic.replies ? topic.replies.length : 0 }}
               </p>
             </div>
@@ -26,8 +17,11 @@
         </div>
       </div>
     </div>
-
-    <!-- Plus-knop -->
+    <div class="pagination">
+      <button :disabled="currentPage === 0" @click="changePage(currentPage - 1)">Vorige</button>
+      <span>Pagina {{ currentPage + 1 }} van {{ totalPages }}</span>
+      <button :disabled="currentPage === totalPages - 1" @click="changePage(currentPage + 1)">Volgende</button>
+    </div>
     <div class="icon-container" @click="goToForum">
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60" height="60" viewBox="0 0 48 48">
         <path fill="#4caf50" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path>
@@ -35,13 +29,9 @@
         <path fill="#fff" d="M14,21h20v6H14V21z"></path>
       </svg>
     </div>
-
-    <!-- Pop-up Modal -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal">
         <h2>Reacties voor: {{ currentTopic?.title }}</h2>
-
-        <!-- Scrollbare reactiescontainer -->
         <div class="replies-container">
           <div v-if="currentTopic?.replies && currentTopic.replies.length">
             <div v-for="reply in currentTopic.replies" :key="reply.id" class="reply-item">
@@ -53,20 +43,10 @@
             <p>Er zijn nog geen reacties.</p>
           </div>
         </div>
-
-        <!-- Reactie invoerveld -->
         <div class="reply-input-container">
-          <textarea
-              v-model="newReplyContent"
-              placeholder="Schrijf je reactie..."
-              rows="3"
-          ></textarea>
-          <button @click="submitReply(currentTopic.id)" class="submit-reply-button">
-            Plaats reactie
-          </button>
+          <textarea v-model="newReplyContent" placeholder="Schrijf je reactie..." rows="3"></textarea>
+          <button @click="submitReply(currentTopic.id)" class="submit-reply-button">Plaats reactie</button>
         </div>
-
-        <!-- Sluitknop -->
         <button class="close-button" @click="closeModal">Sluiten</button>
       </div>
     </div>
@@ -79,84 +59,58 @@ import axios from "axios";
 export default {
   data() {
     return {
-      topics: [], // Lijst met topics
-      showReplies: {}, // Object om zichtbaarheid van reacties te controleren
-      repliesContent: {}, // Inhoud van de reacties per topic
-      showModal: false, // Toont de pop-up modal
-      currentTopic: null, // Huidig geselecteerde topic
-      newReplyContent: "", // Reactie-inhoud
+      topics: [],
+      currentPage: 0,
+      totalPages: 1,
+      showModal: false,
+      currentTopic: null,
+      newReplyContent: "",
     };
   },
   methods: {
-    // Haal topics op van de backend
-    async fetchTopics() {
+    async fetchTopics(page = 0) {
       try {
-        const response = await axios.get("http://localhost:8080/api/forum/topics/latest");
-        this.topics = response.data;
+        const response = await axios.get("http://localhost:8080/api/forum/topics", {
+          params: { page, size: 5 },
+        });
+        this.topics = response.data.content;
+        this.currentPage = response.data.number;
+        this.totalPages = response.data.totalPages;
       } catch (error) {
         console.error("Fout bij het ophalen van onderwerpen:", error);
       }
     },
-
-    // Formatteer de datum
     formatDate(dateString) {
       if (!dateString) return "Datum niet beschikbaar";
       const date = new Date(dateString);
-      if (isNaN(date)) return "Ongeldige datum";
-
-      const options = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      };
-      return date.toLocaleDateString("nl-NL", options);
+      return isNaN(date) ? "Ongeldige datum" : date.toLocaleDateString("nl-NL");
     },
-
-    // Open de pop-up modal en stel het geselecteerde topic in
     openRepliesModal(topic) {
-      this.currentTopic = { ...topic }; // Maak een kopie van het topic
+      this.currentTopic = { ...topic };
       this.showModal = true;
     },
-
-    // Sluit de pop-up modal
     closeModal() {
       this.showModal = false;
       this.currentTopic = null;
       this.newReplyContent = "";
     },
-
-    // Plaats een nieuwe reactie
     async submitReply(topicId) {
       try {
-        const content = this.newReplyContent.trim();
-        if (!content) {
-          alert("De reactie mag niet leeg zijn!");
-          return;
-        }
-
-        // Verstuur de reactie naar de backend
+        if (!this.newReplyContent.trim()) return alert("De reactie mag niet leeg zijn!");
         const response = await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
-          content,
+          content: this.newReplyContent.trim(),
         });
-
-        // Voeg de nieuwe reactie toe aan de huidige lijst (alleen in de modal)
-        if (this.currentTopic) {
-          if (!this.currentTopic.replies) this.currentTopic.replies = [];
-          this.currentTopic.replies.push(response.data);
-        }
-
-        // Reset het invoerveld
+        this.currentTopic.replies.push(response.data);
         this.newReplyContent = "";
       } catch (error) {
         console.error("Fout bij het plaatsen van de reactie:", error);
       }
     },
-
-    // Navigeer naar de forum pagina
+    changePage(page) {
+      this.fetchTopics(page);
+    },
     goToForum() {
-      this.$router.push("/forum"); // Zorg dat deze route bestaat
+      this.$router.push("/forum");
     },
   },
   created() {
@@ -165,9 +119,10 @@ export default {
 };
 </script>
 
-
 <style scoped>
-/* Overzicht container styling */
+/****************************************
+ * Overzicht container styling
+ ****************************************/
 .overview-container {
   max-width: 800px;
   margin: 50px auto;
@@ -195,14 +150,12 @@ h1 {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
 }
 
 .topic-info h4 {
   font-weight: bold;
   font-size: 1.2rem;
   color: #4caf50;
-  margin-bottom: 5px;
 }
 
 .topic-reply-count {
@@ -216,6 +169,38 @@ h1 {
   color: #4caf50;
 }
 
+/****************************************
+ * Paginering styling
+ ****************************************/
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  display: flex;
+  align-items: center;
+}
+
+/****************************************
+ * Modal styling
+ ****************************************/
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -276,11 +261,10 @@ h1 {
   background-color: darkred;
 }
 
-/* Styling voor de Plaats reactie-knop */
 .submit-reply-button {
   margin-top: 10px;
   padding: 10px 15px;
-  background-color: #4caf50; /* Groene kleur */
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;
@@ -291,24 +275,30 @@ h1 {
 }
 
 .submit-reply-button:hover {
-  background-color: #45a049; /* Iets donkerder groen bij hover */
+  background-color: #45a049;
 }
 
 .submit-reply-button:active {
-  background-color: #3e8e41; /* Nog iets donkerder bij klik */
+  background-color: #3e8e41;
 }
 
-.topic-item p,
-.topic-info p {
-  word-wrap: break-word; /* Breekt lange woorden af */
-  overflow-wrap: break-word; /* Compatibiliteit met moderne browsers */
-  white-space: normal; /* Zorg dat tekst meerdere regels kan gebruiken */
-  max-width: 100%; /* Houd de tekst binnen de container */
+/****************************************
+ * Plus-knop styling (rechts geplaatst)
+ ****************************************/
+.icon-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
 }
 
-.topic-item {
-  word-wrap: break-word; /* Lange woorden afbreken */
-  overflow-wrap: break-word;
+.icon-container svg {
+  transition: transform 0.3s ease;
 }
 
+.icon-container:hover svg {
+  transform: scale(1.1);
+}
 </style>
+
