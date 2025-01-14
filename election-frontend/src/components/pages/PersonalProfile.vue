@@ -8,6 +8,14 @@
         <p class="info">Naam: {{ editMode ? editedUser.name : user.name }}</p>
         <p class="info">Voorstander: {{ editMode ? editedUser.voorstander : user.voorstander }} </p>
         <p class="info">Provincie, Stad: {{ editMode ? editedUser.province : user.province }}, {{ editMode ? editedUser.city : user.city }}</p>
+
+      <!-- profielfoto   -->
+      <div v-if="editMode">
+        <input type="file" @change="handleFileChange" accept="image/*" />
+        <button @click="uploadProfilePicture">Upload Foto</button>
+      </div>
+
+
       </div>
 
       <!--Gegevens sectie-->
@@ -48,19 +56,19 @@
         <p class="section-title">Platformen</p>
         <div v-if="!editMode">
         <p class="details" v-if="!editMode && !editedUser.social1" >Voeg je social media platformen toe!</p>
-        <p class="details" >Social media 1: {{editedUser.social1}} </p>
-        <p class ="details" >Social media 2: {{editedUser.social2}}</p>
-        <p class="details" >Social media 3: {{editedUser.social3}}</p>
-        <p class="details" >Social media 4: {{editedUser.social4}}</p>
+        <p class="details" v-if="editedUser.social1">{{editedUser.social1}} </p>
+        <p class ="details" v-if="editedUser.social2">{{editedUser.social2}}</p>
+        <p class="details" v-if="editedUser.social3">{{editedUser.social3}}</p>
+        <p class="details" v-if="editedUser.social4">{{editedUser.social4}}</p>
         </div>
 
         <div v-if="editMode" id="mySocials">
-          <button id="addSocials" @click="addSocialInput">Add</button>
 
           <div v-for="(social, index) in socialInputs" :key="index">
                 <input type="url" v-model="editedUser[social]" class="socials" >
-
+            <button @click="removeSocialInput(index)" class="remove-btn">X</button>
           </div>
+          <button id="addSocials" @click="addSocialInput"> Toevoegen</button>
 
         </div>
 
@@ -91,6 +99,8 @@ export default defineComponent({
       editedUser: {},
       editMode: false,
       socialInputs: [] , //Array voor het bijhouden van toegevoegde socials
+      selectedFile: null, // Hier sla je het geselecteerde bestand op
+      previewImage: null, // Voor het weergeven van een voorbeeld van de afbeelding
     };
   },
   mounted() {
@@ -144,8 +154,39 @@ export default defineComponent({
       }
     },
 
+    removeSocialInput(index) {
+      const socialKey = this.socialInputs[index];
+      this.editedUser[socialKey] = "";
 
-  }
+      //Verwijder de socialkey uit de array
+      this.socialInputs.splice(index, 1)
+      //Verwijder de data uit editeduser
+      this.$delete(this.editedUser, socialKey);
+    },
+
+    handleFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.selectedFile = file;
+        this.previewImage = URL.createObjectURL(file) // Toon een voorbeeld
+      }
+    },
+    //async uploadProfilePicture() {
+      //if (!this.selectedFile) {
+       // alert('Selecteer een foto voordat je uploadt.');
+        //return;
+      //}
+
+      //const formData = new FormData();
+      //formData.append(`profilePicture`, this.selectedFile);
+
+      //try {
+        //const response = await axios.post()
+     // }
+
+    //},
+
+  },
 });
 </script>
 
@@ -267,11 +308,27 @@ export default defineComponent({
 }
 
 #mySocials {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative; /* Add this to enable absolute positioning for children */
+  min-height: 150px; /* Optional: ensure enough space for the button */
 }
 
+#addSocials {
+  position: absolute; /* Position it relative to #mySocials */
+  bottom: 10px; /* Adjust as needed for spacing */
+  right: 10px; /* Adjust as needed for spacing */
+  width: 10vw;
+  background-color: #007bff; /* Optional: button color */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
 .row {
   display: flex;
