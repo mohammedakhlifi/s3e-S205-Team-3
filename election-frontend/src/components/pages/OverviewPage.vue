@@ -17,11 +17,13 @@
         </div>
       </div>
     </div>
+
     <div class="pagination">
       <button :disabled="currentPage === 0" @click="changePage(currentPage - 1)">Vorige</button>
       <span>Pagina {{ currentPage + 1 }} van {{ totalPages }}</span>
       <button :disabled="currentPage === totalPages - 1" @click="changePage(currentPage + 1)">Volgende</button>
     </div>
+
     <div class="icon-container" @click="goToForum">
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60" height="60" viewBox="0 0 48 48">
         <path fill="#4caf50" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path>
@@ -29,6 +31,7 @@
         <path fill="#fff" d="M14,21h20v6H14V21z"></path>
       </svg>
     </div>
+
     <div v-if="showModal" class="modal-overlay">
       <div class="modal">
         <h2>Reacties voor: {{ currentTopic?.title }}</h2>
@@ -83,7 +86,16 @@ export default {
     formatDate(dateString) {
       if (!dateString) return "Datum niet beschikbaar";
       const date = new Date(dateString);
-      return isNaN(date) ? "Ongeldige datum" : date.toLocaleDateString("nl-NL");
+      if (isNaN(date)) return "Ongeldige datum";
+
+      const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+      return date.toLocaleDateString("nl-NL", options);
     },
     openRepliesModal(topic) {
       this.currentTopic = { ...topic };
