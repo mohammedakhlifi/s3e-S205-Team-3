@@ -11,7 +11,7 @@
     <!-- Display Backend Status -->
     <div class="backend-status">
       <div v-if="backendStatus">
-        <p> {{ backendStatus.message }}</p>
+        <p>{{ backendStatus.message }}</p>
       </div>
       <div v-else>
         <p>Loading backend status...</p>
@@ -25,30 +25,34 @@ import { defineComponent } from 'vue';
 import navbar from "@/components/NavBar.vue";
 import axios from 'axios';
 
+// Type for BackendStatus
+interface BackendStatus {
+  message: string;
+}
+
 export default defineComponent({
   components: {
     navbar,
   },
   data() {
     return {
-      backendStatus: null, // Holds the backend status response
+      backendStatus: null as BackendStatus | null, // Define backendStatus type
     };
   },
   mounted() {
-    this.fetchBackendStatus();  // Fetch the backend status when the component is mounted
+    this.fetchBackendStatus(); // Fetch the backend status when the component is mounted
   },
   methods: {
     // Use Axios to fetch backend status
-    fetchBackendStatus() {
-      axios.get('http://localhost:8080/test')
-          .then(response => {
-            this.backendStatus = response.data;
-          })
-          .catch(error => {
-            console.error('Error fetching backend status:', error);
-            this.backendStatus = { message: 'Error connecting to backend' };
-          });
-    }
-  }
+    async fetchBackendStatus() {
+      try {
+        const response = await axios.get<BackendStatus>('http://localhost:8080/test');
+        this.backendStatus = response.data;
+      } catch (error) {
+        console.error('Error fetching backend status:', error);
+        this.backendStatus = { message: 'Error connecting to backend' };
+      }
+    },
+  },
 });
 </script>
