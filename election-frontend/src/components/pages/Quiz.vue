@@ -1,8 +1,6 @@
 <template>
   <div class="app-container">
-    <!-- Container voor de quiz en grafiek -->
     <div class="quiz-chart-container">
-      <!-- Quiz gedeelte -->
       <div class="quiz-section">
         <h1>Stemwijzer Quiz</h1>
         <div v-if="!showResults">
@@ -20,79 +18,36 @@
         </div>
         <div v-else>
           <h2>Uitslag</h2>
-          <p>De partij die het beste bij jouw keuzes past: <strong>{{ getBestMatch() }}</strong></p>
+          <p>De partij die het beste bij jouw keuzes past: <strong>{{ getBestMatch }}</strong></p>
           <button class="retry-button" @click="resetQuiz">Doe de quiz opnieuw</button>
         </div>
       </div>
-
-      <!-- Dynamische grafiek gedeelte -->
       <div class="chart-section">
         <canvas id="resultChart"></canvas>
       </div>
     </div>
   </div>
-<!-- Footer Sectie -->
-<footer class="footer">
-<div class="footer-content">
-  <div class="footer-section">
-    <h3>Contact</h3>
-    <p>Email: info@politiekgids.nl</p>
-    <p>Telefoon: +31 20 123 4567</p>
-  </div>
-  <div class="footer-section">
-    <h3>Volg Ons</h3>
-    <ul>
-      <li><a href="#" class="social-link">Facebook</a></li>
-      <li><a href="#" class="social-link">Twitter</a></li>
-      <li><a href="#" class="social-link">Instagram</a></li>
-    </ul>
-  </div>
-  <div class="footer-section">
-    <h3>Informatie</h3>
-    <ul>
-      <li><a href="#" class="footer-link">Privacybeleid</a></li>
-      <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
-      <li><a href="#" class="footer-link">Cookiebeleid</a></li>
-    </ul>
-  </div>
-</div>
-<div class="footer-bottom">
-  <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
-</div>
-</footer>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  reactive,
+  computed,
+} from 'vue';
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 export default defineComponent({
-  name: 'App',
+  name: 'Quiz',
   setup() {
-    const allQuestions = [
+    const allQuestions = reactive([
       { question: 'Nederland moet meer investeren in duurzame energie.', answers: [1, 2, 3] },
       { question: 'De belastingen voor de rijksten moeten omhoog.', answers: [2, 1, 3] },
-      { question: 'Nederland moet uit de Europese Unie stappen.', answers: [3, 2, 1] },
-      { question: 'We moeten investeren in defensie.', answers: [3, 2, 1] },
-      { question: 'Het minimumloon moet fors omhoog.', answers: [1, 2, 3] },
-      { question: 'Er moet een nationale zorgverzekering komen.', answers: [2, 1, 3] },
-      { question: 'Het woningaanbod moet worden uitgebreid.', answers: [1, 2, 3] },
-      { question: 'Nederland moet meer vluchtelingen opnemen.', answers: [2, 1, 3] },
-      { question: 'Het gebruik van fossiele brandstoffen moet verminderen.', answers: [1, 2, 3] },
-      { question: 'Er moet meer geld naar onderwijs.', answers: [1, 2, 3] },
-      { question: 'De gezondheidszorg moet worden geprivatiseerd.', answers: [3, 2, 1] },
-      { question: 'Er moeten strengere immigratieregels komen.', answers: [3, 1, 2] },
-      { question: 'Zware criminaliteit moet zwaarder bestraft worden.', answers: [3, 2, 1] },
-      { question: 'De overheid moet subsidies geven aan bedrijven.', answers: [2, 3, 1] },
-      { question: 'Er moet een basisinkomen komen voor iedereen.', answers: [1, 2, 3] },
-      { question: 'De woningmarkt moet vrijgegeven worden.', answers: [3, 2, 1] },
-      { question: 'Er moet meer budget voor cultuur.', answers: [1, 2, 3] },
-      { question: 'De klimaatdoelen moeten aangescherpt worden.', answers: [1, 3, 2] },
-      { question: 'Het pensioenstelsel moet hervormd worden.', answers: [2, 1, 3] },
-      { question: 'De politie moet meer bevoegdheden krijgen.', answers: [3, 2, 1] }
-    ];
+    ]);
 
     const parties = reactive({
       VVD: 0,
@@ -105,20 +60,19 @@ export default defineComponent({
       CDA: 0,
       CU: 0,
       SGP: 0,
-      PvdD: 0
+      PvdD: 0,
     });
 
     const options = ['Helemaal eens', 'Eens', 'Oneens', 'Helemaal oneens'];
     const currentQuestionIndex = ref(0);
     const showResults = ref(false);
-    let chart = null;
+    let chart: Chart | null = null;
 
-    // Compute the current question
     const currentQuestion = computed(() => allQuestions[currentQuestionIndex.value]);
 
-    const selectAnswer = (answerIndex) => {
+    const selectAnswer = (answerIndex: number) => {
       const partyIndex = currentQuestion.value.answers[answerIndex];
-      const partyNames = Object.keys(parties);
+      const partyNames = Object.keys(parties) as (keyof typeof parties)[];
       if (partyIndex && partyIndex <= partyNames.length) {
         parties[partyNames[partyIndex - 1]]++;
       }
@@ -130,34 +84,63 @@ export default defineComponent({
       }
     };
 
-    const getBestMatch = () => {
-      return Object.entries(parties).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
-    };
+    const getBestMatch = computed(() => {
+      return Object.entries(parties).reduce(
+          (a, b) => (b[1] > a[1] ? b : a),
+          ['', 0],
+      )[0];
+    });
 
     const resetQuiz = () => {
-      for (const party in parties) parties[party] = 0;
+      Object.keys(parties).forEach((key) => {
+        parties[key as keyof typeof parties] = 0;
+      });
       currentQuestionIndex.value = 0;
       showResults.value = false;
       createChart();
     };
 
     const createChart = () => {
-      const ctx = document.getElementById('resultChart').getContext('2d');
+      const canvas = document.getElementById('resultChart') as HTMLCanvasElement | null;
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
       if (!ctx) return;
+
       const data = {
         labels: Object.keys(parties),
         datasets: [
           {
             data: Object.values(parties),
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#B4E8C1', '#76D7C4', '#F5B7B1', '#85C1E9', '#F7DC6F']
-          }
-        ]
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#4BC0C0',
+              '#9966FF',
+              '#FF9F40',
+              '#B4E8C1',
+              '#76D7C4',
+              '#F5B7B1',
+              '#85C1E9',
+              '#F7DC6F',
+            ],
+          },
+        ],
       };
+
       if (chart) chart.destroy();
       chart = new Chart(ctx, {
         type: 'doughnut',
         data,
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
       });
     };
 
@@ -176,9 +159,9 @@ export default defineComponent({
       showResults,
       selectAnswer,
       getBestMatch,
-      resetQuiz
+      resetQuiz,
     };
-  }
+  },
 });
 </script>
 

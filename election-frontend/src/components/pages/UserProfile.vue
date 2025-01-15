@@ -1,15 +1,15 @@
 <template>
 
   <div class="userProfile">
-<div id="mainInfo">
-  <img src="../../assets/img/defpic3%20(2).jpg" alt="default profile picture">
-  <div id="infoDetails">
-    <h2 class="details">Naam: {{user.name}}</h2>
-  <h3 class="details">Voorstander van de partij: {{user.voorstander}}</h3>
-  <h3 class="details">{{user.city}}, {{user.province}}</h3>
-  <p class="details" id="description">{{user.profielOmschrijving}}</p>
-  </div>
-</div>
+    <div id="mainInfo">
+      <img src="@/assets/img/defpic3 (2).jpg" alt="default profile picture">
+      <div id="infoDetails">
+        <h2 class="details">Naam: {{user.name}}</h2>
+        <h3 class="details">Voorstander van de partij: {{user.voorstander}}</h3>
+        <h3 class="details">{{user.city}}, {{user.province}}</h3>
+        <p class="details" id="description">{{user.profielOmschrijving}}</p>
+      </div>
+    </div>
   </div>
   <div id="platforms" class="userProfile">
     <div class="left-platforms">
@@ -20,8 +20,6 @@
       <p>{{user.social3}}</p>
       <p>{{user.social4}}</p>
     </div>
-
-
   </div>
   <!-- Footer Sectie -->
   <footer class="footer">
@@ -56,9 +54,9 @@
 
 <script>
 import axios from 'axios';
-import {defineComponent} from "vue";
-export default defineComponent({
+import { defineComponent } from "vue";
 
+export default defineComponent({
   data() {
     return {
       user: {
@@ -66,49 +64,36 @@ export default defineComponent({
         voorstander: "",
         province: "",
         city: "",
-        partij: "",
         profielOmschrijving: "",
-        platformen: "",
         social1: "",
         social2: "",
         social3: "",
         social4: "",
       },
       message: "",
-    }
+    };
   },
   mounted() {
     this.fetchUserInfoByName();
   },
   methods: {
     async fetchUserInfoByName() {
-    try {
-      const username = this.$route.params.username;
-      const response = await axios.get(`http://localhost:8080/api/user/name`, {
-        params: { name: username }
-      })
+      try {
+        const username = this.$route.params.username;
+        const response = await axios.get("http://localhost:8080/api/user/name", {
+          params: { name: username }
+        });
 
-      this.user = response.data;
-      console.log("user: ", this.user)
-      console.log("Gebruikersinformatie: ", response.data);
-
-        console.log("response: ", response.data)
-      console.log("username: ", username)
-    }catch (error) {
-      console.error('its an error:', error.response.status);
-    }
-
+        this.user = response.data;
+      } catch (error) {
+        console.error("Error fetching user information:", error);
       }
     }
-
-
-})
-
-
+  }
+});
 </script>
 
-<style>
-
+<style scoped>
 .userProfile {
   display: flex;
   justify-content: center;
@@ -122,7 +107,7 @@ export default defineComponent({
 }
 
 #platforms {
-  max-width: 700px ;
+  max-width: 700px;
 }
 
 #mainInfo {
@@ -151,27 +136,18 @@ export default defineComponent({
 
 #platforms {
   display: flex;
-  justify-content: space-between; /* Zorgt voor ruimte tussen de twee groepen */
-  width: 50%; /* Brede container */
+  justify-content: space-between;
+  width: 50%;
 }
 
 .left-platforms,
 .right-platforms {
-  display: flex; /* Horizontale uitlijning */
+  display: flex;
   flex-direction: column;
-  gap: 20px; /* Horizontale ruimte tussen items */
+  gap: 20px;
   font-size: 21px;
 }
 
-.left-platforms {
-  justify-content: flex-start; /* Links uitlijnen */
-}
-
-.right-platforms {
-  justify-content: flex-end; /* Rechts uitlijnen */
-}
-
-/* Footer Styling met Donkerblauwe Achtergrond */
 .footer {
   background-color: #002f6c;
   padding: 50px 0;
@@ -229,7 +205,6 @@ export default defineComponent({
   color: #ddd;
 }
 
-/* Mobiel Responsief */
 @media (max-width: 900px) {
   .banner-content h1 {
     font-size: 2.5rem;
@@ -255,6 +230,4 @@ export default defineComponent({
     margin-bottom: 20px;
   }
 }
-
-
 </style>

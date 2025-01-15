@@ -57,9 +57,14 @@
 </template>
 
 <script>
+import logoVVD from '@/assets/img/vvd.png';
+import logoSGP from '@/assets/img/sgp.png';
 import logoPVV from '@/assets/img/logo-pvv.jpg';
 import logoGroenLinks from '@/assets/img/groenlinks.png';
-import logoVVD from '@/assets/img/vvd.png';
+import logoFVD from '@/assets/img/fvd.png';
+import logoD66 from '@/assets/img/d66.png';
+import logoBBB from '@/assets/img/bbb.png';
+import logoCU from '@/assets/img/CU.png';
 
 export default {
   data() {
@@ -75,6 +80,17 @@ export default {
             'Meer werkgelegenheid',
           ],
           image: logoVVD,
+        },
+        {
+          name: 'SGP',
+          leader: 'Kees van der Staaij',
+          description: 'Christelijk-politieke partij die zich inzet voor de Bijbel en het gezinsbeleid.',
+          keyPoints: [
+            'Zorg voor de zwakken in de samenleving',
+            'Behoud van christelijke normen',
+            'Aandacht voor het milieu',
+          ],
+          image: logoSGP,
         },
         {
           name: 'PVV',
@@ -98,6 +114,50 @@ export default {
           ],
           image: logoGroenLinks,
         },
+        {
+          name: 'Forum voor Democratie',
+          leader: 'Thierry Baudet',
+          description: 'Conservatief en eurosceptisch met nadruk op nationale soevereiniteit.',
+          keyPoints: [
+            'Afname van belastingdruk',
+            'Eurosceptisch beleid',
+            'Versterking van de nationale identiteit',
+          ],
+          image: logoFVD,
+        },
+        {
+          name: 'D66',
+          leader: 'Rob Jetten',
+          description: 'Progressieve waarden, klimaatverandering, en onderwijsvernieuwing.',
+          keyPoints: [
+            'Investeren in onderwijs',
+            'Klimaatbeleid versterken',
+            'Meer gelijkheid in de samenleving',
+          ],
+          image: logoD66,
+        },
+        {
+          name: 'BBB',
+          leader: 'Caroline van der Plas',
+          description: 'Betrokken bij landbouw en plattelandsontwikkeling in Nederland.',
+          keyPoints: [
+            'Behoud van boerenbedrijven',
+            'Platteland versterken',
+            'Eerlijke milieumaatregelen',
+          ],
+          image: logoBBB,
+        },
+        {
+          name: 'ChristenUnie',
+          leader: 'Gert-Jan Segers',
+          description: 'Partij met een christelijk-sociaal beleid en aandacht voor kwetsbaren.',
+          keyPoints: [
+            'Zorg voor kwetsbare groepen',
+            'Investeren in gezinnen',
+            'Balans tussen geloof en politiek',
+          ],
+          image: logoCU,
+        },
       ],
       selectedParty: null,
     };
@@ -118,11 +178,11 @@ export default {
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: #fff; /* Achtergrondkleur is nu wit */
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
-  color: black;
+  color: black; /* Zwarte tekst */
 }
 
 h1 {
@@ -138,12 +198,16 @@ h1 {
 }
 
 .party-item {
-  background-color: #f9f9f9;
+  background-color: #f9f9f9; /* Achtergrondkleur van de partijitem is lichtgrijs */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .party-item:hover {
@@ -152,13 +216,14 @@ h1 {
 }
 
 .party-logo {
-  width: 100px;
-  height: auto;
-  margin-bottom: 10px;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 15px;
 }
 
 button {
-  margin-top: 10px;
+  margin-top: 20px;
   padding: 10px 15px;
   background-color: #ffd700;
   color: #002f6c;
@@ -223,6 +288,11 @@ button:hover {
   margin-bottom: 10px;
 }
 
+.footer-section p,
+.footer-section ul {
+  font-size: 1rem;
+}
+
 .footer-section ul {
   list-style: none;
   padding-left: 0;
@@ -252,4 +322,5 @@ button:hover {
   font-size: 0.9rem;
   color: #ddd;
 }
+
 </style>
