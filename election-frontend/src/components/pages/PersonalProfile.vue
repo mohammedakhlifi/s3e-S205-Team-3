@@ -9,13 +9,6 @@
         <p class="info">Voorstander: {{ editMode ? editedUser.voorstander : user.voorstander }} </p>
         <p class="info">Provincie, Stad: {{ editMode ? editedUser.province : user.province }}, {{ editMode ? editedUser.city : user.city }}</p>
 
-      <!-- profielfoto   -->
-      <div v-if="editMode">
-        <input type="file" @change="handleFileChange" accept="image/*" />
-        <button @click="uploadProfilePicture">Upload Foto</button>
-      </div>
-
-
       </div>
 
       <!--Gegevens sectie-->
@@ -164,28 +157,6 @@ export default defineComponent({
       this.$delete(this.editedUser, socialKey);
     },
 
-    handleFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.selectedFile = file;
-        this.previewImage = URL.createObjectURL(file) // Toon een voorbeeld
-      }
-    },
-    //async uploadProfilePicture() {
-      //if (!this.selectedFile) {
-       // alert('Selecteer een foto voordat je uploadt.');
-        //return;
-      //}
-
-      //const formData = new FormData();
-      //formData.append(`profilePicture`, this.selectedFile);
-
-      //try {
-        //const response = await axios.post()
-     // }
-
-    //},
-
   },
 });
 </script>
@@ -320,8 +291,8 @@ export default defineComponent({
   position: absolute; /* Position it relative to #mySocials */
   bottom: 10px; /* Adjust as needed for spacing */
   right: 10px; /* Adjust as needed for spacing */
-  width: 10vw;
-  background-color: #007bff; /* Optional: button color */
+  width: 6vw;
+  background-color: #2673c5; /* Optional: button color */
   color: white;
   border: none;
   padding: 10px;
