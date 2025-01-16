@@ -56,11 +56,10 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.findByEmail(email);
-        System.out.println(user.getName());
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(404).body(null); // Gebruiker niet gevonden
+            return ResponseEntity.status(404).body(null); // User not found
         }
     }
 
@@ -71,15 +70,17 @@ public class UserController {
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(404).body(null); // Gebruiker niet gevonden
+            return ResponseEntity.status(404).body(null); // User not found
         }
     }
 
+    // Update user information
     @PutMapping("/user/update")
     public ResponseEntity<String> updateUser(@RequestBody User updatedUser) {
         try {
             User existingUser = userService.findByEmail(updatedUser.getEmail());
             if (existingUser != null) {
+                // Update user fields
                 existingUser.setName(updatedUser.getName());
                 existingUser.setFirstname(updatedUser.getFirstname());
                 existingUser.setLastname(updatedUser.getLastname());
@@ -91,21 +92,17 @@ public class UserController {
                 existingUser.setSocial2(updatedUser.getSocial2());
                 existingUser.setSocial3(updatedUser.getSocial3());
                 existingUser.setSocial4(updatedUser.getSocial4());
-                existingUser.setProfielOmschrijving((updatedUser.getProfielOmschrijving()));
-
+                existingUser.setProfielOmschrijving(updatedUser.getProfielOmschrijving());
 
                 userService.saveUser(existingUser);
                 return ResponseEntity.ok("User updated successfully!");
             } else {
                 return ResponseEntity.status(404).body("User not found!");
             }
-
-
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating user: " + e.getMessage());
         }
     }
-
 
     // A simple token generation method (replace with JWT or other secure logic)
     private String generateToken(User user) {

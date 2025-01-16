@@ -13,13 +13,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // Save a new user or update an existing one
     public void saveUser(User user) {
-        userRepository.save(user); // Save the user in the database
+        userRepository.save(user);
     }
 
+    // Find a user by email
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email); // Find user by email
+        return userRepository.findByEmail(email);
     }
 
-    public User findByName(String name) { return userRepository.findByName(name); }
+    // Find a user by name
+    public User findByName(String name) {
+        return userRepository.findByName(name);
+    }
 }

@@ -225,7 +225,7 @@ button:hover {
 
 p {
   margin-top: 20px;
-  color: #FFFFFF;
+  color: #000000;
   font-size: 1em;
 }
 

@@ -51,7 +51,6 @@ export default {
         { name: "Quiz", url: "/quiz" },
         { name: "Forum", url: "/forum/overview" },
         { name: "Mijn Profiel", url: "/personal-profile" },
-
       ],
 
       authButtons: [
@@ -113,14 +112,14 @@ export default {
   color: white;
   text-decoration: none;
   font-weight: bold;
-  transition: color 0.3s ease, border-bottom 0.3s ease; /* Toegevoegde overgang voor rand */
+  transition: color 0.3s ease, border-bottom 0.3s ease;
   font-size: 1.1em;
 }
 
 .nav-link a:hover,
 .nav-link.active a {
-  color: #ffd700; /* Gouden kleur bij hover */
-  border-bottom: 2px solid #ffd700; /* Gouden onderlijn bij hover */
+  color: #ffd700;
+  border-bottom: 2px solid #ffd700;
 }
 
 /* Zoekbalk */
@@ -154,13 +153,13 @@ export default {
 /* Knoppen */
 .buttons {
   display: flex;
-  gap: 25px; /* Vergrote ruimte tussen knoppen */
-  align-items: center; /* Knoppen verticaal centreren */
+  gap: 25px;
+  align-items: center;
 }
 
 .login-btn,
-.signout-btn { /* Container voor knoppen (Inloggen, Registreren, Uitloggen) */
-  display: inline-block;  /* Zorg ervoor dat elke knop inline blijft */
+.signout-btn {
+  display: inline-block;
 }
 
 .login-btn button,
@@ -170,7 +169,7 @@ export default {
   font-weight: bold;
   border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Overgang voor achtergrondkleur */
+  transition: background-color 0.3s ease, color 0.3s ease;
   border: 2px solid white;
   background-color: transparent;
   color: white;
@@ -180,20 +179,20 @@ export default {
 .signout-btn button:hover,
 .login-btn button.active,
 .signout-btn button.active {
-  background-color: white; /* Achtergrond actieve knop */
-  color: #002f6c; /* Tekstkleur actieve knop */
+  background-color: white;
+  color: #002f6c;
 }
 
 /* Actieve knop */
 button.active {
-  background-color: white; /* Achtergrond actieve knop */
-  color: #002f6c; /* Tekstkleur actieve knop */
-  border-color: #002f6c; /* Kleur rand matchen met actieve staat */
+  background-color: white;
+  color: #002f6c;
+  border-color: #002f6c;
 }
 
 /* Burger Menu */
 .burger {
-  display: none; /* Standaard verborgen */
+  display: none;
   flex-direction: column;
   cursor: pointer;
 }
@@ -240,36 +239,36 @@ button.active {
 }
 
 .mobile-nav-link a:hover {
-  background-color: #ffd700; /* Achtergrond wijzigen bij hover */
+  background-color: #ffd700;
   border-radius: 20px;
-  color: #002f6c; /* Tekstkleur wijzigen bij hover */
+  color: #002f6c;
 }
 
 /* Responsief Ontwerp */
 @media (max-width: 1100px) {
   .nav-links {
-    display: none; /* Verberg navigatielinks op mobiel */
+    display: none;
   }
 
   .burger {
-    display: flex; /* Toon burgericoon op mobiel */
+    display: flex;
   }
 
   .search {
-    width: 50%; /* Pas de breedte van de zoekbalk aan */
+    width: 50%;
     margin: 0;
   }
 
   .search input {
-    width: 100%; /* Maak input volledige breedte */
+    width: 100%;
   }
 
   .buttons {
-    display: none; /* Verberg knoppen op mobiel */
+    display: none;
   }
 
   .mobile-menu {
-    display: flex; /* Toon mobiel menu */
+    display: flex;
   }
 }
 </style>
