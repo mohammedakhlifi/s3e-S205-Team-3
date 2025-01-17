@@ -57,6 +57,13 @@ public class User {
     @Column
     private String profielOmschrijving;
 
+    public User(long l, String alice, String mail) {
+    }
+
+    public User() {
+
+    }
+
 
     // Getters and Setters
     public Long getId() {

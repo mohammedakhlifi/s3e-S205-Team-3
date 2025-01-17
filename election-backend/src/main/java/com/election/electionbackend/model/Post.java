@@ -27,6 +27,16 @@ public class Post {
     @JsonManagedReference
     private List<Reply> replies;
 
+    public Post(long l, String testTopic, String testContent) {
+    }
+
+    public Post() {
+
+    }
+
+    public Post(Object o, String testTitle, String testContent, long l, String user1) {
+    }
+
     // Deze methode wordt automatisch aangeroepen wanneer een nieuwe post wordt aangemaakt
     @PrePersist
     protected void onCreate() {

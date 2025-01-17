@@ -55,7 +55,6 @@
             <option value="" disabled>Selecteer een rol</option>
             <option value="visitor">Bezoeker</option>
             <option value="user">Gebruiker</option>
-            <option value="admin">Beheerder</option>
           </select>
         </div>
 
