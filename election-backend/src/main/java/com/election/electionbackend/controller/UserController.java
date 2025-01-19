@@ -2,6 +2,7 @@ package com.election.electionbackend.controller;
 
 import com.election.electionbackend.model.User;
 import com.election.electionbackend.service.UserService;
+import com.election.electionbackend.util.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,29 +11,33 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173")  // Allow CORS for the Vue.js frontend
+@CrossOrigin(origins = "http://localhost:5173") // Allow CORS for the Vue.js frontend
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
     // Register a new user
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            // Save user with role (frontend should send the role)
+            // Set default role if not provided
             if (user.getRole() == null || user.getRole().isEmpty()) {
-                user.setRole("visitor"); // Default to 'visitor' role if not provided
+                user.setRole("visitor"); // Default to 'visitor' if no role is provided
             }
 
-            // Save the user
+            // Save the user using the UserService
             userService.saveUser(user);
-            return ResponseEntity.ok("User registered successfully!");
 
+            // Respond with success
+            return ResponseEntity.ok("User registered successfully!");
         } catch (Exception e) {
+            // Handle any errors and respond with an error message
             return ResponseEntity.status(400).body("Error registering user: " + e.getMessage());
         }
     }
@@ -42,12 +47,14 @@ public class UserController {
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user) {
         User existingUser = userService.findByEmail(user.getEmail());
         if (existingUser != null && user.getPassword().equals(existingUser.getPassword())) {
-            String token = generateToken(existingUser); // Generate a token for the session
+            // Generate JWT token for the logged-in user
+            String token = jwtUtil.generateToken(existingUser.getEmail());
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
-            response.put("role", existingUser.getRole()); // Include the role in the response
+            response.put("role", existingUser.getRole()); // Include role in the response
             return ResponseEntity.ok(response);
         } else {
+            // If authentication fails, return 401 Unauthorized
             return ResponseEntity.status(401).body(null);
         }
     }
@@ -94,6 +101,7 @@ public class UserController {
                 existingUser.setSocial4(updatedUser.getSocial4());
                 existingUser.setProfielOmschrijving(updatedUser.getProfielOmschrijving());
 
+                // Save the updated user
                 userService.saveUser(existingUser);
                 return ResponseEntity.ok("User updated successfully!");
             } else {

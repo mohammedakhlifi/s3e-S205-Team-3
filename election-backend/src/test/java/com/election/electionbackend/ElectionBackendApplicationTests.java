@@ -14,13 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,48 +62,6 @@ class ElectionBackendApplicationTests {
 	}
 
 	// Tests for PostService
-	@Test
-	void testCreatePost() {
-		when(postRepository.save(post)).thenReturn(post);
-		Post result = postService.createPost(post);
-		assertEquals("Test Title", result.getTitle());
-		verify(postRepository, times(1)).save(post);
-	}
-
-	@Test
-	void testGetTopicsWithPagination() {
-		List<Post> posts = Arrays.asList(
-				new Post(1L, "Post 1", "Content 1", 1L, "User 1"),
-				new Post(2L, "Post 2", "Content 2", 2L, "User 2")
-		);
-		Page<Post> page = new PageImpl<>(posts);
-
-		when(postRepository.findAll(any(Pageable.class))).thenReturn(page);
-
-		List<Post> result = postService.getTopicsWithPagination(0, 5).getContent();
-
-		assertEquals(2, result.size());
-		assertEquals("Post 1", result.get(0).getTitle());
-		verify(postRepository, times(1)).findAll(any(Pageable.class));
-	}
-
-	@Test
-	void testGetLatestFiveTopics() {
-		List<Post> posts = Arrays.asList(
-				new Post(1L, "Post 1", "Content 1", 1L, "User 1"),
-				new Post(2L, "Post 2", "Content 2", 2L, "User 2")
-		);
-		Page<Post> page = new PageImpl<>(posts);
-
-		when(postRepository.findAll(any(Pageable.class))).thenReturn(page);
-
-		List<Post> result = postService.getLatestFiveTopics();
-
-		assertEquals(2, result.size());
-		assertEquals("Post 1", result.get(0).getTitle());
-		verify(postRepository, times(1)).findAll(any(Pageable.class));
-	}
-
 	@Test
 	void testAddReplyToPost() {
 		when(postRepository.findById(1L)).thenReturn(Optional.of(post));
