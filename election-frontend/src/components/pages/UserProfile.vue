@@ -80,7 +80,7 @@ export default defineComponent({
     async fetchUserInfoByName() {
       try {
         const username = this.$route.params.username;
-        const response = await axios.get("https://election-backend-latest.onrender.com//api/user/name", {
+        const response = await axios.get("https://election-backend-latest.onrender.com/api/user/name", {
           params: { name: username }
         });
 

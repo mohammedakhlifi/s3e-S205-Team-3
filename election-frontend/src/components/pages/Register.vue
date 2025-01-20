@@ -137,7 +137,7 @@ export default {
   methods: {
     registerUser() {
       axios
-          .post("https://election-backend-latest.onrender.com//api/register", this.user)
+          .post("https://election-backend-latest.onrender.com/api/register", this.user)
           .then((response) => {
             this.message = response.data;
           })
