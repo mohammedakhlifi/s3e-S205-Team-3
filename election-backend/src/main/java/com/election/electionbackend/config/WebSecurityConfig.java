@@ -14,6 +14,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Disable Spring Security
         http
+                .csrf().disable()  // Disable CSRF protection (optional for APIs)
                 .authorizeRequests()
                 .anyRequest().permitAll(); // Allow all requests without authentication
 
