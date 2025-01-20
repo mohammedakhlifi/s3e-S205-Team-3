@@ -17,7 +17,7 @@
 
 publish=next
 basebranch="$1"
-if test "$#" = 2
+if  "$#" = 2
 then
 	topic="refs/heads/$2"
 else
