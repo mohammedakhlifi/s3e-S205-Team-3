@@ -87,6 +87,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 /* Main container layout */
 .election-page {

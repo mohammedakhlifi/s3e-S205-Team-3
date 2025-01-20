@@ -72,6 +72,7 @@ export default {
 };
 </script>
 
+
 <style>
 /* Algemene Navbar Styling */
 .navbar {
