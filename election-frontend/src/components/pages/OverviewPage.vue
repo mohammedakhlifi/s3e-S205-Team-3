@@ -76,8 +76,8 @@ export default {
   methods: {
     async fetchTopics(page = 0) {
       try {
-        const response = await axios.get("http://localhost:8080/api/forum/topics", {
-          params: { page, size: 5 },
+        const response = await axios.get("https://election-backend-latest.onrender.com//api/forum/topics", {
+          params: {page, size: 5},
         });
         this.topics = response.data.content;
         this.currentPage = response.data.number;
@@ -101,7 +101,7 @@ export default {
       return date.toLocaleDateString("nl-NL", options);
     },
     openRepliesModal(topic) {
-      this.currentTopic = { ...topic };
+      this.currentTopic = {...topic};
       this.showModal = true;
     },
     closeModal() {
@@ -112,7 +112,7 @@ export default {
     async submitReply(topicId) {
       try {
         if (!this.newReplyContent.trim()) return alert("De reactie mag niet leeg zijn!");
-        const response = await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
+        const response = await axios.post(`https://election-backend-latest.onrender.com//api/forum/topics/${topicId}/replies`, {
           content: this.newReplyContent.trim(),
         });
         this.currentTopic.replies.push(response.data);
@@ -293,44 +293,7 @@ h1 {
   background-color: #45a049;
 }
 
-.submit-reply-button:active {
-  background-color: #3e8e41;
-}
-
-/****************************************
- * Plus-knop styling (rechts geplaatst)
- ****************************************/
-.icon-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+.topic-reply-count {
   cursor: pointer;
-  z-index: 1000;
 }
-
-.icon-container svg {
-  transition: transform 0.3s ease;
-}
-
-.icon-container:hover svg {
-  transform: scale(1.1);
-}
-
-.custom-router-link {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-  font-weight: normal;
-}
-
-.custom-router-link:hover {
-  color: #4caf50;
-  text-decoration: underline;
-
-  .custom-router-link:focus {
-    outline: none;
-  }
-}
-
 </style>
-

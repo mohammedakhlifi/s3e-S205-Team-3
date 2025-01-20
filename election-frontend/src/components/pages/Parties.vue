@@ -1,326 +1,299 @@
 <template>
-  <div class="parties-container">
-    <h1>Politieke Partijen in Nederland</h1>
-    <div class="parties-grid">
-      <div v-for="party in parties" :key="party.name" class="party-item">
-        <img :src="party.image" :alt="party.name" class="party-logo" />
-        <h2>{{ party.name }}</h2>
-        <p><strong>Hoofd:</strong> {{ party.leader }}</p>
-        <button @click="showMoreInfo(party)">Meer info</button>
-      </div>
-    </div>
-    <div v-if="selectedParty" class="modal" @click.self="closeModal">
-      <div class="modal-content">
-        <h2>{{ selectedParty.name }}</h2>
-        <img :src="selectedParty.image" :alt="selectedParty.name" class="modal-image" />
-        <p><strong>Hoofd:</strong> {{ selectedParty.leader }}</p>
-        <p><strong>Beschrijving:</strong> {{ selectedParty.description }}</p>
-        <p><strong>Belangrijke Standpunten:</strong></p>
-        <ul>
-          <li v-for="(point, index) in selectedParty.keyPoints" :key="index">{{ point }}</li>
-        </ul>
-        <button @click="closeModal">Sluiten</button>
-      </div>
-    </div>
-  </div>
+  <div>
+    <div class="overview-container">
+      <h1>Overzicht van vragen</h1>
+      <div class="topics-list">
+        <div v-for="topic in topics" :key="topic.id" class="topic-item">
+          <div class="topic-header">
+            <div class="topic-info">
+              <h4>{{ topic.title }}</h4>
+              <p>{{ topic.content }}</p>
+              <p class="topic-date">Gepost door <router-link :to="{ name: 'UserProfile', params: { username: topic.createdBy } }" class="custom-router-link">
+                {{ topic.createdBy }}
+              </router-link> op: {{ formatDate(topic.createdAt) }}</p>
 
-  <div class="parties">
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>Contact</h3>
-          <p>Email: info@politiekgids.nl</p>
-          <p>Telefoon: +31 20 123 4567</p>
-        </div>
-        <div class="footer-section">
-          <h3>Volg Ons</h3>
-          <ul>
-            <li><a href="#" class="social-link">Facebook</a></li>
-            <li><a href="#" class="social-link">Twitter</a></li>
-            <li><a href="#" class="social-link">Instagram</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Informatie</h3>
-          <ul>
-            <li><a href="#" class="footer-link">Privacybeleid</a></li>
-            <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
-            <li><a href="#" class="footer-link">Cookiebeleid</a></li>
-          </ul>
+              <p class="topic-reply-count clickable" @click="openRepliesModal(topic)">
+                Reacties: {{ topic.replies ? topic.replies.length : 0 }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
+    </div>
+
+    <div class="pagination">
+      <button :disabled="currentPage === 0" @click="changePage(currentPage - 1)">Vorige</button>
+      <span>Pagina {{ currentPage + 1 }} van {{ totalPages }}</span>
+      <button :disabled="currentPage === totalPages - 1" @click="changePage(currentPage + 1)">Volgende</button>
+    </div>
+
+    <div class="icon-container" @click="goToForum">
+      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60" height="60" viewBox="0 0 48 48">
+        <path fill="#4caf50" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path>
+        <path fill="#fff" d="M21,14h6v20h-6V14z"></path>
+        <path fill="#fff" d="M14,21h20v6H14V21z"></path>
+      </svg>
+    </div>
+
+    <div v-if="showModal" class="modal-overlay">
+      <div class="modal">
+        <h2>Reacties voor: {{ currentTopic?.title }}</h2>
+        <div class="replies-container">
+          <div v-if="currentTopic?.replies && currentTopic.replies.length">
+            <div v-for="reply in currentTopic.replies" :key="reply.id" class="reply-item">
+              <p>{{ reply.content }}</p>
+              <p class="reply-date">Antwoord gepost op: {{ formatDate(reply.createdAt) }}</p>
+            </div>
+          </div>
+          <div v-else>
+            <p>Er zijn nog geen reacties.</p>
+          </div>
+        </div>
+        <div class="reply-input-container">
+          <textarea v-model="newReplyContent" placeholder="Schrijf je reactie..." rows="3"></textarea>
+          <button @click="submitReply(currentTopic.id)" class="submit-reply-button">Plaats reactie</button>
+        </div>
+        <button class="close-button" @click="closeModal">Sluiten</button>
       </div>
-    </footer>
+    </div>
   </div>
 </template>
 
 <script>
-import logoVVD from '@/assets/img/vvd.png';
-import logoSGP from '@/assets/img/sgp.png';
-import logoPVV from '@/assets/img/logo-pvv.jpg';
-import logoGroenLinks from '@/assets/img/groenlinks.png';
-// import logoFVD from '@/assets/img/fvd.png';
-import logoD66 from '@/assets/img/d66.png';
-import logoBBB from '@/assets/img/bbb.png';
-import logoCU from '@/assets/img/CU.png';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      parties: [
-        {
-          name: 'VVD',
-          leader: 'Dylan Yesilgöz',
-          description: 'Vrijheid en verantwoordelijkheid, economische groei, en een kleinere overheid.',
-          keyPoints: [
-            'Economische groei stimuleren',
-            'Focus op nationale veiligheid',
-            'Meer werkgelegenheid',
-          ],
-          image: logoVVD,
-        },
-        {
-          name: 'SGP',
-          leader: 'Kees van der Staaij',
-          description: 'Christelijk-politieke partij die zich inzet voor de Bijbel en het gezinsbeleid.',
-          keyPoints: [
-            'Zorg voor de zwakken in de samenleving',
-            'Behoud van christelijke normen',
-            'Aandacht voor het milieu',
-          ],
-          image: logoSGP,
-        },
-        {
-          name: 'PVV',
-          leader: 'Geert Wilders',
-          description: 'Streng immigratiebeleid en een kritische houding ten opzichte van de EU.',
-          keyPoints: [
-            'Beperken immigratie',
-            'Meer politie op straat',
-            'Strengere aanpak van criminaliteit',
-          ],
-          image: logoPVV,
-        },
-        {
-          name: 'GroenLinks',
-          leader: 'Jesse Klaver',
-          description: 'Duurzaamheid en sociale gelijkheid staan centraal in het beleid.',
-          keyPoints: [
-            'Klimaatverandering aanpakken',
-            'Eerlijke verdeling van rijkdom',
-            'Investeren in schone energie',
-          ],
-          image: logoGroenLinks,
-        },
-        {
-          name: 'Forum voor Democratie',
-          leader: 'Thierry Baudet',
-          description: 'Conservatief en eurosceptisch met nadruk op nationale soevereiniteit.',
-          keyPoints: [
-            'Afname van belastingdruk',
-            'Eurosceptisch beleid',
-            'Versterking van de nationale identiteit',
-          ],
-          // image: logoFVD,
-        },
-        {
-          name: 'D66',
-          leader: 'Rob Jetten',
-          description: 'Progressieve waarden, klimaatverandering, en onderwijsvernieuwing.',
-          keyPoints: [
-            'Investeren in onderwijs',
-            'Klimaatbeleid versterken',
-            'Meer gelijkheid in de samenleving',
-          ],
-          image: logoD66,
-        },
-        {
-          name: 'BBB',
-          leader: 'Caroline van der Plas',
-          description: 'Betrokken bij landbouw en plattelandsontwikkeling in Nederland.',
-          keyPoints: [
-            'Behoud van boerenbedrijven',
-            'Platteland versterken',
-            'Eerlijke milieumaatregelen',
-          ],
-          image: logoBBB,
-        },
-        {
-          name: 'ChristenUnie',
-          leader: 'Gert-Jan Segers',
-          description: 'Partij met een christelijk-sociaal beleid en aandacht voor kwetsbaren.',
-          keyPoints: [
-            'Zorg voor kwetsbare groepen',
-            'Investeren in gezinnen',
-            'Balans tussen geloof en politiek',
-          ],
-          image: logoCU,
-        },
-      ],
-      selectedParty: null,
+      topics: [],
+      currentPage: 0,
+      totalPages: 1,
+      showModal: false,
+      currentTopic: null,
+      newReplyContent: "",
     };
   },
   methods: {
-    showMoreInfo(party) {
-      this.selectedParty = party;
+    async fetchTopics(page = 0) {
+      try {
+        const response = await axios.get("https://election-backend-latest.onrender.com//api/forum/topics", {
+          params: {page, size: 5},
+        });
+        this.topics = response.data.content;
+        this.currentPage = response.data.number;
+        this.totalPages = response.data.totalPages;
+      } catch (error) {
+        console.error("Fout bij het ophalen van onderwerpen:", error);
+      }
+    },
+    formatDate(dateString) {
+      if (!dateString) return "Datum niet beschikbaar";
+      const date = new Date(dateString);
+      if (isNaN(date)) return "Ongeldige datum";
+
+      const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+      return date.toLocaleDateString("nl-NL", options);
+    },
+    openRepliesModal(topic) {
+      this.currentTopic = {...topic};
+      this.showModal = true;
     },
     closeModal() {
-      this.selectedParty = null;
+      this.showModal = false;
+      this.currentTopic = null;
+      this.newReplyContent = "";
     },
+    async submitReply(topicId) {
+      try {
+        if (!this.newReplyContent.trim()) return alert("De reactie mag niet leeg zijn!");
+        const response = await axios.post(`https://election-backend-latest.onrender.com//api/forum/topics/${topicId}/replies`, {
+          content: this.newReplyContent.trim(),
+        });
+        this.currentTopic.replies.push(response.data);
+        this.newReplyContent = "";
+      } catch (error) {
+        console.error("Fout bij het plaatsen van de reactie:", error);
+      }
+    },
+    changePage(page) {
+      this.fetchTopics(page);
+    },
+    goToForum() {
+      this.$router.push("/forum");
+    },
+  },
+  created() {
+    this.fetchTopics();
   },
 };
 </script>
 
 <style scoped>
-.parties-container {
-  max-width: 1200px;
-  margin: 20px auto;
+/****************************************
+ * Overzicht container styling
+ ****************************************/
+.overview-container {
+  max-width: 800px;
+  margin: 50px auto;
   padding: 20px;
-  background-color: #fff; /* Achtergrondkleur is nu wit */
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
-  color: black; /* Zwarte tekst */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 30px;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #002f6c;
 }
 
-.parties-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+.topics-list {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
-.party-item {
-  background-color: #f9f9f9; /* Achtergrondkleur van de partijitem is lichtgrijs */
+.topic-item {
+  background-color: #f9f9f9;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
-.party-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.topic-info h4 {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #4caf50;
 }
 
-.party-logo {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  margin-bottom: 15px;
-}
-
-button {
-  margin-top: 20px;
-  padding: 10px 15px;
-  background-color: #ffd700;
-  color: #002f6c;
-  border: none;
-  border-radius: 5px;
+.topic-reply-count {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #bfa500;
+.topic-reply-count:hover {
+  color: #4caf50;
 }
 
-.modal {
+/****************************************
+ * Paginering styling
+ ****************************************/
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  display: flex;
+  align-items: center;
+}
+
+/****************************************
+ * Modal styling
+ ****************************************/
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 1000;
 }
 
-.modal-content {
-  background: white;
+.modal {
+  background-color: white;
   padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 500px;
-  text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.modal-image {
-  width: 150px;
-  height: auto;
-  margin-bottom: 20px;
+.replies-container {
+  flex-grow: 1;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 15px;
 }
 
-.footer {
-  background-color: #002f6c;
-  padding: 50px 0;
-  color: white;
-  font-size: 1rem;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
-}
-
-.footer-section {
-  width: 30%;
-}
-
-.footer-section h3 {
-  font-size: 1.5rem;
+.reply-item {
+  background-color: #f1f1f1;
+  padding: 10px;
   margin-bottom: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #4caf50;
 }
 
-.footer-section p,
-.footer-section ul {
-  font-size: 1rem;
+.reply-input-container textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.footer-section ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.footer-section ul li {
-  margin-bottom: 10px;
-}
-
-.footer-section ul li a {
+.close-button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  background-color: red;
   color: white;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.footer-section ul li a:hover {
-  color: #ffd700;
+.close-button:hover {
+  background-color: darkred;
 }
 
-.footer-bottom {
-  text-align: center;
-  border-top: 1px solid #ddd;
-  padding-top: 20px;
+.submit-reply-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-.footer-bottom p {
-  font-size: 0.9rem;
-  color: #ddd;
+.submit-reply-button:hover {
+  background-color: #45a049;
 }
 
+.topic-reply-count {
+  cursor: pointer;
+}
 </style>

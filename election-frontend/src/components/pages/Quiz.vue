@@ -30,13 +30,8 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  ref,
-  reactive,
-  computed,
-} from 'vue';
+import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
+import axios from 'axios';
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
@@ -113,17 +108,9 @@ export default defineComponent({
           {
             data: Object.values(parties),
             backgroundColor: [
-              '#FF6384',
-              '#36A2EB',
-              '#FFCE56',
-              '#4BC0C0',
-              '#9966FF',
-              '#FF9F40',
-              '#B4E8C1',
-              '#76D7C4',
-              '#F5B7B1',
-              '#85C1E9',
-              '#F7DC6F',
+              '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+              '#9966FF', '#FF9F40', '#B4E8C1', '#76D7C4',
+              '#F5B7B1', '#85C1E9', '#F7DC6F',
             ],
           },
         ],
