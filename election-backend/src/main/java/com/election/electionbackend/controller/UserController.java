@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("https://election-backend-latest.onrender.com/api")
-@CrossOrigin(origins = "http://localhost:5173") // Allow CORS for the Vue.js frontend
+@RequestMapping("/api")
+@CrossOrigin(origins = "https://s3e-s205-team-3.onrender.com")  // Allow requests from your frontend domain
 public class UserController {
 
     private final UserService userService;
@@ -26,18 +26,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            // Set default role if not provided
             if (user.getRole() == null || user.getRole().isEmpty()) {
-                user.setRole("visitor"); // Default to 'visitor' if no role is provided
+                user.setRole("visitor");  // Default role if not specified
             }
-
-            // Save the user using the UserService
             userService.saveUser(user);
-
-            // Respond with success
             return ResponseEntity.ok("User registered successfully!");
         } catch (Exception e) {
-            // Handle any errors and respond with an error message
             return ResponseEntity.status(400).body("Error registering user: " + e.getMessage());
         }
     }
@@ -47,15 +41,13 @@ public class UserController {
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user) {
         User existingUser = userService.findByEmail(user.getEmail());
         if (existingUser != null && user.getPassword().equals(existingUser.getPassword())) {
-            // Generate JWT token for the logged-in user
             String token = jwtUtil.generateToken(existingUser.getEmail());
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
-            response.put("role", existingUser.getRole()); // Include role in the response
+            response.put("role", existingUser.getRole());
             return ResponseEntity.ok(response);
         } else {
-            // If authentication fails, return 401 Unauthorized
-            return ResponseEntity.status(401).body(null);
+            return ResponseEntity.status(401).body(null);  // Unauthorized if credentials are incorrect
         }
     }
 
@@ -66,7 +58,7 @@ public class UserController {
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(404).body(null); // User not found
+            return ResponseEntity.status(404).body(null);  // User not found
         }
     }
 
@@ -77,7 +69,7 @@ public class UserController {
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(404).body(null); // User not found
+            return ResponseEntity.status(404).body(null);  // User not found
         }
     }
 
@@ -87,7 +79,7 @@ public class UserController {
         try {
             User existingUser = userService.findByEmail(updatedUser.getEmail());
             if (existingUser != null) {
-                // Update user fields
+                // Update the existing user with new details
                 existingUser.setName(updatedUser.getName());
                 existingUser.setFirstname(updatedUser.getFirstname());
                 existingUser.setLastname(updatedUser.getLastname());
@@ -101,7 +93,6 @@ public class UserController {
                 existingUser.setSocial4(updatedUser.getSocial4());
                 existingUser.setProfielOmschrijving(updatedUser.getProfielOmschrijving());
 
-                // Save the updated user
                 userService.saveUser(existingUser);
                 return ResponseEntity.ok("User updated successfully!");
             } else {
@@ -112,8 +103,7 @@ public class UserController {
         }
     }
 
-    // A simple token generation method (replace with JWT or other secure logic)
     private String generateToken(User user) {
-        return user.getEmail() + "-token"; // Simplified token for demonstration purposes
+        return user.getEmail() + "-token";  // Simple token generation (replace with JWT logic)
     }
 }
