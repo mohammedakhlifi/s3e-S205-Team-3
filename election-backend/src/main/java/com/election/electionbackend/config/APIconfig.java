@@ -10,7 +10,7 @@
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
-                    .allowedOriginPatterns("http://localhost:*", "http://*.hva.nl:*")
+                    .allowedOriginPatterns("https://s3e-s205-team-3.onrender.com/*", "http://*.hva.nl:*")
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true);
