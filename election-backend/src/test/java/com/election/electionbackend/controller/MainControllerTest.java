@@ -11,11 +11,11 @@ class MainControllerTest {
     private final MainController mainController = new MainController();
 
     @Test
-    void testGetTestRoot() {
+    void testGetStatus() {
         // Act
-        Map<String, String> response = mainController.getTestRoot();
+        Map<String, String> response = mainController.getStatus();
 
         // Assert
-        assertEquals("", response.get("message"));
+        assertEquals("API is running", response.get("message"));
     }
 }

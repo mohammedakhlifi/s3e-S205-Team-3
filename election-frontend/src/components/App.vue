@@ -46,8 +46,7 @@ export default defineComponent({
     // Use Axios to fetch backend status
     async fetchBackendStatus() {
       try {
-        // Verander de URL naar de juiste endpoint
-        const response = await axios.get<BackendStatus>('https://election-backend-latest.onrender.com/api/status');
+        const response = await axios.get<BackendStatus>('/status'); // Change the URL to /status
         this.backendStatus = response.data;
       } catch (error) {
         console.error('Error fetching backend status:', error);
