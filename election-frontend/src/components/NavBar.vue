@@ -48,7 +48,7 @@ export default {
         { name: "Home", url: "/" },
         { name: "Verkiezingsresultaat", url: "/election-result" },
         { name: "Partijen", url: "/parties" },
-        { name: "Quiz", url: "/quiz" },
+        { name: "Quizz", url: "/quiz" },
         { name: "Forum", url: "/forum/overview" },
         { name: "Mijn Profiel", url: "/personal-profile" },
       ],
