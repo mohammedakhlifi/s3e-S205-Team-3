@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("https://election-backend-latest.onrender.com/api")
 @CrossOrigin(origins = "http://localhost:5173") // Allow CORS for the Vue.js frontend
 public class UserController {
 
