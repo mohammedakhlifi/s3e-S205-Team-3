@@ -16,4 +16,3 @@ public class APIconfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 }
-
