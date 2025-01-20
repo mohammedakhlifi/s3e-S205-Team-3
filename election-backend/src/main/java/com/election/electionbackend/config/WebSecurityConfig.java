@@ -12,11 +12,14 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Disable Spring Security
+        // CSRF-uitgeschakeld voor API
         http
-                .csrf().disable()  // Disable CSRF protection (optional for APIs)
-                .authorizeRequests()
-                .anyRequest().permitAll(); // Allow all requests without authentication
+                .csrf(csrf -> csrf.disable())  // CSRF-beveiliging wordt uitgeschakeld
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/api/**").permitAll()  // Sta toegang toe voor alle API-aanvragen zonder authenticatie
+                                .anyRequest().permitAll()  // Sta alle andere verzoeken toe zonder authenticatie
+                );
 
         return http.build();
     }

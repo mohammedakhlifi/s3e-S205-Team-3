@@ -25,7 +25,7 @@ import { defineComponent } from 'vue';
 import navbar from "@/components/NavBar.vue";
 import axios from 'axios';
 
-// Type for BackendStatus
+// Type voor BackendStatus
 interface BackendStatus {
   message: string;
 }
@@ -36,17 +36,17 @@ export default defineComponent({
   },
   data() {
     return {
-      backendStatus: null as BackendStatus | null, // Define backendStatus type
+      backendStatus: null as BackendStatus | null, // Definieer de backendStatus type
     };
   },
   mounted() {
-    this.fetchBackendStatus(); // Fetch the backend status when the component is mounted
+    this.fetchBackendStatus(); // Haal de backend status op wanneer de component is gemonteerd
   },
   methods: {
-    // Use Axios to fetch backend status
+    // Gebruik Axios om backend status op te halen
     async fetchBackendStatus() {
       try {
-        const response = await axios.get<BackendStatus>('/status'); // Change the URL to /status
+        const response = await axios.get<BackendStatus>('https://election-backend-latest.onrender.com/api/status');  // Gebruik het juiste pad
         this.backendStatus = response.data;
       } catch (error) {
         console.error('Error fetching backend status:', error);
