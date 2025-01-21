@@ -18,7 +18,7 @@
 
       <div class="buttons">
         <div v-if="authState.isAuthenticated" class="signout-btn">
-          <button @click="signOut">Uitloggen</button>
+          <button @click="signOut">Uitlogge</button>
         </div>
 
         <div v-else>
