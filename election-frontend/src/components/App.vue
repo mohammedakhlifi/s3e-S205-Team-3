@@ -37,6 +37,7 @@ export default defineComponent({
   data() {
     return {
       backendStatus: null as BackendStatus | null, // Define backendStatus type
+      backendURL: "https://election-backend-latest.onrender.com"
     };
   },
   mounted() {
@@ -46,7 +47,7 @@ export default defineComponent({
     // Use Axios to fetch backend status
     async fetchBackendStatus() {
       try {
-        const response = await axios.get<BackendStatus>('/test');
+        const response = await axios.get<BackendStatus>(backendUrl + '/test');
         this.backendStatus = response.data;
       } catch (error) {
         console.error('Error fetching backend status:', error);
