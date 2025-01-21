@@ -41,6 +41,7 @@ export default defineComponent({
     };
   },
   mounted() {
+    globallyaxios.defaults.baseURL = "https://election-backend-latest.onrender.com"
     this.fetchBackendStatus(); // Fetch the backend status when the component is mounted
   },
   methods: {
