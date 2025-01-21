@@ -36,7 +36,7 @@ export default defineComponent({
   },
   data() {
     return {
-      backendStatus: null as BackendStatus | null, // Define backendStatus type
+      backendStatus: null as BackendStatus | null,
       backendURL: "https://election-backend-latest.onrender.com"
     };
   },
