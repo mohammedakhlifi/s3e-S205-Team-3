@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "https://s3e-s205-team-3.onrender.com")  // Allow requests from your frontend domain
+@CrossOrigin(origins = "https://election-backend-latest.onrender.com")  // Allow requests from your frontend domain
 public class UserController {
 
     private final UserService userService;
