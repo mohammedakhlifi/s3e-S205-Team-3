@@ -93,7 +93,7 @@ export default defineComponent({
   methods: {
     async fetchUserInfoByEmail() {
       try {
-        const response = await axios.get(`https://election-backend-latest.onrender.com/api/user`, { params: { email: this.email } });
+        const response = await axios.get(`https://s3e-s205-team-3-backend.onrender.com/api/user`, { params: { email: this.email } });
         this.user = response.data;
         this.editedUser = { ...response.data };
         this.socialInputs = Object.keys(this.editedUser)
@@ -111,7 +111,7 @@ export default defineComponent({
     },
     async saveChanges() {
       try {
-        await axios.put(`https://election-backend-latest.onrender.com/api/user/update`, this.editedUser);
+        await axios.put(`https://s3e-s205-team-3-backend.onrender.com/api/user/update`, this.editedUser);
         this.user = { ...this.editedUser };
         this.editMode = false;
       } catch (error) {

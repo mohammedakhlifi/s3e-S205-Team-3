@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("https://election-backend-latest.onrender.com/api/forum")
+@RequestMapping("https://s3e-s205-team-3-backend.onrender.com/api/forum")
 public class PostController {
 
     private final PostService postService;

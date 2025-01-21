@@ -37,7 +37,7 @@ export default defineComponent({
   data() {
     return {
       backendStatus: null as BackendStatus | null,
-      backendURL: "https://election-backend-latest.onrender.com"
+      backendURL: "https://s3e-s205-team-3-backend.onrender.com"
     };
   },
   mounted() {

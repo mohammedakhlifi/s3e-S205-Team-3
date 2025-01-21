@@ -80,7 +80,7 @@ export default {
   methods: {
     async fetchTopics(page = 0) {
       try {
-        const response = await axios.get("https://election-backend-latest.onrender.com/api/forum/topics", {
+        const response = await axios.get("https://s3e-s205-team-3-backend.onrender.com/api/forum/topics", {
           params: {page, size: 5},
         });
         this.topics = response.data.content;
@@ -116,7 +116,7 @@ export default {
     async submitReply(topicId) {
       try {
         if (!this.newReplyContent.trim()) return alert("De reactie mag niet leeg zijn!");
-        const response = await axios.post(`https://election-backend-latest.onrender.com/api/forum/topics/${topicId}/replies`, {
+        const response = await axios.post(`https://s3e-s205-team-3-backend.onrender.com/api/forum/topics/${topicId}/replies`, {
           content: this.newReplyContent.trim(),
         });
         this.currentTopic.replies.push(response.data);

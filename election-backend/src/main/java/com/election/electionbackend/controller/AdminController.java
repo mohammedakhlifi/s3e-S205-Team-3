@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("https://election-backend-latest.onrender.com/api/admin") // Updated backend URL
+@RequestMapping("https://s3e-s205-team-3-backend.onrender.com/api/admin") // Updated backend URL
 public class AdminController {
 
     @Autowired
