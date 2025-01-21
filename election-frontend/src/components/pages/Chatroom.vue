@@ -15,7 +15,7 @@ export default {
     };
   },
   created() {
-    this.socket = new WebSocket("ws://https://election-backend-latest.onrender.com//chat");
+    this.socket = new WebSocket("ws://https://election-backend-latest.onrender.com/chat");
     this.socket.onmessage = (event) => {
       this.messages.push(event.data);
     };
