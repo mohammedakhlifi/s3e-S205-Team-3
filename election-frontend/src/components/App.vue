@@ -41,14 +41,14 @@ export default defineComponent({
     };
   },
   mounted() {
-    globallyaxios.defaults.baseURL = "https://election-backend-latest.onrender.com"
     this.fetchBackendStatus(); // Fetch the backend status when the component is mounted
   },
   methods: {
     // Use Axios to fetch backend status
     async fetchBackendStatus() {
       try {
-        const response = await axios.get<BackendStatus>('/test');
+        apiClient = axios.create({   baseURL: 'https://election-backend-latest.onrender.com', });
+        const response = await apiClient.get<BackendStatus>('/test');
         this.backendStatus = response.data;
       } catch (error) {
         console.error('Error fetching backend status:', error);
