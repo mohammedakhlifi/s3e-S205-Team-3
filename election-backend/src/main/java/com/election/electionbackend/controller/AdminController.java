@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("https://s3e-s205-team-3-backend.onrender.com/api/admin") // Updated backend URL
+@RequestMapping("/api/admin")
 public class AdminController {
 
     @Autowired
@@ -18,8 +18,6 @@ public class AdminController {
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        System.out.println("Users fetched: " + users);  // Log the users for debugging
-        return users;
+        return userRepository.findAll();
     }
 }

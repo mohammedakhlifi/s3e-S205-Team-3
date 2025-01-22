@@ -21,7 +21,6 @@ public class UserController {
         this.jwtUtil = jwtUtil;
     }
 
-    // Register a new user
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
@@ -35,7 +34,6 @@ public class UserController {
         }
     }
 
-    // Login user and generate a token
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user) {
         User existingUser = userService.findByEmail(user.getEmail());
@@ -46,52 +44,28 @@ public class UserController {
             response.put("role", existingUser.getRole());
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(401).body(null);  // Unauthorized if credentials are incorrect
+            return ResponseEntity.status(401).body(null);
         }
     }
 
-    // Fetch user by email
     @GetMapping("/user")
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.findByEmail(email);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.status(404).body(null);  // User not found
-        }
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.status(404).body(null);
     }
 
-    // Fetch user by name
     @GetMapping("/user/name")
     public ResponseEntity<User> getUserByName(@RequestParam String name) {
         User user = userService.findByName(name);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.status(404).body(null);  // User not found
-        }
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.status(404).body(null);
     }
 
-    // Update user information
     @PutMapping("/user/update")
     public ResponseEntity<String> updateUser(@RequestBody User updatedUser) {
         try {
             User existingUser = userService.findByEmail(updatedUser.getEmail());
             if (existingUser != null) {
-                // Update the existing user with new details
-                existingUser.setName(updatedUser.getName());
-                existingUser.setFirstname(updatedUser.getFirstname());
-                existingUser.setLastname(updatedUser.getLastname());
-                existingUser.setPassword(updatedUser.getPassword());
-                existingUser.setCity(updatedUser.getCity());
-                existingUser.setProvince(updatedUser.getProvince());
-                existingUser.setVoorstander(updatedUser.getVoorstander());
-                existingUser.setSocial1(updatedUser.getSocial1());
-                existingUser.setSocial2(updatedUser.getSocial2());
-                existingUser.setSocial3(updatedUser.getSocial3());
-                existingUser.setSocial4(updatedUser.getSocial4());
-                existingUser.setProfielOmschrijving(updatedUser.getProfielOmschrijving());
-
+                existingUser.updateDetails(updatedUser); // Use the method to update the fields
                 userService.saveUser(existingUser);
                 return ResponseEntity.ok("User updated successfully!");
             } else {
@@ -100,9 +74,5 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating user: " + e.getMessage());
         }
-    }
-
-    private String generateToken(User user) {
-        return user.getEmail() + "-token";  // Simple token generation (replace with JWT logic)
     }
 }

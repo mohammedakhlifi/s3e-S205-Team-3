@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("https://s3e-s205-team-3-backend.onrender.com/api/forum")
+@RequestMapping("/api/forum")
 public class PostController {
 
     private final PostService postService;
@@ -20,9 +20,8 @@ public class PostController {
     }
 
     @GetMapping("/topics")
-    public Page<Post> getTopicsWithPagination(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
+    public Page<Post> getTopicsWithPagination(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "5") int size) {
         return postService.getTopicsWithPagination(page, size);
     }
 
