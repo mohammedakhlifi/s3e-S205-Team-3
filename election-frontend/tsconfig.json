@@ -1,36 +1,30 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
     "lib": ["dom", "esnext"],
     "allowJs": true,
     "jsx": "preserve",
+    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "noEmit": true,
-    "baseUrl": ".",
+    "types": ["vite/client"],
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
-    },
-    "types": [
-      "vuex/types"
-    ]
+    }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
+    "src/**/*",
     "src/**/*.vue"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    }
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }
