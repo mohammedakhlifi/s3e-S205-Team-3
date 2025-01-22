@@ -17,4 +17,8 @@ public class MainController {
         response.put("message", "API is running");
         return response;
     }
+
+    public Map<String, String> getTestRoot() {
+        return Map.of();
+    }
 }

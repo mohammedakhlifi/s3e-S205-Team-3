@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./election-backend  # Verander naar de juiste backend map
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+  frontend:
+    build:
+      context: ./election-frontend  # Verander naar de juiste frontend map
+    ports:
+      - "5173:5173"
+    environment:
+      - VUE_APP_API_URL=http://localhost:8080

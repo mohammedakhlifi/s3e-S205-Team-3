@@ -1,13 +1,14 @@
-# Use a newer version of Java (e.g., openjdk:17)
-FROM openjdk:17-jdk
+# Gebruik een Java 17 image als basis
+FROM openjdk:17-jdk-slim
 
+# Zet de werkdirectory naar /app
 WORKDIR /app
 
-# Copy the generated JAR file from the target directory
-COPY target/election-backend-0.0.1-SNAPSHOT.jar app.jar
+# Kopieer de jar file naar de container (vervang de naam met de juiste jar-bestandnaam)
+COPY target/your-spring-boot-app.jar app.jar
 
-# Expose port 8080 for communication
+# Exposeer poort 8080
 EXPOSE 8080
 
-# Command to run the app
+# Start de Spring Boot app
 ENTRYPOINT ["java", "-jar", "app.jar"]
