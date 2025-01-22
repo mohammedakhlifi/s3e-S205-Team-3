@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173") // Allow CORS for the Vue.js frontend
+@CrossOrigin(origins = "https://s3e-s205-team-3.onrender.com") // Allow CORS for the Vue.js frontend
 public class UserController {
 
     private final UserService userService;

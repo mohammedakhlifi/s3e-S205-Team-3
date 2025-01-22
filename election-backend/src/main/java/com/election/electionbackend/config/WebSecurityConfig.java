@@ -16,7 +16,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")  // Apply to all endpoints
-                .allowedOrigins("http://localhost:5173", "http://*.hva.nl:*")  // Allow both localhost and frontend Docker container
+                .allowedOrigins("http://localhost:5173", "http://*.hva.nl:*", "https://s3e-s205-team-3.onrender.com:*")  // Allow both localhost and frontend Docker container
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Content-Type", "Authorization")
                 .allowCredentials(true); // Allow credentials if needed
