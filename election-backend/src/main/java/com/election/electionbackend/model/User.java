@@ -1,8 +1,6 @@
 package com.election.electionbackend.model;
 
 import jakarta.persistence.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import java.time.LocalDate;
 
 @Entity
@@ -13,88 +11,61 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
-    private String password;
+
+    @Column(nullable = false)
+    private String password; // Store hashed password
+
+    @Column(nullable = false)
     private LocalDate birthDate;
+
+    @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false)
     private String province;
-    private String role;
-    private String supporter;
-    private String firstName;
-    private String lastName;
+
+    @Column(nullable = false)
+    private String role; // New role field
+
+    @Column
+    private String voorstander;
+
+    @Column
+    private String firstname;
+
+    @Column
+    private String lastname;
+
+    //Columns for social media platforms
+    @Column
     private String social1;
+
+    @Column
     private String social2;
+
+    @Column
     private String social3;
+
+    @Column
     private String social4;
-    private String profileDescription;
 
-    // Constructor met 3 argumenten (id, name, email)
-    public User(Long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
+    @Column
+    private String profielOmschrijving;
+
+    public User(long l, String alice, String mail) {
     }
 
-    // Standaard constructor
-    public User() {}
+    public User() {
 
-    // Nieuwe method om de details van de gebruiker bij te werken
-    public void updateDetails(User updatedUser) {
-        if (updatedUser.getName() != null) {
-            this.name = updatedUser.getName();
-        }
-        if (updatedUser.getEmail() != null) {
-            this.email = updatedUser.getEmail();
-        }
-        if (updatedUser.getPassword() != null) {
-            this.password = updatedUser.getPassword(); // Bewerk wachtwoord
-        }
-        if (updatedUser.getBirthDate() != null) {
-            this.birthDate = updatedUser.getBirthDate();
-        }
-        if (updatedUser.getCity() != null) {
-            this.city = updatedUser.getCity();
-        }
-        if (updatedUser.getProvince() != null) {
-            this.province = updatedUser.getProvince();
-        }
-        if (updatedUser.getRole() != null) {
-            this.role = updatedUser.getRole();
-        }
-        if (updatedUser.getSupporter() != null) {
-            this.supporter = updatedUser.getSupporter();
-        }
-        if (updatedUser.getFirstName() != null) {
-            this.firstName = updatedUser.getFirstName();
-        }
-        if (updatedUser.getLastName() != null) {
-            this.lastName = updatedUser.getLastName();
-        }
-        if (updatedUser.getSocial1() != null) {
-            this.social1 = updatedUser.getSocial1();
-        }
-        if (updatedUser.getSocial2() != null) {
-            this.social2 = updatedUser.getSocial2();
-        }
-        if (updatedUser.getSocial3() != null) {
-            this.social3 = updatedUser.getSocial3();
-        }
-        if (updatedUser.getSocial4() != null) {
-            this.social4 = updatedUser.getSocial4();
-        }
-        if (updatedUser.getProfileDescription() != null) {
-            this.profileDescription = updatedUser.getProfileDescription();
-        }
     }
 
-    // Versleuteling van wachtwoord
-    public void encryptPassword() {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(this.password);
-    }
 
-    // Getters en Setters
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -159,67 +130,45 @@ public class User {
         this.role = role;
     }
 
-    public String getSupporter() {
-        return supporter;
+    public String getVoorstander() { return voorstander; }
+
+    public void setVoorstander(String voorstander) { this.voorstander = voorstander; }
+
+
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setSupporter(String supporter) {
-        this.supporter = supporter;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
+    public String getSocial1() { return social1; }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public void setSocial1(String social1) {this.social1 = social1;}
 
-    public String getSocial1() {
-        return social1;
-    }
+    public String getSocial2() { return social2;}
 
-    public void setSocial1(String social1) {
-        this.social1 = social1;
-    }
+    public void setSocial2(String social2) {this.social2 = social2;}
 
-    public String getSocial2() {
-        return social2;
-    }
+    public String getSocial3() { return social3; }
 
-    public void setSocial2(String social2) {
-        this.social2 = social2;
-    }
+    public void setSocial3(String social3) {this.social3 = social3;}
 
-    public String getSocial3() {
-        return social3;
-    }
+    public String getSocial4() { return social4;}
 
-    public void setSocial3(String social3) {
-        this.social3 = social3;
-    }
+    public void setSocial4(String social4) {this.social4 = social4;}
 
-    public String getSocial4() {
-        return social4;
-    }
+    public String getProfielOmschrijving()  { return profielOmschrijving; }
 
-    public void setSocial4(String social4) {
-        this.social4 = social4;
-    }
-
-    public String getProfileDescription() {
-        return profileDescription;
-    }
-
-    public void setProfileDescription(String profileDescription) {
-        this.profileDescription = profileDescription;
-    }
+    public void setProfielOmschrijving(String profielOmschrijving) {this.profielOmschrijving = profielOmschrijving;}
 }
+

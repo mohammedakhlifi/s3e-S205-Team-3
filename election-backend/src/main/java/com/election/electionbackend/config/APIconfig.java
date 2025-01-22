@@ -10,9 +10,9 @@ public class APIconfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "http://frontend:5173")  // Allow frontend Docker container
+                .allowedOriginPatterns("http://localhost:*", "http://*.hva.nl:*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true);  // Allow credentials if needed
+                .allowCredentials(true);
     }
 }
