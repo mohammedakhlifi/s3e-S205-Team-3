@@ -1,7 +1,11 @@
 build:
   docker:
-    frontend: ./frontend/Dockerfile  # Verwijs naar de Dockerfile in de frontend directory
-    backend: ./backend/Dockerfile    # Verwijs naar de Dockerfile in de backend directory
+    frontend:
+      context: ./election-frontend  # Verwijs naar de frontend map
+      dockerfile: Dockerfile  # Verwijs naar de Dockerfile in de frontend map
+    backend:
+      context: ./election-backend  # Verwijs naar de backend map
+      dockerfile: Dockerfile  # Verwijs naar de Dockerfile in de backend map
 
 release:
   command:
@@ -12,6 +16,7 @@ run:
     command:
       - docker-compose run frontend  # Draai de frontend container
     image: frontend-image  # Geef het frontend image een naam
+
   backend:
     command:
       - docker-compose run backend  # Draai de backend container

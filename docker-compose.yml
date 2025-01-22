@@ -1,19 +1,17 @@
-version: '3.8'
-
 services:
   frontend:
     build:
-      context: ./frontend  # Verander dit naar je frontend directory
+      context: ./election-frontend  # Verwijs naar je frontend directory
+      dockerfile: Dockerfile  # Zorg ervoor dat dit klopt naar de Dockerfile in de frontend directory
     ports:
       - "80:80"
-    depends_on:
-      - backend
     networks:
       - app-network
 
   backend:
     build:
-      context: ./backend  # Verander dit naar je backend directory
+      context: ./election-backend  # Verwijs naar je backend directory
+      dockerfile: Dockerfile  # Zorg ervoor dat dit klopt naar de Dockerfile in de backend directory
     ports:
       - "8080:8080"
     networks:
