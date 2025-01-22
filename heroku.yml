@@ -1,23 +1,16 @@
 build:
   docker:
     frontend:
-      context: ./election-frontend  # Verwijs naar de frontend map
-      dockerfile: Dockerfile  # Verwijs naar de Dockerfile in de frontend map
+      dockerfile: ./election-frontend/Dockerfile
     backend:
-      context: ./election-backend  # Verwijs naar de backend map
-      dockerfile: Dockerfile  # Verwijs naar de Dockerfile in de backend map
-
-release:
-  command:
-    - docker-compose up -d  # Start zowel de frontend als de backend met Docker Compose
+      dockerfile: ./election-backend/Dockerfile
 
 run:
   web:
     command:
-      - docker-compose run frontend  # Draai de frontend container
-    image: frontend-image  # Geef het frontend image een naam
-
+      - docker-compose run frontend
+    image: frontend-image
   backend:
     command:
-      - docker-compose run backend  # Draai de backend container
-    image: backend-image  # Geef het backend image een naam
+      - docker-compose run backend
+    image: backend-image
