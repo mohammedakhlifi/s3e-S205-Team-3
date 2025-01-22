@@ -1,12 +1,16 @@
 build:
   docker:
-    frontend: ./frontend/Dockerfile  # Verwijs naar de Dockerfile voor de frontend
-    backend: ./backend/Dockerfile  # Verwijs naar de Dockerfile voor de backend
+    frontend: ./frontend/Dockerfile  # Verwijs naar de Dockerfile in de frontend directory
+    backend: ./backend/Dockerfile  # Verwijs naar de Dockerfile in de backend directory
 
 release:
   command:
     - docker-compose up -d  # Start zowel de frontend als de backend met Docker Compose
 
 run:
-  web: docker-compose run frontend  # Hier draai je de frontend container
-  backend: docker-compose run backend  # Hier draai je de backend container
+  web:
+    command: docker-compose run frontend  # Draai de frontend container
+    image: "frontend-image"  # Geef het image een naam
+  backend:
+    command: docker-compose run backend  # Draai de backend container
+    image: "backend-image"  # Geef het image een naam
