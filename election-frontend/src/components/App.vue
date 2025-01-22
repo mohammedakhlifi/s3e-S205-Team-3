@@ -40,7 +40,7 @@ export default defineComponent({
   methods: {
     // Use Axios to fetch backend status
     fetchBackendStatus() {
-      axios.get('http://localhost:8080/test')
+      axios.get('https://election-backend-i358.onrender.com/test')
           .then(response => {
             this.backendStatus = response.data;
           })
