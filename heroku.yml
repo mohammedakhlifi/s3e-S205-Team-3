@@ -9,8 +9,8 @@ run:
   web:
     command:
       - docker-compose run frontend
-    image: frontend-image
+    image: election-frontend:latest  # Gebruik de juiste frontend image
   backend:
     command:
       - docker-compose run backend
-    image: backend-image
+    image: election-backend:latest  # Gebruik de juiste backend image
