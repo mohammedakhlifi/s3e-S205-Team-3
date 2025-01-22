@@ -1,18 +1,24 @@
-version: '3'
+version: '3.8'
 
 services:
-  backend:
-    build:
-      context: ./election-backend  # Verander naar de juiste backend map
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
-
   frontend:
     build:
-      context: ./election-frontend  # Verander naar de juiste frontend map
+      context: ./frontend  # Verander dit naar je frontend directory
     ports:
-      - "5173:5173"
-    environment:
-      - VUE_APP_API_URL=http://localhost:8080
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend  # Verander dit naar je backend directory
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

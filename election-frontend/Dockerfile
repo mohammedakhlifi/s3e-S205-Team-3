@@ -1,25 +1,25 @@
-# Gebruik een Node.js image om te bouwen
+# Gebruik een Node.js versie 18 (of hoger)
 FROM node:18 AS build
 
-# Zet de werkdirectory naar /app
+# Stel werkmap in
 WORKDIR /app
 
-# Kopieer de package.json en installeer dependencies
-COPY package*.json ./
+# Kopieer package.json en package-lock.json en installeer afhankelijkheden
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Kopieer de rest van de bestanden en bouw de applicatie
+# Kopieer de rest van de applicatie en bouw de productieversie
 COPY . .
 RUN npm run build
 
-# Gebruik een Nginx image om de gecompileerde bestanden te serveren
+# Gebruik een server zoals Nginx om de gebuilde bestanden te serveren
 FROM nginx:alpine
 
-# Kopieer de build van de vorige stage naar de Nginx container
+# Kopieer de gebuilde bestanden naar de Nginx-webserver
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Exposeer poort 80
 EXPOSE 80
 
-# Start Nginx
+# Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]

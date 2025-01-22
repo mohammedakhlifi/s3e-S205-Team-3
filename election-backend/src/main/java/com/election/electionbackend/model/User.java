@@ -1,6 +1,8 @@
 package com.election.electionbackend.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.time.LocalDate;
 
 @Entity
@@ -46,7 +48,7 @@ public class User {
             this.email = updatedUser.getEmail();
         }
         if (updatedUser.getPassword() != null) {
-            this.password = updatedUser.getPassword();
+            this.password = updatedUser.getPassword(); // Bewerk wachtwoord
         }
         if (updatedUser.getBirthDate() != null) {
             this.birthDate = updatedUser.getBirthDate();
@@ -84,6 +86,12 @@ public class User {
         if (updatedUser.getProfileDescription() != null) {
             this.profileDescription = updatedUser.getProfileDescription();
         }
+    }
+
+    // Versleuteling van wachtwoord
+    public void encryptPassword() {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(this.password);
     }
 
     // Getters en Setters

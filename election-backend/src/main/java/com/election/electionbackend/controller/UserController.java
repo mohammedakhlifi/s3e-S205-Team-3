@@ -4,6 +4,7 @@ import com.election.electionbackend.model.User;
 import com.election.electionbackend.service.UserService;
 import com.election.electionbackend.util.JwtUtil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -27,7 +28,10 @@ public class UserController {
             if (user.getRole() == null || user.getRole().isEmpty()) {
                 user.setRole("visitor");  // Default role if not specified
             }
+
+            user.encryptPassword();  // Encrypt the password before saving it
             userService.saveUser(user);
+
             return ResponseEntity.ok("User registered successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Error registering user: " + e.getMessage());
@@ -37,11 +41,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user) {
         User existingUser = userService.findByEmail(user.getEmail());
-        if (existingUser != null && user.getPassword().equals(existingUser.getPassword())) {
+
+        if (existingUser != null && new BCryptPasswordEncoder().matches(user.getPassword(), existingUser.getPassword())) {
             String token = jwtUtil.generateToken(existingUser.getEmail());
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             response.put("role", existingUser.getRole());
+
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(401).body(null);
@@ -67,6 +73,7 @@ public class UserController {
             if (existingUser != null) {
                 existingUser.updateDetails(updatedUser); // Use the method to update the fields
                 userService.saveUser(existingUser);
+
                 return ResponseEntity.ok("User updated successfully!");
             } else {
                 return ResponseEntity.status(404).body("User not found!");

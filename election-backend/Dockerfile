@@ -1,14 +1,14 @@
-# Gebruik een Java 17 image als basis
+# Gebruik een JDK-afbeelding als basis
 FROM openjdk:17-jdk-slim
 
-# Zet de werkdirectory naar /app
+# Stel de werkdirectory in
 WORKDIR /app
 
-# Kopieer de jar file naar de container (vervang de naam met de juiste jar-bestandnaam)
-COPY target/your-spring-boot-app.jar app.jar
+# Kopieer de jar file naar de container
+COPY target/election-backend-0.0.1-SNAPSHOT.jar app.jar
 
 # Exposeer poort 8080
 EXPOSE 8080
 
-# Start de Spring Boot app
+# Voer de jar uit
 ENTRYPOINT ["java", "-jar", "app.jar"]

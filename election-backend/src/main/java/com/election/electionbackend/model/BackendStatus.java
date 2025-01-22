@@ -1,10 +1,9 @@
-package com.election.electionbackend.model; // Update to your package
+package com.election.electionbackend.model;
 
 public class BackendStatus {
-
     private String message;
 
-    // Getter and Setter methods
+    // Getter en setter voor message
     public String getMessage() {
         return message;
     }

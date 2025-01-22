@@ -1,81 +1,53 @@
-  <template>
-    <div class="login-container">
-      <div class="login-box">
-        <h2>{{ isLoggedIn ? 'Welkom, ' + email : 'Inloggen' }}</h2>
+<template>
+  <div class="login-container">
+    <div class="login-box">
+      <h2>{{ isLoggedIn ? 'Welkom, ' + email : 'Inloggen' }}</h2>
 
-        <form v-if="!isLoggedIn" @submit.prevent="loginUser">
-          <div class="form-group">
-            <label for="email">E-mail</label>
-            <input type="email" v-model="login.email" id="email" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Wachtwoord</label>
-            <input type="password" v-model="login.password" id="password" required />
-          </div>
-          <button type="submit">Inloggen</button>
-        </form>
+      <form v-if="!isLoggedIn" @submit.prevent="loginUser">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" v-model="login.email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Wachtwoord</label>
+          <input type="password" v-model="login.password" id="password" required />
+        </div>
+        <button type="submit">Inloggen</button>
+      </form>
 
-        <!-- Sign Out Button -->
-        <button v-if="isLoggedIn" @click="signOut">Uitloggen</button>
+      <button v-if="isLoggedIn" @click="signOut">Uitloggen</button>
 
-        <p v-if="message">{{ message }}</p>
-      </div>
+      <p v-if="message">{{ message }}</p>
     </div>
+  </div>
+</template>
 
-    <!-- Footer Sectie -->
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>Contact</h3>
-          <p>Email: info@politiekgids.nl</p>
-          <p>Telefoon: +31 20 123 4567</p>
-        </div>
-        <div class="footer-section">
-          <h3>Volg Ons</h3>
-          <ul>
-            <li><a href="#" class="social-link">Facebook</a></li>
-            <li><a href="#" class="social-link">Twitter</a></li>
-            <li><a href="#" class="social-link">Instagram</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Informatie</h3>
-          <ul>
-            <li><a href="#" class="footer-link">Privacybeleid</a></li>
-            <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
-            <li><a href="#" class="footer-link">Cookiebeleid</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
-      </div>
-    </footer>
-  </template>
+<script>
+import axios from 'axios';
 
-  <script>
-  import axios from 'axios';
-
-  export default {
-    data() {
-      return {
-        login: {
-          email: '',
-          password: '',
-        },
-        message: '',
-        email: localStorage.getItem('email') || '',
-      };
-    },
-    computed: {
-      isLoggedIn() {
-        return !!localStorage.getItem('token');
+export default {
+  data() {
+    return {
+      login: {
+        email: '',
+        password: '',
       },
+      message: '',
+      email: localStorage.getItem('email') || '',
+    };
+  },
+  computed: {
+    isLoggedIn() {
+      return !!localStorage.getItem('token');
     },
-    methods: {
-      async loginUser() {
-        try {
-          const response = await axios.post('http://localhost:8080/api/login', this.login);
+  },
+  methods: {
+    async loginUser() {
+      try {
+        const response = await axios.post(`${process.env.VUE_APP_API_URL}/api/login`, this.login);
+
+        // Controleer of de response van de server een 200 is
+        if (response.status === 200) {
           const { token, role } = response.data;
 
           localStorage.setItem('token', token);
@@ -83,31 +55,36 @@
           localStorage.setItem('email', this.login.email);
           this.email = this.login.email;
           this.message = 'Inloggen geslaagd!';
-          console.log("Ingelogd met e-mailadres:", this.login.email); // Console loggen van de e-mail
+          console.log("Ingelogd met e-mailadres:", this.login.email);
+
           if (role === 'admin') {
             this.$router.push('/admin');
           } else {
             this.$router.push('/');
           }
-        } catch (error) {
+        } else {
           this.message = 'Inloggen mislukt. Probeer het opnieuw.';
-          console.error(error);
         }
-      },
-
-      signOut() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        localStorage.removeItem('email');
-        this.email = '';
-        this.message = 'U bent succesvol uitgelogd.';
-        this.$router.push('/login'); // Navigeren naar de loginpagina
-      },
+      } catch (error) {
+        this.message = 'Inloggen mislukt. Probeer het opnieuw.';
+        console.error(error.response ? error.response.data : error);
+      }
     },
-  };
-  </script>
 
-  <style scoped>
+    signOut() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('email');
+      this.email = '';
+      this.message = 'U bent succesvol uitgelogd.';
+      this.$router.push('/login');
+    },
+  },
+};
+</script>
+
+
+<style scoped>
   .login-container {
     display: flex;
     justify-content: center;

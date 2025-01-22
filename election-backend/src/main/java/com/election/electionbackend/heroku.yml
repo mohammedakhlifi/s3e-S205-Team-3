@@ -1,0 +1,12 @@
+build:
+  docker:
+    frontend: ./frontend/Dockerfile  # Verwijs naar de Dockerfile voor de frontend
+    backend: ./backend/Dockerfile  # Verwijs naar de Dockerfile voor de backend
+
+release:
+  command:
+    - docker-compose up -d  # Start zowel de frontend als de backend met Docker Compose
+
+run:
+  web: docker-compose run frontend  # Hier draai je de frontend container
+  backend: docker-compose run backend  # Hier draai je de backend container

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")  // Verander naar je basis-API pad
+@RequestMapping("/api")  // Basis-API pad
 public class MainController {
 
     @GetMapping("/status")  // Endpoint zonder "test", verandert in /status
@@ -16,9 +16,5 @@ public class MainController {
         Map<String, String> response = new HashMap<>();
         response.put("message", "API is running");
         return response;
-    }
-
-    public Map<String, String> getTestRoot() {
-        return Map.of();
     }
 }

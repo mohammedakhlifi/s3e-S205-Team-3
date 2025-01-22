@@ -16,12 +16,16 @@ public class JwtUtil {
     private final long jwtExpirationMs = 3600000; // 1 hour in milliseconds
 
     public String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(secretKey)
-                .compact();
+        try {
+            return Jwts.builder()
+                    .setSubject(username)
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                    .signWith(secretKey)
+                    .compact();
+        } catch (Exception e) {
+            throw new RuntimeException("Error generating JWT token", e); // Foutafhandelingsmechanisme
+        }
     }
 
     public String extractUsername(String token) {
