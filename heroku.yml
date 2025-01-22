@@ -1,16 +1,18 @@
 build:
   docker:
     frontend:
+      context: ./election-frontend
       dockerfile: ./election-frontend/Dockerfile
     backend:
+      context: ./election-backend
       dockerfile: ./election-backend/Dockerfile
 
 run:
   web:
     command:
       - docker-compose run frontend
-    image: election-frontend:latest  # Gebruik de juiste frontend image
+    image: election-frontend:latest
   backend:
     command:
       - docker-compose run backend
-    image: election-backend:latest  # Gebruik de juiste backend image
+    image: election-backend:latest
