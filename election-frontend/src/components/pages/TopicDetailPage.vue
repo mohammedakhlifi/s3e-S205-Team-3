@@ -39,7 +39,7 @@ export default {
     async fetchPost() {
       try {
         const response = await axios.get(
-            `https://s3e-s205-team-3-backend.onrender.com/api/forum/topics/${this.$route.params.id}`
+            `http://localhost:8080/api/forum/topics/${this.$route.params.id}`
         );
         this.post = response.data;
       } catch (error) {
@@ -54,7 +54,7 @@ export default {
 
       try {
         const response = await axios.post(
-            `https://s3e-s205-team-3-backend.onrender.com/api/forum/topics/${this.$route.params.id}/replies`,
+            `http://localhost:8080/api/forum/topics/${this.$route.params.id}/replies`,
             { content: this.newReply }
         );
         this.post.replies.push(response.data); // Voeg de nieuwe reactie toe

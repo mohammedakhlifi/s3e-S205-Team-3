@@ -8,6 +8,7 @@
         <p class="info">Naam: {{ editMode ? editedUser.name : user.name }}</p>
         <p class="info">Voorstander: {{ editMode ? editedUser.voorstander : user.voorstander }} </p>
         <p class="info">Provincie, Stad: {{ editMode ? editedUser.province : user.province }}, {{ editMode ? editedUser.city : user.city }}</p>
+
       </div>
 
       <!--Gegevens sectie-->
@@ -15,13 +16,13 @@
         <p class="section-title" v-if="!editMode">Mijn Gegevens</p>
         <p v-if="editMode" class="section-title">Nieuwe Gegevens</p>
         <div id="editMode" v-if="editMode">
-          <input class="editField" v-model="editedUser.name" placeholder="Gebruikersnaam"/>
-          <input class="editField" v-model="editedUser.firstname" placeholder="Voornaam"/>
+         <input class="editField" v-model="editedUser.name" placeholder="Gebruikersnaam"/>
+          <input class="editField" v-model="editedUser.firstname"  placeholder="Voornaam"/>
           <input class="editField" v-model="editedUser.lastname" placeholder="Achternaam" />
           <input class="editField" v-model="editedUser.password" placeholder="Wachtwoord"/>
           <input class="editField" v-model="editedUser.city" placeholder="Stad"/>
           <input class="editField" v-model="editedUser.province" placeholder="Provincie" />
-          <input class="editField" v-model="editedUser.voorstander" placeholder="Partij Voorstander" />
+          <input class="editField" v-model="editedUser.voorstander"  placeholder="Partij Voorstander" />
         </div>
         <div v-else>
           <p class="details">Gebruikersnaam: {{ user.name }}</p>
@@ -31,42 +32,48 @@
           <p class="details">Wachtwoord: {{ user.password }}</p>
           <p class="details">Stad: {{ user.city }}</p>
           <p class="details">Provincie: {{ user.province }}</p>
-          <p class="details">Voorstander van partij: {{ editedUser.voorstander }} </p>
+          <p class="details">Voorstander van partij: {{editedUser.voorstander}} </p>
         </div>
         <br>
         <button id="edit" v-if="!editMode" @click="toggleEdit">Bewerken</button>
-        <button class="editModeButtons" v-if="editMode" @click="saveChanges">Opslaan</button>
+        <button class="editModeButtons"  v-if="editMode" @click="saveChanges">Opslaan</button>
         <button class="editModeButtons" id="cancelButton" v-if="editMode" @click="cancelEdit">Annuleren</button>
+
       </div>
     </div>
 
-    <!--Platformen sectie-->
+
     <div class="row">
+      <!--Platformen sectie-->
       <div id="platformen">
         <p class="section-title">Platformen</p>
         <div v-if="!editMode">
-          <p class="details" v-if="!editMode && !editedUser.social1">Voeg je social media platformen toe!</p>
-          <p class="details" v-if="editedUser.social1">{{ editedUser.social1 }}</p>
-          <p class="details" v-if="editedUser.social2">{{ editedUser.social2 }}</p>
-          <p class="details" v-if="editedUser.social3">{{ editedUser.social3 }}</p>
-          <p class="details" v-if="editedUser.social4">{{ editedUser.social4 }}</p>
+        <p class="details" v-if="!editMode && !editedUser.social1" >Voeg je social media platformen toe!</p>
+        <p class="details" v-if="editedUser.social1">{{editedUser.social1}} </p>
+        <p class ="details" v-if="editedUser.social2">{{editedUser.social2}}</p>
+        <p class="details" v-if="editedUser.social3">{{editedUser.social3}}</p>
+        <p class="details" v-if="editedUser.social4">{{editedUser.social4}}</p>
         </div>
 
         <div v-if="editMode" id="mySocials">
+
           <div v-for="(social, index) in socialInputs" :key="index">
-            <input type="url" v-model="editedUser[social]" class="socials">
+                <input type="url" v-model="editedUser[social]" class="socials" >
             <button @click="removeSocialInput(index)" class="remove-btn">X</button>
           </div>
-          <button id="addSocials" @click="addSocialInput">Toevoegen</button>
+          <button id="addSocials" @click="addSocialInput"> Toevoegen</button>
+
         </div>
+
       </div>
 
       <!--Omschrijving sectie-->
       <div id="omschrijving">
         <p class="section-title">Omschrijving</p>
         <p class="details" v-if="!editMode && !editedUser.profielOmschrijving">Nog geen omschrijving</p>
-        <p v-else-if="!editMode">{{ editedUser.profielOmschrijving }}</p>
-        <textarea id="profileDesc" v-model="editedUser.profielOmschrijving" v-if="editMode"></textarea>
+        <p v-else-if="!editMode">{{editedUser.profielOmschrijving}}</p>
+        <textarea id="profileDesc"  v-model="editedUser.profielOmschrijving" v-if="editMode" />
+
       </div>
     </div>
   </div>
@@ -84,7 +91,9 @@ export default defineComponent({
       user: {},
       editedUser: {},
       editMode: false,
-      socialInputs: [], // Array for managing added socials
+      socialInputs: [] , //Array voor het bijhouden van toegevoegde socials
+      selectedFile: null, // Hier sla je het geselecteerde bestand op
+      previewImage: null, // Voor het weergeven van een voorbeeld van de afbeelding
     };
   },
   mounted() {
@@ -93,13 +102,24 @@ export default defineComponent({
   methods: {
     async fetchUserInfoByEmail() {
       try {
-        const response = await axios.get(`https://s3e-s205-team-3-backend.onrender.com/api/user`, { params: { email: this.email } });
+        const response = await axios.get(`http://localhost:8080/api/user`, {
+          params: { email: this.email }
+        });
         this.user = response.data;
-        this.editedUser = { ...response.data };
+        this.editedUser = { ...response.data,
+        voorstander: response.data.voorstander || "",
+        social1: response.data.social1 || "",
+        social2: response.data.social2 || "",
+        social3: response.data.social3 || "",
+        social4: response.data.social4 || "",
+        profielOmschrijving: response.data.profielOmschrijving || "" };
+
+
         this.socialInputs = Object.keys(this.editedUser)
-            .filter((key) => key.startsWith('social') && this.editedUser[key]);
+            .filter(key => key.startsWith(`social`) && this.editedUser[key]);
+
       } catch (error) {
-        console.error('User not found:', error);
+        console.error('User not found:', error.response.status);
       }
     },
     toggleEdit() {
@@ -111,30 +131,35 @@ export default defineComponent({
     },
     async saveChanges() {
       try {
-        await axios.put(`https://s3e-s205-team-3-backend.onrender.com/api/user/update`, this.editedUser);
+        const response = await axios.put(`http://localhost:8080/api/user/update`, this.editedUser);
         this.user = { ...this.editedUser };
         this.editMode = false;
       } catch (error) {
-        console.error('Error updating user:', error);
+        console.error('Error updating user:', error.response.status);
       }
     },
+
     addSocialInput() {
       if (this.socialInputs.length < 4) {
         this.socialInputs.push(`social${this.socialInputs.length + 1}`);
       } else {
-        alert('Je kunt alleen 4 socials toevoegen');
+        alert("je kunt alleen 4 socials toevoegen")
       }
     },
+
     removeSocialInput(index) {
       const socialKey = this.socialInputs[index];
-      this.editedUser[socialKey] = '';
-      this.socialInputs.splice(index, 1);
+      this.editedUser[socialKey] = "";
+
+      //Verwijder de socialkey uit de array
+      this.socialInputs.splice(index, 1)
+      //Verwijder de data uit editeduser
       this.$delete(this.editedUser, socialKey);
     },
+
   },
 });
 </script>
-
 
 <style scoped>
 /* Wrapper and General Styling */

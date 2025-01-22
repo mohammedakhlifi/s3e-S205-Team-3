@@ -16,15 +16,15 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Apply to all endpoints
-                .allowedOrigins("https://s3e-s205-team-3.onrender.com")  // Your frontend's URL
+                .allowedOrigins("http://localhost:5173")  // Allow localhost for local development
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Content-Type", "Authorization")
-                .allowCredentials(true); // Allow cookies or credentials
+                .allowCredentials(true); // Allow credentials if needed
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Disable Spring Security
+        // Disable Spring Security for APIs and allow all requests
         http
                 .csrf().disable()  // Disable CSRF protection (optional for APIs)
                 .authorizeRequests()

@@ -1,127 +1,111 @@
-<template>
-  <div class="login-container">
-    <div class="login-box">
-      <h2>{{ isLoggedIn ? 'Welkom, ' + email : 'Inloggen' }}</h2>
+  <template>
+    <div class="login-container">
+      <div class="login-box">
+        <h2>{{ isLoggedIn ? 'Welkom, ' + email : 'Inloggen' }}</h2>
 
-      <form v-if="!isLoggedIn" @submit.prevent="loginUser">
-        <div class="form-group">
-          <label for="email">E-mail</label>
-          <input
-              type="email"
-              v-model="login.email"
-              id="email"
-              required
-              :class="{ error: emailError }"
-          />
-          <p v-if="emailError" class="error-message">{{ emailError }}</p>
-        </div>
-        <div class="form-group">
-          <label for="password">Wachtwoord</label>
-          <input
-              type="password"
-              v-model="login.password"
-              id="password"
-              required
-              :class="{ error: passwordError }"
-          />
-          <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
-        </div>
-        <button type="submit" :disabled="loading">Inloggen</button>
-      </form>
+        <form v-if="!isLoggedIn" @submit.prevent="loginUser">
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" v-model="login.email" id="email" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Wachtwoord</label>
+            <input type="password" v-model="login.password" id="password" required />
+          </div>
+          <button type="submit">Inloggen</button>
+        </form>
 
-      <!-- Sign Out Button -->
-      <button v-if="isLoggedIn" @click="signOut">Uitloggen</button>
+        <!-- Sign Out Button -->
+        <button v-if="isLoggedIn" @click="signOut">Uitloggen</button>
 
-      <p v-if="message">{{ message }}</p>
+        <p v-if="message">{{ message }}</p>
+      </div>
     </div>
-  </div>
-</template>
 
-<script>
-import axios from "axios";
+    <!-- Footer Sectie -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: info@politiekgids.nl</p>
+          <p>Telefoon: +31 20 123 4567</p>
+        </div>
+        <div class="footer-section">
+          <h3>Volg Ons</h3>
+          <ul>
+            <li><a href="#" class="social-link">Facebook</a></li>
+            <li><a href="#" class="social-link">Twitter</a></li>
+            <li><a href="#" class="social-link">Instagram</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Informatie</h3>
+          <ul>
+            <li><a href="#" class="footer-link">Privacybeleid</a></li>
+            <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
+            <li><a href="#" class="footer-link">Cookiebeleid</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
+      </div>
+    </footer>
+  </template>
 
-export default {
-  data() {
-    return {
-      login: {
-        email: "",
-        password: "",
+  <script>
+  import axios from 'axios';
+
+  export default {
+    data() {
+      return {
+        login: {
+          email: '',
+          password: '',
+        },
+        message: '',
+        email: localStorage.getItem('email') || '',
+      };
+    },
+    computed: {
+      isLoggedIn() {
+        return !!localStorage.getItem('token');
       },
-      message: "",
-      email: localStorage.getItem("email") || "",
-      loading: false,
-      emailError: null,
-      passwordError: null,
-    };
-  },
-  computed: {
-    isLoggedIn() {
-      return !!localStorage.getItem("token");
     },
-  },
-  methods: {
-    validateForm() {
-      this.emailError = null;
-      this.passwordError = null;
+    methods: {
+      async loginUser() {
+        try {
+          const response = await axios.post('http://localhost:8080/api/login', this.login);
+          const { token, role } = response.data;
 
-      let valid = true;
-
-      if (!this.login.email || !/\S+@\S+\.\S+/.test(this.login.email)) {
-        this.emailError = "Voer een geldig e-mailadres in.";
-        valid = false;
-      }
-
-      if (!this.login.password || this.login.password.length < 6) {
-        this.passwordError = "Wachtwoord moet minimaal 6 tekens bevatten.";
-        valid = false;
-      }
-
-      return valid;
-    },
-    async loginUser() {
-      if (!this.validateForm()) return;
-
-      this.loading = true;
-      try {
-        const response = await axios.post("https://s3e-s205-team-3-backend.onrender.com/api/login", this.login);
-        const { token, role } = response.data;
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("role", role);
-        localStorage.setItem("email", this.login.email);
-
-        this.email = this.login.email;
-        this.message = "Inloggen geslaagd!";
-        console.log("Ingelogd met e-mailadres:", this.login.email);
-
-        if (role === "admin") {
-          this.$router.push("/admin");
-        } else {
-          this.$router.push("/");
+          localStorage.setItem('token', token);
+          localStorage.setItem('role', role);
+          localStorage.setItem('email', this.login.email);
+          this.email = this.login.email;
+          this.message = 'Inloggen geslaagd!';
+          console.log("Ingelogd met e-mailadres:", this.login.email); // Console loggen van de e-mail
+          if (role === 'admin') {
+            this.$router.push('/admin');
+          } else {
+            this.$router.push('/');
+          }
+        } catch (error) {
+          this.message = 'Inloggen mislukt. Probeer het opnieuw.';
+          console.error(error);
         }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          this.message = "Ongeldige inloggegevens.";
-        } else {
-          this.message = "Er is iets misgegaan. Probeer het opnieuw.";
-        }
-        console.error(error);
-      } finally {
-        this.loading = false;
-        this.login.password = ""; // Clear password after attempt
-      }
+      },
+
+      signOut() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('email');
+        this.email = '';
+        this.message = 'U bent succesvol uitgelogd.';
+        this.$router.push('/login'); // Navigeren naar de loginpagina
+      },
     },
-    signOut() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      localStorage.removeItem("email");
-      this.email = "";
-      this.message = "U bent succesvol uitgelogd.";
-      this.$router.push("/login");
-    },
-  },
-};
-</script>
+  };
+  </script>
 
   <style scoped>
   .login-container {

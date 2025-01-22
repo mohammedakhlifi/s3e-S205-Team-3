@@ -8,13 +8,9 @@
             <div class="topic-info">
               <h4>{{ topic.title }}</h4>
               <p>{{ topic.content }}</p>
-              <p class="topic-date">Gepost door
-                <router-link :to="{ name: 'UserProfile', params: { username: topic.createdBy } }"
-                             class="custom-router-link">
-                  {{ topic.createdBy }}
-                </router-link>
-                op: {{ formatDate(topic.createdAt) }}
-              </p>
+              <p class="topic-date">Gepost door <router-link :to="{ name: 'UserProfile', params: { username: topic.createdBy } }" class="custom-router-link">
+                {{ topic.createdBy }}
+              </router-link> op: {{ formatDate(topic.createdAt) }}</p>
 
               <p class="topic-reply-count clickable" @click="openRepliesModal(topic)">
                 Reacties: {{ topic.replies ? topic.replies.length : 0 }}
@@ -80,8 +76,8 @@ export default {
   methods: {
     async fetchTopics(page = 0) {
       try {
-        const response = await axios.get("https://s3e-s205-team-3-backend.onrender.com/api/forum/topics", {
-          params: {page, size: 5},
+        const response = await axios.get("http://localhost:8080/api/forum/topics", {
+          params: { page, size: 5 },
         });
         this.topics = response.data.content;
         this.currentPage = response.data.number;
@@ -105,7 +101,7 @@ export default {
       return date.toLocaleDateString("nl-NL", options);
     },
     openRepliesModal(topic) {
-      this.currentTopic = {...topic};
+      this.currentTopic = { ...topic };
       this.showModal = true;
     },
     closeModal() {
@@ -116,7 +112,7 @@ export default {
     async submitReply(topicId) {
       try {
         if (!this.newReplyContent.trim()) return alert("De reactie mag niet leeg zijn!");
-        const response = await axios.post(`https://s3e-s205-team-3-backend.onrender.com/api/forum/topics/${topicId}/replies`, {
+        const response = await axios.post(`http://localhost:8080/api/forum/topics/${topicId}/replies`, {
           content: this.newReplyContent.trim(),
         });
         this.currentTopic.replies.push(response.data);
@@ -337,3 +333,4 @@ h1 {
 }
 
 </style>
+

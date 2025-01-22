@@ -61,7 +61,7 @@ import logoVVD from '@/assets/img/vvd.png';
 import logoSGP from '@/assets/img/sgp.png';
 import logoPVV from '@/assets/img/logo-pvv.jpg';
 import logoGroenLinks from '@/assets/img/groenlinks.png';
-// import logoFVD from '@/assets/img/fvd.png';
+import logoFVD from '@/assets/img/fvd.png';
 import logoD66 from '@/assets/img/d66.png';
 import logoBBB from '@/assets/img/bbb.png';
 import logoCU from '@/assets/img/CU.png';
@@ -123,7 +123,7 @@ export default {
             'Eurosceptisch beleid',
             'Versterking van de nationale identiteit',
           ],
-          // image: logoFVD,
+          image: logoFVD,
         },
         {
           name: 'D66',

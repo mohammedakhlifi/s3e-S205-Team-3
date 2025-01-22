@@ -63,35 +63,35 @@
       <p v-if="message">{{ message }}</p>
     </div>
   </div>
-<!-- Footer Sectie -->
-<footer class="footer">
-<div class="footer-content">
-  <div class="footer-section">
-    <h3>Contact</h3>
-    <p>Email: info@politiekgids.nl</p>
-    <p>Telefoon: +31 20 123 4567</p>
-  </div>
-  <div class="footer-section">
-    <h3>Volg Ons</h3>
-    <ul>
-      <li><a href="#" class="social-link">Facebook</a></li>
-      <li><a href="#" class="social-link">Twitter</a></li>
-      <li><a href="#" class="social-link">Instagram</a></li>
-    </ul>
-  </div>
-  <div class="footer-section">
-    <h3>Informatie</h3>
-    <ul>
-      <li><a href="#" class="footer-link">Privacybeleid</a></li>
-      <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
-      <li><a href="#" class="footer-link">Cookiebeleid</a></li>
-    </ul>
-  </div>
-</div>
-<div class="footer-bottom">
-  <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
-</div>
-</footer>
+  <!-- Footer Sectie -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: info@politiekgids.nl</p>
+        <p>Telefoon: +31 20 123 4567</p>
+      </div>
+      <div class="footer-section">
+        <h3>Volg Ons</h3>
+        <ul>
+          <li><a href="#" class="social-link">Facebook</a></li>
+          <li><a href="#" class="social-link">Twitter</a></li>
+          <li><a href="#" class="social-link">Instagram</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Informatie</h3>
+        <ul>
+          <li><a href="#" class="footer-link">Privacybeleid</a></li>
+          <li><a href="#" class="footer-link">Algemene Voorwaarden</a></li>
+          <li><a href="#" class="footer-link">Cookiebeleid</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Politieke Gids. Alle rechten voorbehouden.</p>
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -137,7 +137,7 @@ export default {
   methods: {
     registerUser() {
       axios
-          .post("https://s3e-s205-team-3-backend.onrender.com/api/register", this.user)
+          .post("http://localhost:8080/api/register", this.user)
           .then((response) => {
             this.message = response.data;
           })

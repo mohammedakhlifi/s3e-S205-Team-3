@@ -1,23 +1,23 @@
 <template>
-  <div class="app-container">
-    <!-- Navbar Component -->
-    <navbar></navbar>
+<div class="app-container">
+<!-- Navbar Component -->
+<navbar></navbar>
 
-    <!-- Main Content Area (dynamically changing based on route) -->
-    <div class="content">
-      <router-view></router-view>
-    </div>
+<!-- Main Content Area (dynamically changing based on route) -->
+<div class="content">
+  <router-view></router-view>
+</div>
 
-    <!-- Display Backend Status -->
-    <div class="backend-status">
-      <div v-if="backendStatus">
-        <p>{{ backendStatus.message }}</p>
-      </div>
-      <div v-else>
-        <p>Loading backend status...</p>
-      </div>
-    </div>
+<!-- Display Backend Status -->
+<div class="backend-status">
+  <div v-if="backendStatus">
+    <p>{{ backendStatus.message }}</p>
   </div>
+  <div v-else>
+    <p>Loading backend status...</p>
+  </div>
+</div>
+</div>
 </template>
 
 <script lang="ts">
@@ -36,8 +36,7 @@ export default defineComponent({
   },
   data() {
     return {
-      backendStatus: null as BackendStatus | null,
-      backendURL: "https://s3e-s205-team-3-backend.onrender.com"
+      backendStatus: null as BackendStatus | null, // Define backendStatus type
     };
   },
   mounted() {
@@ -47,7 +46,7 @@ export default defineComponent({
     // Use Axios to fetch backend status
     async fetchBackendStatus() {
       try {
-        const response = await axios.get<BackendStatus>(`${this.backendURL}/test`);
+        const response = await axios.get<BackendStatus>('http://localhost:8080/test');
         this.backendStatus = response.data;
       } catch (error) {
         console.error('Error fetching backend status:', error);
