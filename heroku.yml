@@ -1,7 +1,7 @@
 build:
   docker:
     frontend: ./frontend/Dockerfile  # Verwijs naar de Dockerfile in de frontend directory
-    backend: ./backend/Dockerfile  # Verwijs naar de Dockerfile in de backend directory
+    backend: ./backend/Dockerfile    # Verwijs naar de Dockerfile in de backend directory
 
 release:
   command:
@@ -9,8 +9,10 @@ release:
 
 run:
   web:
-    command: docker-compose run frontend  # Draai de frontend container
-    image: "frontend-image"  # Geef het image een naam
+    command:
+      - docker-compose run frontend  # Draai de frontend container
+    image: frontend-image  # Geef het frontend image een naam
   backend:
-    command: docker-compose run backend  # Draai de backend container
-    image: "backend-image"  # Geef het image een naam
+    command:
+      - docker-compose run backend  # Draai de backend container
+    image: backend-image  # Geef het backend image een naam
