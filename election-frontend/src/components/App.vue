@@ -40,7 +40,7 @@ export default defineComponent({
   methods: {
     // Use Axios to fetch backend status
     fetchBackendStatus() {
-      axios.get('https://election-backend-i358.onrender.com/test')
+      axios.get('VUE_APP_API_URL/test')
           .then(response => {
             this.backendStatus = response.data;
           })

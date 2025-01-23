@@ -83,7 +83,7 @@ export default {
 
       this.loading = true;
       try {
-        const response = await axios.post("https://election-backend-i358.onrender.com/api/login", this.login);
+        const response = await axios.post("VUE_APP_API_URL/api/login", this.login);
         const { token, role } = response.data;
 
         localStorage.setItem("token", token);

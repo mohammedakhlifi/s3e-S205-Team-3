@@ -80,7 +80,7 @@ export default defineComponent({
     async fetchUserInfoByName() {
       try {
         const username = this.$route.params.username;
-        const response = await axios.get("https://election-backend-i358.onrender.com/api/user/name", {
+        const response = await axios.get("VUE_APP_API_URL/api/user/name", {
           params: { name: username }
         });
 

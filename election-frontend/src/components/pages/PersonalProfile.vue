@@ -102,7 +102,7 @@ export default defineComponent({
   methods: {
     async fetchUserInfoByEmail() {
       try {
-        const response = await axios.get(`https://election-backend-i358.onrender.com/api/user`, {
+        const response = await axios.get(`VUE_APP_API_URL/api/user`, {
           params: { email: this.email }
         });
         this.user = response.data;
@@ -131,7 +131,7 @@ export default defineComponent({
     },
     async saveChanges() {
       try {
-        const response = await axios.put(`https://election-backend-i358.onrender.com/api/user/update`, this.editedUser);
+        const response = await axios.put(`VUE_APP_API_URL/api/user/update`, this.editedUser);
         this.user = { ...this.editedUser };
         this.editMode = false;
       } catch (error) {

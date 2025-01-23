@@ -137,7 +137,7 @@ export default {
   methods: {
     registerUser() {
       axios
-          .post("https://election-backend-i358.onrender.com/api/register", this.user)
+          .post("VUE_APP_API_URL/api/register", this.user)
           .then((response) => {
             this.message = response.data;
           })

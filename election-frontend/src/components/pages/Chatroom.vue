@@ -15,7 +15,7 @@ export default {
     };
   },
   created() {
-    this.socket = new WebSocket("ws://https://election-backend-i358.onrender.com/chat");
+    this.socket = new WebSocket("ws://VUE_APP_API_URL/chat");
     this.socket.onmessage = (event) => {
       this.messages.push(event.data);
     };
